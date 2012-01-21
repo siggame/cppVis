@@ -1,7 +1,6 @@
 #ifndef IOPTIONSMAN_H
 #define IOPTIONSMAN_H
 
-#include "../lib/optionsmanager/option.h"
 #include <string>
 #include <QtPlugin>
 

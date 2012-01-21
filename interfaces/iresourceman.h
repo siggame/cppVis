@@ -1,49 +1,139 @@
 #ifndef IRESOURCEMAN_H
 #define IRESOURCEMAN_H
 
+#include <set>
 #include <vector>
 #include <string>
-#include "../lib/resourcemanager/resource.h"
+#include "typedefs.h"
+//#include "resource.h"
 #include <QtPlugin>
 
 namespace visualizer
 {
 
-class IResourceMan
-{
-  public:
-    virtual Resource* reference( const std::string& rName, const std::string& referencer ) = 0;
-    virtual bool release( const std::string& rName, const std::string& references ) = 0;
+  class Resource
+  {
+    public:
+      /** Default constructor */
+      Resource(ResourceType type)
+      {
+        m_type = type;
+      }
 
-    virtual bool regFile( const ResID_t& rName, const std::string& filename ) = 0;
-    virtual bool del( const ResID_t& rName ) = 0;
+      /** Default destructor */
+      ~Resource(){}
 
-    virtual bool loadResourceFile( const std::string& filename ) = 0;
-    virtual bool saveResourceFile( const std::string& filename ) = 0;
+      bool unload()
+      {
+        return true;
+      }
 
-    virtual bool exists( const ResID_t& rName ) = 0;
-    virtual std::vector<std::string> listResourceNames() = 0;
+      ResourceType type()
+      {
+        return m_type;
+      }
 
-    virtual void loadTexture
-      ( 
-      const std::string& filename, 
-      const std::string& name 
-      )= 0;
+      inline bool isReferencedBy(const std::string & referencer)
+      {
+        if (m_references.find(referencer) != m_references.end())
+        {
+          return true;
+        }
+        return false;
+      }
 
-    virtual void loadTexture
-      ( 
-      QImage& image, 
-      const std::string& name 
-      ) = 0;
+      inline std::set<std::string> referenceList()
+      {
+        return m_references;
+      }
 
-    virtual void loadFont
-      ( 
-      const std::string& fontWidths, 
-      const std::string& fontTexture, 
-      const std::string& name
-      ) = 0;
+      inline unsigned int numReferences()
+      {
+        return m_references.size();
+      }
 
-};
+    #ifdef DEBUG
+      void printReferences()
+      {
+        std::cout << "References:\n"
+          for (std::set<std::string>::iterator it = m_references.begin();
+          it != m_references.end(); it++)
+        {
+          std::cout << *it << '\n';
+        }
+      }
+    #endif
+
+      inline bool reference(const std::string & referencer)
+      {
+        if (!isReferencedBy(referencer))
+        {
+          m_references.insert(referencer);
+          return true;
+        }
+
+      #ifdef DEBUG
+        std::cout << "Referencer: \"" << reference << "\" already exists\n";
+      #endif
+        return false;
+      }
+
+      inline bool deReference(const std::string & referencer)
+      {
+        if (isReferencedBy(referencer))
+        {
+          m_references.erase(referencer);
+          return true;
+        }
+
+      #ifdef DEBUG
+        std::cout << "Referencer: \"" << reference << "\" doesn't exist\n";
+      #endif
+        return false;
+      }
+
+    protected:
+      ResourceType m_type;
+      std::set<std::string> m_references;
+      std::string filename;
+    private:
+  };
+
+  class IResourceMan
+  {
+    public:
+      virtual Resource* reference( const std::string& rName, const std::string& referencer ) = 0;
+      virtual bool release( const std::string& rName, const std::string& references ) = 0;
+
+      virtual bool regFile( const ResID_t& rName, const std::string& filename ) = 0;
+      virtual bool del( const ResID_t& rName ) = 0;
+
+      virtual bool loadResourceFile( const std::string& filename ) = 0;
+      virtual bool saveResourceFile( const std::string& filename ) = 0;
+
+      virtual bool exists( const ResID_t& rName ) = 0;
+      virtual std::vector<std::string> listResourceNames() = 0;
+
+      virtual void loadTexture
+        ( 
+        const std::string& filename, 
+        const std::string& name 
+        )= 0;
+
+      virtual void loadTexture
+        ( 
+        QImage& image, 
+        const std::string& name 
+        ) = 0;
+
+      virtual void loadFont
+        ( 
+        const std::string& fontWidths, 
+        const std::string& fontTexture, 
+        const std::string& name
+        ) = 0;
+
+  };
 
 } // visualizer
 
