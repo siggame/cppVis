@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
   ///////////////////////////////////////////////////////////////////
   OptionsMan->setup();
 
-
   OptionsMan->loadOptionFile( "./options.cfg", "core" );
 
   // TODO: FIXME

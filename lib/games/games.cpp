@@ -27,7 +27,6 @@ namespace visualizer
   void _Games::_setup()
   {
     IGame *game = 0;
-    bool pluginFound;
 
     QDir pluginsDir( qApp->applicationDirPath() );
     QStringList pluginFilter;
@@ -50,7 +49,6 @@ namespace visualizer
 #if __DEBUG__
           cerr << "Plugin Loaded: " << qPrintable( pluginsDir.absoluteFilePath( fileName ) ) << endl;
 #endif
-          pluginFound = true;
           m_gameList.push_back( game );
           game->gui = GUI;
           game->animationEngine = AnimationEngine;

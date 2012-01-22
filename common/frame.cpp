@@ -20,7 +20,7 @@ namespace visualizer
     return m_frame;
   }
 
-  const size_t Frame::size() const
+  size_t Frame::size() const
   {
     return m_frame.size();
   }

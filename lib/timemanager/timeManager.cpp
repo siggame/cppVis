@@ -131,7 +131,7 @@ namespace visualizer
     if( m_turn < 0 )
       m_turn = 0;
 
-    if( m_turn >= m_maxTurns )
+    if( (unsigned int)m_turn >= m_maxTurns )
     {
       m_turn = m_maxTurns-1;
     }
@@ -300,7 +300,7 @@ namespace visualizer
         setTurn(loop_start);
       }
 
-      if( m_turn >= m_maxTurns )
+      if( (unsigned int)m_turn >= m_maxTurns )
       {
         m_turn = m_maxTurns-1;
       }

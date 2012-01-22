@@ -29,7 +29,7 @@ namespace visualizer
 
       /// @TODO Should probably return a wrapped object
       std::list<SmartPointer<Animatable> >& getAnimations();
-      const size_t size() const;
+      size_t size() const;
 
     private:
       std::list<SmartPointer<Animatable> > m_frame;

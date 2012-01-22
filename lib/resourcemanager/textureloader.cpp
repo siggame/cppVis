@@ -115,13 +115,13 @@ namespace visualizer
     size_t tempW, tempH;
     for( tempW = 0; tempW < sizeof( powers )/sizeof(unsigned int); tempW++ )
     {
-      if( texture.width() <= powers[tempW] )
+      if( (unsigned int)texture.width() <= powers[tempW] )
         break;
     }
 
     for( tempH = 0; tempH < sizeof( powers )/sizeof(unsigned int); tempH++ )
     {
-      if( texture.height() <= powers[tempH] )
+      if( (unsigned int)texture.height() <= powers[tempH] )
         break;
     }
 

@@ -137,7 +137,7 @@ namespace visualizer
         ) : ResTexture( image, id ), width( rWidth ), height( rHeight ), numFrames( frames )
       {}
     
-      Rect calcTexCoord( const int& frame ) const
+      Rect calcTexCoord( const unsigned int& frame ) const
       {
         if( frame >= numFrames )
         {

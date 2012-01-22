@@ -8,6 +8,15 @@ namespace visualizer
 
   void _OptionsMan::setup()
   {
+    if( !OptionsMan )
+    {
+      OptionsMan = new _OptionsMan;
+    }
+    else
+    {
+      THROW( Exception, "OptionsManager Already Initialized" );
+    }
+
   }
 
   void _OptionsMan::destroy()
@@ -17,6 +26,7 @@ namespace visualizer
   void _OptionsMan::loadOptionFile( const std::string& filename, const string& domain )
   {
     THROW( Exception, "No Options File Found!" );
+
   }
 
   istream& operator >> ( istream& os, Option& rhs )

@@ -160,7 +160,7 @@ namespace visualizer
       QStringList pathList;
       QList<QUrl> urlList = mimeData->urls();
 
-      for( size_t i = 0; i < urlList.size() && i < 32; ++i )
+      for( size_t i = 0; i < (unsigned int)urlList.size() && i < 32; ++i )
       {
         pathList.append( urlList.at( i ).toLocalFile() );
       }
@@ -266,7 +266,7 @@ namespace visualizer
 
   }
 
-  void _GUI::closeEvent( QCloseEvent* event )
+  void _GUI::closeEvent( QCloseEvent* /* event */ )
   {
     Renderer->destroy();
   }
