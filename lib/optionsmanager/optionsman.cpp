@@ -57,8 +57,8 @@ namespace visualizer
     map< string, ofstream* > files;
     for( vector< pair< string, string > >::iterator i = m_domains.begin(); i != m_domains.end(); i++ )
     {
-      ofstream out( i->first.c_str(), ofstream::binary | ofstream::trunc );
-      files[ i->second ] = &out;
+      ofstream *out = new ofstream( i->first.c_str(), ofstream::binary | ofstream::trunc );
+      files[ i->second ] = out;
     }
 
     for( map< string, Option >::iterator i = m_options.begin(); i != m_options.end(); i++ )
@@ -66,6 +66,11 @@ namespace visualizer
       ofstream& out = *files[ i->second.domain ];
       out << i->second;
 
+    }
+
+    for( map< string, ofstream* >::iterator i = files.begin(); i != files.end(); i++ )
+    {
+      delete i->second;
     }
 
   }
@@ -213,24 +218,33 @@ namespace visualizer
   ostream& operator << ( ostream& os, const Option& rhs )
   {
 
-    os << (unsigned char)rhs.type;
+    os.write( (const char*)&rhs.type, sizeof( unsigned char ) );
 
-    os << (unsigned int)rhs.key.size();
+    unsigned int sz = rhs.key.size();
+    os.write( (const char*)&sz, sizeof( unsigned int ) );
     os << rhs.key;
     
     switch( rhs.type )
     {
       case OP_INT:
       case OP_FLOAT:
-        os << (float)rhs.fMinRange << (float)rhs.fMaxRange << (float)rhs.fValue;
+        os.write( (const char*)&rhs.fMinRange, sizeof( float ) );
+        os.write( (const char*)&rhs.fMaxRange, sizeof( float ) );
+        os.write( (const char*)&rhs.fValue, sizeof( float ) );
+        //os << (float)rhs.fMinRange << (float)rhs.fMaxRange << (float)rhs.fValue;
       break;
       case OP_STRING:
-        os << (unsigned int)rhs.sValue.size() << rhs.sValue;
+        sz = rhs.sValue.size();
+        os.write( (const char*)&sz, sizeof( unsigned int ) );
+        os << rhs.sValue;
       case OP_COMBO:
-        os << (unsigned int)rhs.sOptions.size();
+        sz = (unsigned int)rhs.sOptions.size();
+        os.write( (const char*)&sz, sizeof( unsigned int ) );
         for( vector<string>::const_iterator i = rhs.sOptions.begin(); i != rhs.sOptions.end(); i++ )
         {
-          os << (unsigned int)i->size() << *i;
+          sz = i->size();
+          os.write( (const char*)&sz, sizeof( unsigned int ) );
+          os << *i;
         }
       break;
       default:
