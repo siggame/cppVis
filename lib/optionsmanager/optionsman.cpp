@@ -1,5 +1,8 @@
 #include "optionsman.h"
 #include "common.h"
+#include <fstream>
+
+using namespace std;
 
 namespace visualizer
 {
@@ -21,11 +24,49 @@ namespace visualizer
 
   void _OptionsMan::destroy()
   {
+    delete OptionsMan;
+    OptionsMan = 0;
   }
 
   void _OptionsMan::loadOptionFile( const std::string& filename, const string& domain )
   {
-    THROW( Exception, "No Options File Found!" );
+    m_domains.push_back( pair<string, string>( filename, domain ) );
+    ifstream in( filename.c_str(), ifstream::binary );
+
+    if( !in.is_open() )
+    {
+      return;
+    }
+
+    while( !in.eof() )
+    {
+      Option o;
+      in >> o;
+      o.domain = domain;
+      m_options[ o.key ] = o;
+
+    }
+    
+
+    in.close();
+
+  }
+
+  void _OptionsMan::saveOptions()
+  {
+    map< string, ofstream* > files;
+    for( vector< pair< string, string > >::iterator i = m_domains.begin(); i != m_domains.end(); i++ )
+    {
+      ofstream out( i->first.c_str(), ofstream::binary | ofstream::trunc );
+      files[ i->second ] = &out;
+    }
+
+    for( map< string, Option >::iterator i = m_options.begin(); i != m_options.end(); i++ )
+    {
+      ofstream& out = *files[ i->second.domain ];
+      out << i->second;
+
+    }
 
   }
 
@@ -36,6 +77,14 @@ namespace visualizer
     unsigned int len;
     unsigned int ops;
     char *str;
+
+    os.read( (char*)&len, sizeof( unsigned int ) );
+    str = new char[len+1];
+    os.read( (char*)str, len );
+    str[len] = 0;
+    rhs.key = str;
+    delete str;
+
     switch( rhs.type )
     {
       case OP_INT:
@@ -70,6 +119,12 @@ namespace visualizer
    
     return os;
   } // _OptionsMan::loadOptionFile()
+
+  void _OptionsMan::addOption( const Option& op )
+  {
+    m_options[ op.key ] = op;
+
+  }
 
   string& _OptionsMan::getString( const string& key )
   {
@@ -118,7 +173,7 @@ namespace visualizer
     map< string, Option >::iterator f = m_options.find( key );
     if( f == m_options.end() )
     {
-      THROW( Exception, "Could not find key" );
+      THROW( Exception, "Could not find key %s.", key.c_str() );
     }
     else
     {
@@ -159,6 +214,9 @@ namespace visualizer
   {
 
     os << (unsigned char)rhs.type;
+
+    os << (unsigned int)rhs.key.size();
+    os << rhs.key;
     
     switch( rhs.type )
     {

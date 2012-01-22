@@ -20,10 +20,33 @@ namespace visualizer
 
   struct Option
   {
+    Option()
+    {
+    }
+
+    Option( const string& rKey, const string& rDomain, const string& rValue )
+    {
+      key = rKey;
+      type = OP_STRING;
+      sValue = rValue;
+      domain = rDomain;
+
+    }
+
+    Option( const string& rKey, const string& rDomain, const float& rValue )
+    {
+      key = rKey;
+      type = OP_FLOAT;
+      fValue = rValue;
+      domain = rDomain;
+
+    }
+
     float fMinRange;
     float fMaxRange;
     float fValue;
 
+    string key;
     string sValue;
     vector<string> sOptions;
 
@@ -39,19 +62,21 @@ namespace visualizer
     Q_INTERFACES( IOptionsMan );
     private:
       map< string, Option > m_options;
-      void addOption( const Option& op );
+      vector< pair<string, string> > m_domains;
     public: 
+      void addOption( const Option& op );
+
       void setup();
       void destroy();
 
       void loadOptionFile( const string& filename, const string& domain );
+      void saveOptions();
 
       string& getString( const string& key );
       const string& getString( const string& key ) const;
 
       float& getNumber( const string& key );
       const float& getNumber( const string& key ) const;
-
 
   }; // _OptionsMan
 

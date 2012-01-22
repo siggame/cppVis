@@ -26,6 +26,15 @@ int main(int argc, char *argv[])
   OptionsMan->setup();
 
   OptionsMan->loadOptionFile( "./options.cfg", "core" );
+  
+  OptionsMan->addOption( Option( "renderHeight", "core", 1024 ) );
+  OptionsMan->addOption( Option( "renderWidth", "core", 1024 ) );
+  OptionsMan->addOption( Option( "arenaMode", "core", 0 ) );
+  OptionsMan->addOption( Option( "demonstrationMode", "core", 0 ) );
+  OptionsMan->addOption( Option( "mapSize", "core", 24 ) );
+
+
+
 
   // TODO: FIXME
 #if 0
