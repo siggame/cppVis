@@ -136,7 +136,7 @@ namespace visualizer
     map< string, Option >::iterator f = m_options.find( key );
     if( f == m_options.end() )
     {
-      THROW( Exception, "Could not find key" );
+      THROW( Exception, "Could not find key %s", key.c_str() );
     }
     else
     {
@@ -157,7 +157,7 @@ namespace visualizer
     map< string, Option >::const_iterator f = m_options.find( key );
     if( f == m_options.end() )
     {
-      THROW( Exception, "Could not find key" );
+      THROW( Exception, "Could not find key %s", key.c_str() );
     }
     else
     {
@@ -199,7 +199,7 @@ namespace visualizer
     map< string, Option >::const_iterator f = m_options.find( key );
     if( f == m_options.end() )
     {
-      THROW( Exception, "Could not find key" );
+      THROW( Exception, "Could not find key %s", key.c_str() );
     }
     else
     {

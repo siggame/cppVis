@@ -19,6 +19,7 @@ namespace visualizer
   {
     unsigned int  startSize;
     std::string   regex;
+    bool          giveFilename;
   };
 
   class IGame
