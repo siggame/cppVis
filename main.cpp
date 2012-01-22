@@ -25,16 +25,16 @@ int main(int argc, char *argv[])
   ///////////////////////////////////////////////////////////////////
   OptionsMan->setup();
 
-	if( !OptionsMan->loadOptionFile( "./options.cfg" ) )
-	{
-		std::cerr << "Could Not Load options.cfg" << std::endl;
-		return 1;
-	}
 
+  OptionsMan->loadOptionFile( "./options.cfg", "core" );
+
+  // TODO: FIXME
+#if 0
 	// initialize global options
 	OptionsMan->addInt("numTurns",1);
 	OptionsMan->addBool("sliderDragging", false );
 	OptionsMan->addInt( "currentTurn", 0 );
+#endif
   
   // NO MEMORY LEAKS AT THIS POINT
 

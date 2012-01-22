@@ -198,7 +198,7 @@ namespace visualizer
 
   void _TimeManager::play()
   {
-    m_speed = OptionsMan->getFloat( "speed" );
+    m_speed = (*OptionsMan)[ "speed" ];
 
   } // _TimeManager::play()
 
@@ -233,7 +233,7 @@ namespace visualizer
   {
     if( m_speed >= 0 )
     {
-      m_speed = -OptionsMan->getFloat( "speed" );
+      m_speed = -(*OptionsMan)[ "speed" ];
     }
     else
     {
@@ -313,7 +313,7 @@ namespace visualizer
         // Very close to the next turn, but not quite
         m_turnCompletion = 0.9999f;
 
-        if( !strcmp( OptionsMan->getStr( "gameMode" ).c_str(), "arena" ) )
+        if( !strcmp( ((std::string)(*OptionsMan)[ "gameMode" ]).c_str(), "arena" ) )
         {
           if( !GUI->loadInProgress() )
           {

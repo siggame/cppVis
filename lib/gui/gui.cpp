@@ -221,13 +221,7 @@ namespace visualizer
 
   void _GUI::helpContents()
   {
-    if( OptionsMan->exists( "helpURL" ) )
-    {
-      QDesktopServices::openUrl( QUrl( OptionsMan->getStr( "helpURL" ).c_str() ) );
-    } else
-    {
-      QDesktopServices::openUrl( QUrl( "http://www.megaminerai.com" ) );
-    }
+    QDesktopServices::openUrl( QUrl( ((std::string)(*OptionsMan)["helpURL"]).c_str() ) );
   }
 
 
@@ -343,12 +337,8 @@ namespace visualizer
     buildToolSet();
 
     // If we're in arenaMode, change some settings
-    if(
-      !OptionsMan->exists( "arenaMode" ) ||
-      OptionsMan->getBool( "arenaMode" ) ||
-      !OptionsMan->getStr( "gameMode" ).compare( "arena" )
 
-      )
+    if( (*OptionsMan)[ "arenaMode" ] )
     {
       menuBar()->hide();
       setFullScreen(true);
@@ -357,10 +347,7 @@ namespace visualizer
     }
 
     //If we're in demonstrationMode, change different settings
-    if(
-      !OptionsMan->exists( "demonstrationMode" ) ||
-      OptionsMan->getBool( "demonstrationMode" )
-      )
+    if( (*OptionsMan)[ "demonstrationMode" ] )
     {
       menuBar()->hide();
       setFullScreen(true);

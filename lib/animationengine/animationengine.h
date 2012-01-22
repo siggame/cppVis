@@ -5,7 +5,7 @@
 #ifndef ANIMATIONENGINE_H
 #define ANIMATIONENGINE_H
 
-#include "animator.h"
+//#include "animator.h"
 #include "../timemanager/timeManager.h"
 #include "../../interfaces/ianimationengine.h"
 #include "common.h"

@@ -1,38 +1,27 @@
 #ifndef IOPTIONSMAN_H
 #define IOPTIONSMAN_H
 
-#include <string>
 #include <QtPlugin>
+#include <vector>
+#include <string>
+
+using std::string;
 
 namespace visualizer
 {
-
-  typedef std::string OptID_t;
-
   class IOptionsMan
   {
     public:
-      virtual bool loadOptionFile( const std::string& filename ) = 0;
-      virtual bool saveOptionFile( const std::string& filename ) = 0;
-      virtual OptionBase* operator() ( const OptID_t& oName ) = 0;
+      virtual void loadOptionFile( const string& filename, const string& domain ) = 0;
 
-      virtual bool exists( const OptID_t& oName ) = 0;
-      virtual OptionType optionType( const OptID_t& oName ) = 0;
+      virtual void setString( const string& key, const string& value ) = 0;
+      virtual void setNumber( const string& key, const float& value ) = 0;
 
-      virtual bool addString( const OptID_t& oName, const std::string& val ) = 0;
-      virtual bool addInt( const OptID_t& oName, const int& val ) = 0;
-      virtual bool addFloat( const OptID_t& oName, const float& val ) = 0;
-      virtual bool addBool( const OptID_t& oName, const bool& val ) = 0;
+      virtual string& getString( const string& key ) = 0;
+      virtual const string& getString( const string& key ) const = 0;
 
-      virtual const int& getInt( const OptID_t& oName ) = 0;
-      virtual const float& getFloat( const OptID_t& oName ) = 0;
-      virtual const bool& getBool( const OptID_t& oName ) = 0;
-      virtual const std::string& getStr( const OptID_t& oName ) = 0;
-
-      virtual void setInt( const OptID_t& oName, const int& val ) = 0;
-      virtual void setFloat( const OptID_t& oName, const float& val ) = 0;
-      virtual void setBool( const OptID_t& oName, const bool& val ) = 0;
-      virtual void setStr( const OptID_t& oName, const std::string& val ) = 0;
+      virtual float& getNumber( const string& key ) = 0;
+      virtual const float& getNumber( const string& key ) const = 0;
 
   }; // IOptionsMan
 
