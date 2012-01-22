@@ -71,7 +71,7 @@ namespace visualizer
     evt->acceptProposedAction();
   }
 
-  void _GUI::loadGamestring( char* log, const size_t& length )
+  void _GUI::loadGamestring( char* log, const size_t& length, const string& gamelog )
   {
     bool parserFound = false;
 
@@ -107,7 +107,14 @@ namespace visualizer
       if( rx.indexIn( fullLog.c_str() ) != -1 )
       {
         TimeManager->setTurn( 0 );
-        (*i)->loadGamelog( fullLog );
+        if( (*i)->logFileInfo().giveFilename )
+        {
+          (*i)->loadGamelog( gamelog );
+        }
+        else
+        {
+          (*i)->loadGamelog( fullLog );
+        }
         parserFound = true;
       }
 
@@ -136,7 +143,7 @@ namespace visualizer
 
       file_gamelog.close();
 
-      loadGamestring( input, length );
+      loadGamestring( input, length, gamelog );
 
       delete [] input;
     }
@@ -289,7 +296,7 @@ namespace visualizer
         return;
       char *temp = new char[ arr.size() ];
       memcpy( temp, arr.constData(), arr.size() );
-      loadGamestring( temp, arr.size() );
+      loadGamestring( temp, arr.size(), "" );
       m_loadInProgress = false;
       delete [] temp;
     }
@@ -368,68 +375,11 @@ namespace visualizer
 
   void _GUI::newReadyConnect()
   {
-#if 0
-    QTcpSocket *client = m_visReadyServer->nextPendingConnection();
 
-    QDataStream inout( (QIODevice*)client );
-    inout.setVersion( QDataStream::Qt_4_0 );
-
-    char rfg = TimeManager->readyForGamelog();
-
-    inout.writeRawData( (char*)&rfg, 1 );
-
-    client->disconnectFromHost();
-
-#endif
   }
 
   void _GUI::newConnect()
   {
-#if 0
-    QTcpSocket *client = m_server->nextPendingConnection();
-
-    QDataStream inout( (QIODevice*)client );
-    inout.setVersion( QDataStream::Qt_4_0 );
-
-    unsigned int fileSize = 20;
-
-
-    while( (unsigned int)client->bytesAvailable() < sizeof( fileSize ) )
-    {
-      if( !client->waitForReadyRead( 5000 ) )
-      {
-        THROW
-          (
-          Exception,
-          "Didn't get that gamelog in time."
-          );
-      }
-    }
-
-    inout >> fileSize;
-
-    while( (unsigned int)client->bytesAvailable() < fileSize )
-    {
-      if( !client->waitForReadyRead( 5000 ) )
-      {
-        THROW
-          (
-          Exception,
-          "Didn't get that gamelog in time."
-          );
-      }
-    }
-
-    char *gamelog = new char[ fileSize + 1 ];
-    inout.readRawData( gamelog, fileSize );
-    gamelog[ fileSize ] = 0;
-
-    loadGamestring( gamelog, fileSize );
-
-    delete [] gamelog;
-
-    client->disconnectFromHost();
-#endif
 
   }
 
