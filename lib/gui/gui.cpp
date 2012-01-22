@@ -4,6 +4,7 @@
 #include "../beanstalker/beanstalker.h"
 #include <QDesktopServices>
 #include <Qt>
+#include "optionsmanager/optionsdialog.h"
 
 #include <iostream>
 #include <string>
@@ -21,8 +22,6 @@ namespace visualizer
 
   _GUI::~_GUI()
   {
-    delete m_helpContents;
-    delete m_centralWidget;
   }
 
   bool _GUI::setup()
@@ -598,6 +597,7 @@ namespace visualizer
 
   void _GUI::optionsDialog()
   {
+    OptionsDialog* od = new OptionsDialog;
 
   }
 

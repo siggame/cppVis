@@ -63,6 +63,7 @@ namespace visualizer
     private:
       map< string, Option > m_options;
       vector< pair<string, string> > m_domains;
+      friend class OptionsDialog;
     public: 
       void addOption( const Option& op );
 
