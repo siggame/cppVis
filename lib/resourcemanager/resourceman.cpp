@@ -1,5 +1,7 @@
 #include "resourceman.h"
 #include "textureloader.h"
+#include "renderer/text.h"
+#include "resource.h"
 
 #include <sstream>
 #include <fstream>

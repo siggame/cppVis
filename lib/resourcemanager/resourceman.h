@@ -2,6 +2,7 @@
 #define RESOURCEMAN_H
 
 #include "../manager/manager.h"
+#include "resource.h"
 #include "iresourceman.h"
 #include "itextureloader.h"
 #include <map>

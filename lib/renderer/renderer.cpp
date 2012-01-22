@@ -1,6 +1,7 @@
 #include "renderer.h"
 #include "../selectionrender/selectionrender.h"
 #include <sstream>
+
 using namespace std;
 
 namespace visualizer
@@ -59,7 +60,7 @@ namespace visualizer
 
     /// @TODO Need to clean up this code a bit.
     glPushMatrix();
-    float mapSize = (float)OptionsMan->getInt("mapSize");
+    float mapSize = (float)OptionsMan->getNumber("mapSize");
 
     translate( width()*m_winX/m_unitSzX, height()*m_winY/m_unitSzY );
 
@@ -159,21 +160,8 @@ namespace visualizer
     }
     else
     {
-      if ( OptionsMan->exists(renderHeightName) && OptionsMan->optionType(renderDepthName) == OT_INT &&
-        OptionsMan->exists(renderWidthName) && OptionsMan->optionType(renderWidthName) == OT_INT )
-      {
-        if ( OptionsMan->exists(renderDepthName) && OptionsMan->optionType(renderDepthName) == OT_INT)
-        {
-          resize( OptionsMan->getInt(renderWidthName),
-            OptionsMan->getInt(renderHeightName),
-            OptionsMan->getInt(renderDepthName) );
-        }
-        else
-        {
-          resize( OptionsMan->getInt(renderWidthName),
-            OptionsMan->getInt(renderHeightName) );
-        }
-      }
+
+      resize( OptionsMan->getNumber( "renderWidth" ), OptionsMan->getNumber( "renderHeight" ) );
     }
 
     clear();

@@ -221,7 +221,7 @@ namespace visualizer
 
   void _GUI::helpContents()
   {
-    QDesktopServices::openUrl( QUrl( ((std::string)(*OptionsMan)["helpURL"]).c_str() ) );
+    QDesktopServices::openUrl( QUrl( OptionsMan->getString( "helpURL" ).c_str() ) );
   }
 
 
@@ -338,7 +338,7 @@ namespace visualizer
 
     // If we're in arenaMode, change some settings
 
-    if( (*OptionsMan)[ "arenaMode" ] )
+    if( OptionsMan->getNumber( "arenaMode" ) )
     {
       menuBar()->hide();
       setFullScreen(true);
@@ -347,7 +347,7 @@ namespace visualizer
     }
 
     //If we're in demonstrationMode, change different settings
-    if( (*OptionsMan)[ "demonstrationMode" ] )
+    if( OptionsMan->getNumber( "demonstrationMode" ) )
     {
       menuBar()->hide();
       setFullScreen(true);

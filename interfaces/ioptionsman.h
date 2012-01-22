@@ -14,9 +14,6 @@ namespace visualizer
     public:
       virtual void loadOptionFile( const string& filename, const string& domain ) = 0;
 
-      virtual void setString( const string& key, const string& value ) = 0;
-      virtual void setNumber( const string& key, const float& value ) = 0;
-
       virtual string& getString( const string& key ) = 0;
       virtual const string& getString( const string& key ) const = 0;
 
