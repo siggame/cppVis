@@ -33,9 +33,9 @@ int main(int argc, char *argv[])
   OptionsMan->addOption( Option( "arenaMode", "core", 0 ) );
   OptionsMan->addOption( Option( "demonstrationMode", "core", 0 ) );
   OptionsMan->addOption( Option( "mapSize", "core", 24 ) );
-#endif
 
   OptionsMan->saveOptions();
+#endif
 
 
   // TODO: FIXME

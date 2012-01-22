@@ -466,6 +466,10 @@ namespace visualizer
     toggleFullScreenAct->setStatusTip( tr("Toggle Fullscreen Mode") );
     connect( toggleFullScreenAct, SIGNAL(triggered()), this, SLOT(toggleFullScreen()) );
 
+    m_editOptions = new QAction( tr( "&Options" ), this );
+    m_editOptions->setStatusTip( tr( "Edit Program Options" ) );
+    connect( m_editOptions, SIGNAL( triggered() ), this, SLOT( optionsDialog() ) );
+
     m_fileExit = new QAction( tr( "&Quit" ), this );
     m_fileExit->setShortcut( tr( "Ctrl+Q" ) );
     m_fileExit->setStatusTip(
@@ -503,6 +507,7 @@ namespace visualizer
     menu->addAction( m_fileExit );
 
     menu = menuBar()->addMenu( tr( "&Edit" ) );
+    menu->addAction( m_editOptions );
 
     menu = menuBar()->addMenu( tr( "&View" ) );
     menu->addAction(toggleFullScreenAct);
@@ -589,6 +594,10 @@ namespace visualizer
     }
 
     TimeManager->setTurnPercent( TimeManager->getTurnPercent() + 0.5f );
+  }
+
+  void _GUI::optionsDialog()
+  {
   }
 
 

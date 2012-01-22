@@ -169,6 +169,8 @@ class _GUI : public QMainWindow, public IGUI
     void stepTurnForwardShortcut();
     void stepTurnBackShortcut();
 
+    void optionsDialog();
+
     void catchEscapeKey();
 
     void turnPercentageShortcut1();
@@ -257,6 +259,8 @@ class _GUI : public QMainWindow, public IGUI
 
     QAction *m_fileOpen;         /// File->Open
     QAction *m_fileExit;         /// File->Exit
+
+    QAction *m_editOptions;      /// Edit->Options
 
     QAction *toggleFullScreenAct;/// View -> Toggle Full Screen
 
