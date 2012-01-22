@@ -598,8 +598,8 @@ namespace visualizer
 
   void _GUI::optionsDialog()
   {
-  }
 
+  }
 
   void _GUI::stepTurnBackShortcut()
   {
