@@ -190,7 +190,7 @@ namespace visualizer
       // void setCameraFocus()
       // void setCameraZoom()
 
-      void setUnitSize
+      void setGridDimensions
         (
         const float& sX,
         const float& sY

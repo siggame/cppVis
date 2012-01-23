@@ -542,7 +542,7 @@ namespace visualizer
     glPopMatrix();
   } // _Renderer::pop()
 
-  void _Renderer::setUnitSize
+  void _Renderer::setGridDimensions
     (
     const float& sX,
     const float& sY
