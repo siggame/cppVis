@@ -40,7 +40,7 @@ namespace visualizer
 
 } // visualizer
 
-Q_DECLARE_INTERFACE( visualizer::IGame, "siggame.vis2.game/0.1" );
+Q_DECLARE_INTERFACE( visualizer::IGame, "siggame.vis2.game/0.2" );
 
 
 #endif

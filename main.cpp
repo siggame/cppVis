@@ -27,27 +27,6 @@ int main(int argc, char *argv[])
 
   OptionsMan->loadOptionFile( "./options.xml", "core" );
   
-#if 0
-  OptionsMan->addOption( Option( "renderHeight", "core", 1024 ) );
-  OptionsMan->addOption( Option( "renderWidth", "core", 1024 ) );
-  OptionsMan->addOption( Option( "arenaMode", "core", 0 ) );
-  OptionsMan->addOption( Option( "demonstrationMode", "core", 0 ) );
-  OptionsMan->addOption( Option( "mapSize", "core", 24 ) );
-  OptionsMan->addOption( Option( "speed", "core", 1 ) );
-  OptionsMan->addOption( Option( "gameMode", "core", "normal" ) );
-
-#endif
-  OptionsMan->saveOptions();
-
-
-  // TODO: FIXME
-#if 0
-	// initialize global options
-	OptionsMan->addInt("numTurns",1);
-	OptionsMan->addBool("sliderDragging", false );
-	OptionsMan->addInt( "currentTurn", 0 );
-#endif
-  
   // NO MEMORY LEAKS AT THIS POINT
 
   ///////////////////////////////////////////////////////////////////

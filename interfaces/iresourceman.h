@@ -137,6 +137,6 @@ namespace visualizer
 
 } // visualizer
 
-Q_DECLARE_INTERFACE( visualizer::IResourceMan, "siggame.vis2.resourceman/0.1" );
+Q_DECLARE_INTERFACE( visualizer::IResourceMan, "siggame.vis2.resourceman/0.2" );
 
 #endif

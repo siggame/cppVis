@@ -24,6 +24,6 @@ namespace visualizer
 
 } // visualizer
 
-Q_DECLARE_INTERFACE( visualizer::IOptionsMan, "siggame.vis2.optionsman/0.1" );
+Q_DECLARE_INTERFACE( visualizer::IOptionsMan, "siggame.vis2.optionsman/0.2" );
 
 #endif

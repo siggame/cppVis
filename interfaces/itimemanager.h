@@ -46,6 +46,6 @@ namespace visualizer
 
 } // visualizer
 
-Q_DECLARE_INTERFACE( visualizer::ITimeManager, "siggame.vis2.timemanager/0.1" );
+Q_DECLARE_INTERFACE( visualizer::ITimeManager, "siggame.vis2.timemanager/0.2" );
 
 #endif

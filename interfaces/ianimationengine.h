@@ -22,9 +22,7 @@ namespace visualizer
 
       // @TODO: Change this to a smart pointer or something similar so we know when the game is dead and 
       // we don't accidentally use it once Piracy has been destroyed.
-      virtual void registerFrameContainer( AnimSequence* frameList ) = 0;
-
-      virtual void registerGame( IGame* game, AnimSequence* frameList=0 ) = 0;
+      virtual void registerGame( IGame* game, AnimSequence* frameList ) = 0;
  
   }; // IAnimationEngine
 
@@ -36,7 +34,7 @@ namespace visualizer
 
 } // visualizer
 
-Q_DECLARE_INTERFACE( visualizer::IAnimationEngine, "siggame.vis2.animationengine/0.1" );
+Q_DECLARE_INTERFACE( visualizer::IAnimationEngine, "siggame.vis2.animationengine/0.2" );
 //Q_DECLARE_INTERFACE( visualizer::IAnimator, "siggame.vis2.animator/0.1" );
 
 #endif

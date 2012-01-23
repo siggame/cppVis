@@ -7,6 +7,7 @@ namespace visualizer
   _AnimationEngine::_AnimationEngine()
   {
     m_frameList = 0;
+    m_currentGame = 0;
 
   } // _AnimationEngine::_AnimationEngine()
 
@@ -116,7 +117,6 @@ namespace visualizer
       i++
       )
     {
-      animator.getData();
       (*i)->animate( TimeManager->getTurnPercent(), animator.getData(), m_currentGame );
     }
 
@@ -126,10 +126,7 @@ namespace visualizer
   {
     m_animMutex.lock();
       m_currentGame = game;
-      if( frameList )
-        m_frameList = frameList;
-      else
-        m_frameList = (AnimSequence*)game;
+      m_frameList = frameList;
     m_animMutex.unlock();
   }
 

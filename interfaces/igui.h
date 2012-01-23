@@ -32,6 +32,6 @@ namespace visualizer
 
 } // visualizer
 
-Q_DECLARE_INTERFACE( visualizer::IGUI, "siggame.vis2.gui/0.1" );
+Q_DECLARE_INTERFACE( visualizer::IGUI, "siggame.vis2.gui/0.2" );
 
 #endif
