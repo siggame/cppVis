@@ -92,6 +92,8 @@ namespace visualizer
             } 
             else if( s.toElement().tagName() == "value" )
             {
+              cout << o.key << ":" << qPrintable( s.toElement().text() ) << 
+endl;
               if( o.type == OP_INT || o.type == OP_FLOAT )
               {
                 o.fValue = s.toElement().text().toFloat();
@@ -191,7 +193,9 @@ namespace visualizer
           break;
         case OP_STRING:
           out << "    <value>" << i->second.sValue << "</value>" << endl;
+          break;
         case OP_COMBO:
+          out << "    <value>" << i->second.sValue << "</value>" << endl;
           out << "    <combos>" << endl;
           for
             ( 

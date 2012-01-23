@@ -16,11 +16,17 @@
   <option>
     <key>gameMode</key>
     <type>Combo</type>
+    <value>Arena</value>
     <combos>
       <op>Normal</op>
       <op>Arena</op>
       <op>Demo</op>
     </combos>
+  </option>
+  <option>
+    <key>helpURL</key>
+    <type>String</type>
+    <value>http://www.google.com</value>
   </option>
   <option>
     <key>mapSize</key>
