@@ -40,8 +40,14 @@
     <minvalue>0.01</minvalue>
     <minvalue>10</minvalue>
   </option>
-
-
-
-
+  <option>
+    <key>gameMode</key>
+    <type>Combo</type>
+    <value>Normal</value>
+    <combos>
+      <op>Normal</op>
+      <op>Arena</op>
+      <op>Demo</op>
+    </combos>
+  </option>
 </options>
