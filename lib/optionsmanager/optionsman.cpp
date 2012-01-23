@@ -62,6 +62,8 @@ namespace visualizer
         if( e.tagName() == "option" )
         {
           Option o;
+          o.domain = domain;
+
           QDomNode s = e.firstChild();
           while( !s.isNull() )
           {
@@ -120,6 +122,8 @@ namespace visualizer
             
             s = s.nextSibling();
           }
+
+          m_options[ o.key ] = o;
 
         }
         else

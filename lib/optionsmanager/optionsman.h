@@ -22,6 +22,15 @@ namespace visualizer
   {
     Option()
     {
+      fMinRange = -999999;
+      fMaxRange =  999999;
+      fValue = 0;
+
+      key = "";
+      sValue = "";
+      type = OP_INT;
+      domain = "";
+
     }
 
     Option( const string& rKey, const string& rDomain, const string& rValue )
