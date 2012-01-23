@@ -16,7 +16,7 @@
   <option>
     <key>gameMode</key>
     <type>Combo</type>
-    <value>Arena</value>
+    <value>Demo</value>
     <combos>
       <op>Normal</op>
       <op>Arena</op>
@@ -26,7 +26,7 @@
   <option>
     <key>helpURL</key>
     <type>String</type>
-    <value>http://www.google.com</value>
+    <value>http://www.gmail.com</value>
   </option>
   <option>
     <key>mapSize</key>
@@ -37,14 +37,14 @@
   <option>
     <key>renderHeight</key>
     <type>Integer</type>
-    <value>32</value>
+    <value>1190</value>
     <minvalue>1</minvalue>
     <maxvalue>2048</maxvalue>
   </option>
   <option>
     <key>renderWidth</key>
     <type>Integer</type>
-    <value>32</value>
+    <value>1</value>
     <minvalue>1</minvalue>
     <maxvalue>2048</maxvalue>
   </option>

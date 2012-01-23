@@ -43,6 +43,10 @@ namespace visualizer
               QCheckBox *checkbox = new QCheckBox();
               checkbox->setProperty( "key", QVariant( j->second.key.c_str() ) );
               checkbox->setProperty( "type", QVariant( "checkbox" ) );
+
+              checkbox->setChecked( j->second.fValue );
+
+
               mapper->setMapping( checkbox, checkbox );
               connect( checkbox, SIGNAL( stateChanged( int ) ), mapper, SLOT( map() ) );
               layout->addWidget( checkbox, i, 1 );
@@ -55,9 +59,19 @@ namespace visualizer
               slider->setProperty( "type", QVariant( "slider" ) );
               layout->addWidget( slider, i, 1 );
               mapper->setMapping( slider, slider );
+              if( j->second.type == OP_INT )
+              {
+                slider->setMinimum( j->second.fMinRange );
+                slider->setMaximum( j->second.fMaxRange );
+                slider->setValue( j->second.fValue );
+              }
+              else
+              {
+                slider->setMinimum( j->second.fMinRange * 1000 );
+                slider->setMaximum( j->second.fMaxRange * 1000 );
+                slider->setValue( j->second.fValue * 1000 );
+              }
               connect( slider, SIGNAL( valueChanged( int ) ), mapper, SLOT( map() ) );
-              slider->setMinimum( j->second.fMinRange );
-              slider->setMaximum( j->second.fMaxRange );
             }
 
           } 
@@ -86,7 +100,6 @@ namespace visualizer
           comboBox->setProperty( "key", QVariant( j->second.key.c_str() ) );
           comboBox->setProperty( "type", QVariant( "comboBox" ) );
           mapper->setMapping( comboBox, comboBox ) ;
-          connect( comboBox, SIGNAL( currentIndexChanged( int ) ), mapper, SLOT( map() ) );
           layout->addWidget( comboBox, i, 1 );
           for
             ( 
@@ -99,6 +112,8 @@ namespace visualizer
             if( !k->compare( j->second.sValue ) )
               comboBox->setCurrentIndex( comboBox->count()-1 );
           }
+
+          connect( comboBox, SIGNAL( currentIndexChanged( int ) ), mapper, SLOT( map() ) );
 
         } break;
       }
@@ -138,6 +153,8 @@ namespace visualizer
     {
       o.fValue = ((QCheckBox*)w)->isChecked();
     }
+
+    OptionsMan->saveOptions();
 
   }
 
