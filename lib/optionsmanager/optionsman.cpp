@@ -59,7 +59,73 @@ namespace visualizer
       QDomElement e = n.toElement();
       if( !e.isNull() )
       {
-        cout << qPrintable( e.tagName() ) << endl;
+        if( e.tagName() == "option" )
+        {
+          Option o;
+          QDomNode s = e.firstChild();
+          while( !s.isNull() )
+          {
+            if( s.toElement().tagName() == "key" )
+            {
+              o.key = qPrintable( s.toElement().text() );
+            }
+            else if( s.toElement().tagName() == "type" )
+            {
+              if( s.toElement().text() == "Integer" )
+              {
+                o.type = OP_INT;
+              }
+              else if( s.toElement().text() == "Float" )
+              {
+                o.type = OP_FLOAT;
+              }
+              else if( s.toElement().text() == "String" )
+              {
+                o.type = OP_STRING;
+              }
+              else
+              {
+                o.type = OP_COMBO;
+              }
+            } 
+            else if( s.toElement().tagName() == "value" )
+            {
+              if( o.type == OP_INT || o.type == OP_FLOAT )
+              {
+                o.fValue = s.toElement().text().toFloat();
+              }
+              else
+              {
+                o.sValue = qPrintable( s.toElement().text() );
+              }
+            } 
+            else if( s.toElement().tagName() == "minvalue" )
+            {
+              o.fMinRange = s.toElement().text().toFloat();
+            }
+            else if( s.toElement().tagName() == "maxvalue" )
+            {
+              o.fMaxRange = s.toElement().text().toFloat();
+            } 
+            else if( s.toElement().tagName() == "combos" )
+            {
+              QDomNode combos = s.firstChild();
+              while( !combos.isNull() )
+              {
+                o.sOptions.push_back( qPrintable( combos.toElement().text() ) );
+                combos = combos.nextSibling();
+              }
+
+            }
+            
+            s = s.nextSibling();
+          }
+
+        }
+        else
+        {
+          THROW( Exception, "Expecting an option.  Did not receive it." );
+        }
         
       }
 

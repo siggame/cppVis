@@ -1,0 +1,17 @@
+<options>
+  <option>
+    <key>renderHeight</key>
+    <type>Integer</type>
+    <value>32</value>
+    <minvalue>1</minvalue>
+    <maxvalue>2048</maxvalue>
+  </option>
+  <option>
+    <key>renderWidth</key>
+    <type>Combo</type>
+    <combos>
+
+    </combos>
+  </option>
+
+</options>
