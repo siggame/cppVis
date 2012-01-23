@@ -1,53 +1,51 @@
 <options>
-  <option>
-    <key>renderHeight</key>
-    <type>Integer</type>
-    <value>32</value>
-    <minvalue>1</minvalue>
-    <maxvalue>2048</maxvalue>
-  </option>
-  <option>
-    <key>renderWidth</key>
-    <type>Integer</type>
-    <value>32</value>
-    <minvalue>1</minvalue>
-    <maxvalue>2048</maxvalue>
-  </option>
-  <option>
-    <key>arenaMode</key>
-    <type>Integer</type>
-    <value>0</value>
-    <minvalue>0</minvalue>
-    <maxvalue>1</maxvalue>
-  </option>
-  <option>
-    <key>demonstrationMode</key>
-    <type>Integer</type>
-    <value>0</value>
-    <minvalue>0</minvalue>
-    <maxvalue>1</maxvalue>
-  </option>
-  <option>
-    <key>mapSize</key>
-    <type>Integer</type>
-    <value>32</value>
-    <minvalue>1</minvalue>
-  </option>
-  <option>
-    <key>speed</key>
-    <type>Float</type>
-    <value>1</value>
-    <minvalue>0.01</minvalue>
-    <minvalue>10</minvalue>
-  </option>
-  <option>
-    <key>gameMode</key>
-    <type>Combo</type>
-    <value>Normal</value>
-    <combos>
-      <op>Normal</op>
-      <op>Arena</op>
-      <op>Demo</op>
-    </combos>
-  </option>
+<option>
+<key>arenaMode</key>
+<type>Integer</type>
+<value>0</value>
+<minvalue>0</minvalue>
+<maxvalue>1</maxvalue>
+</option>
+<option>
+<key>demonstrationMode</key>
+<type>Integer</type>
+<value>0</value>
+<minvalue>0</minvalue>
+<maxvalue>1</maxvalue>
+</option>
+<option>
+<key>gameMode</key>
+<type>Combo</type>
+<combos>
+<op>Normal</op>
+<op>Arena</op>
+<op>Demo</op>
+</combos>
+</option>
+<option>
+<key>mapSize</key>
+<type>Integer</type>
+<value>32</value>
+<minvalue>1</minvalue>
+</option>
+<option>
+<key>renderHeight</key>
+<type>Integer</type>
+<value>32</value>
+<minvalue>1</minvalue>
+<maxvalue>2048</maxvalue>
+</option>
+<option>
+<key>renderWidth</key>
+<type>Integer</type>
+<value>32</value>
+<minvalue>1</minvalue>
+<maxvalue>2048</maxvalue>
+</option>
+<option>
+<key>speed</key>
+<type>Float</type>
+<value>1</value>
+<minvalue>10</minvalue>
+</option>
 </options>

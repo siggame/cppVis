@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
   OptionsMan->addOption( Option( "speed", "core", 1 ) );
   OptionsMan->addOption( Option( "gameMode", "core", "normal" ) );
 
-  //OptionsMan->saveOptions();
 #endif
+  OptionsMan->saveOptions();
 
 
   // TODO: FIXME

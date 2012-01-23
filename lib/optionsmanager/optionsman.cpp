@@ -136,29 +136,7 @@ namespace visualizer
       n = n.nextSibling();
 
     }
-    
-
-#if 0
-    ifstream in( filename.c_str(), ifstream::binary );
-
-    if( !in.is_open() )
-    {
-      return;
-    }
-
-    while( !in.eof() )
-    {
-      Option o;
-      in >> o;
-      o.domain = domain;
-      m_options[ o.key ] = o;
-
-    }
-    
-
-    in.close();
-#endif
-
+   
   }
 
   void _OptionsMan::saveOptions()
@@ -168,17 +146,72 @@ namespace visualizer
     {
       ofstream *out = new ofstream( i->first.c_str(), ofstream::binary | ofstream::trunc );
       files[ i->second ] = out;
+
+      (*out) << "<options>" << endl;
     }
 
     for( map< string, Option >::iterator i = m_options.begin(); i != m_options.end(); i++ )
     {
       ofstream& out = *files[ i->second.domain ];
-      out << i->second;
+      out << "<option>" << endl;
 
+      out << "<key>" << i->second.key << "</key>" << endl;
+      out << "<type>"; 
+      switch( i->second.type )
+      {
+        case OP_INT:
+          out << "Integer";
+          break;
+        case OP_FLOAT:
+          out << "Float";
+          break;
+        case OP_STRING:
+          out << "String";
+          break;
+        case OP_COMBO:
+          out << "Combo";
+          break;
+      }
+      out << "</type>" << endl;
+
+      switch( i->second.type )
+      {
+        case OP_INT:
+        case OP_FLOAT:
+          out << "<value>" << i->second.fValue << "</value>" << endl;
+          if( i->second.fMinRange != -999999 )
+          {
+            out << "<minvalue>" << i->second.fMinRange << "</minvalue>" << endl;
+          }
+          if( i->second.fMaxRange != 999999 )
+          {
+            out << "<maxvalue>" << i->second.fMaxRange << "</maxvalue>" << endl;
+          }
+
+          break;
+        case OP_STRING:
+          out << "<value>" << i->second.sValue << "</value>" << endl;
+        case OP_COMBO:
+          out << "<combos>" << endl;
+          for
+            ( 
+              vector<string>::iterator j = i->second.sOptions.begin();
+              j != i->second.sOptions.end();
+              j++
+            )
+          {
+            out << "<op>" << *j << "</op>" << endl;
+          }
+          out << "</combos>" << endl;
+          break;
+      }
+
+      out << "</option>" << endl;
     }
 
     for( map< string, ofstream* >::iterator i = files.begin(); i != files.end(); i++ )
     {
+      (*i->second) << "</options>" << endl;
       delete i->second;
     }
 
