@@ -153,10 +153,10 @@ namespace visualizer
     for( map< string, Option >::iterator i = m_options.begin(); i != m_options.end(); i++ )
     {
       ofstream& out = *files[ i->second.domain ];
-      out << "<option>" << endl;
+      out << "  <option>" << endl;
 
-      out << "<key>" << i->second.key << "</key>" << endl;
-      out << "<type>"; 
+      out << "    <key>" << i->second.key << "</key>" << endl;
+      out << "    <type>"; 
       switch( i->second.type )
       {
         case OP_INT:
@@ -178,21 +178,21 @@ namespace visualizer
       {
         case OP_INT:
         case OP_FLOAT:
-          out << "<value>" << i->second.fValue << "</value>" << endl;
+          out << "    <value>" << i->second.fValue << "</value>" << endl;
           if( i->second.fMinRange != -999999 )
           {
-            out << "<minvalue>" << i->second.fMinRange << "</minvalue>" << endl;
+            out << "    <minvalue>" << i->second.fMinRange << "</minvalue>" << endl;
           }
           if( i->second.fMaxRange != 999999 )
           {
-            out << "<maxvalue>" << i->second.fMaxRange << "</maxvalue>" << endl;
+            out << "    <maxvalue>" << i->second.fMaxRange << "</maxvalue>" << endl;
           }
 
           break;
         case OP_STRING:
-          out << "<value>" << i->second.sValue << "</value>" << endl;
+          out << "    <value>" << i->second.sValue << "</value>" << endl;
         case OP_COMBO:
-          out << "<combos>" << endl;
+          out << "    <combos>" << endl;
           for
             ( 
               vector<string>::iterator j = i->second.sOptions.begin();
@@ -200,13 +200,13 @@ namespace visualizer
               j++
             )
           {
-            out << "<op>" << *j << "</op>" << endl;
+            out << "      <op>" << *j << "</op>" << endl;
           }
-          out << "</combos>" << endl;
+          out << "    </combos>" << endl;
           break;
       }
 
-      out << "</option>" << endl;
+      out << "  </option>" << endl;
     }
 
     for( map< string, ofstream* >::iterator i = files.begin(); i != files.end(); i++ )
