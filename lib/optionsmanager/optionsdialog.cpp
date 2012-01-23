@@ -1,6 +1,7 @@
 #include "optionsdialog.h"
 #include <QLineEdit>
 #include <QComboBox>
+#include <QCheckBox>
 
 namespace visualizer
 {
@@ -33,10 +34,25 @@ namespace visualizer
         case OP_FLOAT:
           if( j->second.fMinRange != -999999 && j->second.fMaxRange != 999999 )
           {
-            QSlider *slider = new QSlider( Qt::Horizontal );
-            layout->addWidget( slider, i, 1 );
-            slider->setMinimum( j->second.fMinRange );
-            slider->setMaximum( j->second.fMaxRange );
+            if( j->second.fMinRange == 0 && j->second.fMaxRange == 1 )
+            {
+              QCheckBox *checkbox = new QCheckBox();
+              layout->addWidget( checkbox, i, 1 );
+
+            }
+            else
+            {
+              QSlider *slider = new QSlider( Qt::Horizontal );
+              layout->addWidget( slider, i, 1 );
+              slider->setMinimum( j->second.fMinRange );
+              slider->setMaximum( j->second.fMaxRange );
+            }
+
+          } 
+          else
+          {
+            QLineEdit *lineEdit = new QLineEdit( QVariant( j->second.fValue ).toString() );
+            layout->addWidget( lineEdit, i, 1 );
 
           } break;
         case OP_STRING:
