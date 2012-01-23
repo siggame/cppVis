@@ -11,8 +11,12 @@ namespace visualizer
 {
   class OptionsDialog : public QScrollArea
   {
+    Q_OBJECT;
     public:
       OptionsDialog();
+
+    private slots:
+      void changeOption( QWidget* w );
 
     private:
     
