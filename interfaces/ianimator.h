@@ -6,6 +6,8 @@
 namespace visualizer
 {
 
+  class IGame;
+
   struct AnimData
   {
   }; // AnimData
@@ -17,7 +19,7 @@ namespace visualizer
     float startTime; 
     float endTime;
 
-    virtual void animate( const float& t, AnimData *d ) = 0;
+    virtual void animate( const float& t, AnimData *d, IGame* game ) = 0;
 
     virtual ~Anim() {}
   }; // Anim

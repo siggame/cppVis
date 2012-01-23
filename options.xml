@@ -26,7 +26,7 @@
   <option>
     <key>helpURL</key>
     <type>String</type>
-    <value>http://www.gmail.com</value>
+    <value>http://xkcd.com</value>
   </option>
   <option>
     <key>mapSize</key>
@@ -37,14 +37,14 @@
   <option>
     <key>renderHeight</key>
     <type>Integer</type>
-    <value>1190</value>
+    <value>443</value>
     <minvalue>1</minvalue>
     <maxvalue>2048</maxvalue>
   </option>
   <option>
     <key>renderWidth</key>
     <type>Integer</type>
-    <value>1</value>
+    <value>1756</value>
     <minvalue>1</minvalue>
     <maxvalue>2048</maxvalue>
   </option>

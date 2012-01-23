@@ -117,10 +117,21 @@ namespace visualizer
       )
     {
       animator.getData();
-      (*i)->animate( TimeManager->getTurnPercent(), animator.getData() );
+      (*i)->animate( TimeManager->getTurnPercent(), animator.getData(), m_currentGame );
     }
 
   } // _AnimationEngine::drawAnim()
+
+  void _AnimationEngine::registerGame( IGame* game, AnimSequence* frameList )
+  {
+    m_animMutex.lock();
+      m_currentGame = game;
+      if( frameList )
+        m_frameList = frameList;
+      else
+        m_frameList = (AnimSequence*)game;
+    m_animMutex.unlock();
+  }
 
   void _AnimationEngine::registerFrameContainer( AnimSequence* frameList )
   {

@@ -50,11 +50,13 @@ namespace visualizer
       void draw();
       void drawAnim( Animatable& animator );
 
+      void registerGame( IGame* game, AnimSequence* frameList=0 );
       void registerFrameContainer( AnimSequence* frameList );
 
     private:
       QMutex m_animMutex;
       AnimSequence *m_frameList;
+      IGame *m_currentGame;
      
   }; // _AnimationEngine
 
