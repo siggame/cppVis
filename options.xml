@@ -31,7 +31,7 @@
   <option>
     <key>mapSize</key>
     <type>Integer</type>
-    <value>32</value>
+    <value>320</value>
     <minvalue>1</minvalue>
   </option>
   <option>

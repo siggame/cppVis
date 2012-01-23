@@ -139,7 +139,10 @@ namespace visualizer
     }
     else if( w->property( "type" ).toString() == "lineEdit" )
     {
-      o.sValue = qPrintable( ((QLineEdit*)w)->text() );
+      if( o.type == OP_STRING || o.type == OP_COMBO ) 
+        o.sValue = qPrintable( ((QLineEdit*)w)->text() );
+      else
+        o.fValue = QVariant( ((QLineEdit*)w)->text() ).toFloat();
     }
     else if( w->property( "type" ).toString() == "slider" )
     {
