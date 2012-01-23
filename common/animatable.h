@@ -33,9 +33,8 @@ namespace visualizer
   class Animatable
   {
     public:
-      Animatable( IRenderer *renderer = 0 );
-      virtual ~Animatable() {};
-      virtual AnimData* getData() = 0; 
+      virtual AnimData* getData()
+      { return 0; } 
 
       void addKeyFrame( SmartPointer< Anim > anim );
       void addSubFrame( const size_t& subFrame, SmartPointer< Anim > anim );
@@ -46,12 +45,9 @@ namespace visualizer
       std::list<SmartPointer<Anim> >& getFrames();
       const std::list<SmartPointer<Anim> >& getFrames() const;
 
-      const IRenderer& renderer() const;
     private:
       std::vector< std::list<SmartPointer<Anim> >::iterator > m_keyFrames;
       std::list<SmartPointer<Anim> > m_frames;
-
-      IRenderer *m_renderer;
 
   }; // Animatable
 

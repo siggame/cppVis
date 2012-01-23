@@ -14,8 +14,10 @@ namespace visualizer
  
   struct Anim
   {
-    virtual float controlDuration() const = 0;
-    virtual float totalDuration() const = 0;
+    virtual float controlDuration() const
+    { return 0; }
+    virtual float totalDuration() const
+    { return 0; }
     float startTime; 
     float endTime;
 

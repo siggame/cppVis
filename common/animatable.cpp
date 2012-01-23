@@ -4,25 +4,6 @@
 namespace visualizer
 {
 
-  Animatable::Animatable( IRenderer *renderer )
-  {
-    m_renderer = renderer;
-  }
-
-  const IRenderer& Animatable::renderer() const
-  {
-    if( m_renderer == 0 )
-    {
-      THROW
-        (
-          Exception, 
-          "Cannot use the renderer if never given.  Please use construtor with valid renderer pointer." 
-        );
-    }
-
-    return *m_renderer;
-  }
-
   void Animatable::addKeyFrame( SmartPointer< Anim > anim )
   {
     m_frames.push_back( SmartPointer<Anim>( anim ) );
