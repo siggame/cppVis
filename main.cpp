@@ -25,9 +25,9 @@ int main(int argc, char *argv[])
   ///////////////////////////////////////////////////////////////////
   OptionsMan->setup();
 
-  //OptionsMan->loadOptionFile( "./options.cfg", "core" );
+  OptionsMan->loadOptionFile( "./options.xml", "core" );
   
-#if 1
+#if 0
   OptionsMan->addOption( Option( "renderHeight", "core", 1024 ) );
   OptionsMan->addOption( Option( "renderWidth", "core", 1024 ) );
   OptionsMan->addOption( Option( "arenaMode", "core", 0 ) );

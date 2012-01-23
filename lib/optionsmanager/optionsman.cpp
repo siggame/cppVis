@@ -1,6 +1,8 @@
 #include "optionsman.h"
 #include "common.h"
 #include <fstream>
+#include <QDomDocument>
+#include <QFile>
 
 using namespace std;
 
@@ -31,6 +33,42 @@ namespace visualizer
   void _OptionsMan::loadOptionFile( const std::string& filename, const string& domain )
   {
     m_domains.push_back( pair<string, string>( filename, domain ) );
+
+    QDomDocument doc( "OptionsML" );
+    QFile file( filename.c_str() );
+
+    if( !file.open( QIODevice::ReadOnly ) )
+      THROW( Exception, "%s options file could not be found.", filename.c_str() );
+
+    if( !doc.setContent( &file ) )
+    {
+      file.close();
+      THROW( Exception, "%s was unable to parse the XML", filename.c_str() );
+    }
+
+    file.close();
+
+    QDomElement root = doc.documentElement();
+
+    if( root.tagName() != "options" )
+      THROW( Exception, "%s did not have an options root", filename.c_str() );
+
+    QDomNode n = root.firstChild();
+    while( !n.isNull() )
+    {
+      QDomElement e = n.toElement();
+      if( !e.isNull() )
+      {
+        cout << qPrintable( e.tagName() ) << endl;
+        
+      }
+
+      n = n.nextSibling();
+
+    }
+    
+
+#if 0
     ifstream in( filename.c_str(), ifstream::binary );
 
     if( !in.is_open() )
@@ -49,6 +87,7 @@ namespace visualizer
     
 
     in.close();
+#endif
 
   }
 
