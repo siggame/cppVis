@@ -30,11 +30,15 @@ namespace visualizer
       switch( j->second.type )
       {
         case OP_INT:
-
-          break;
         case OP_FLOAT:
-        
-          break;
+          if( j->second.fMinRange != -999999 && j->second.fMaxRange != 999999 )
+          {
+            QSlider *slider = new QSlider( Qt::Horizontal );
+            layout->addWidget( slider, i, 1 );
+            slider->setMinimum( j->second.fMinRange );
+            slider->setMaximum( j->second.fMaxRange );
+
+          } break;
         case OP_STRING:
         {
           QLineEdit *lineEdit = new QLineEdit( j->second.sValue.c_str() );
