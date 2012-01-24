@@ -15,11 +15,9 @@ namespace visualizer
     glInit();
   }
 
-
   RenderWidget::~RenderWidget()
   {
   }
-
 
   void RenderWidget::initializeGL()
   {
@@ -28,12 +26,10 @@ namespace visualizer
     QGLWidget::initializeGL();
   }
 
-
   void RenderWidget::resizeEvent( QResizeEvent *evt )
   {
     Renderer->resize( evt->size().width(), evt->size().height() );
   }
-
 
   void RenderWidget::mousePressEvent( QMouseEvent *e )
   {
@@ -41,10 +37,10 @@ namespace visualizer
     {
       //QString line;
 
-      initialX = e->x();
-      initialY = e->y();
+      GUI->m_input.x = e->x();
+      GUI->m_input.y = e->y();
 
-      SelectionRender->setSelectionBox(initialX, initialY, initialX+1, initialY+1);
+      //SelectionRender->setSelectionBox(initialX, initialY, initialX+1, initialY+1);
       //+1 guarantees we create a box, rather than a point.
 
       //line.clear();
@@ -64,12 +60,20 @@ namespace visualizer
 
   }
 
-
   void RenderWidget::mouseReleaseEvent( QMouseEvent *e )
   {
 
-    currentX = e->x()+1;
-    currentY = e->y()+1;
+    GUI->m_input.sx = e->x()+1;
+    GUI->m_input.sy = e->y()+1;
+
+    if( e->button() == Qt::LeftButton )
+    {
+      GUI->m_input.leftRelease = true;
+    } else
+    {
+      GUI->m_input.rightRelease = true;
+    }
+
     //+1 guarantees we create a box, rather than a point.
 
     SelectionRender->setUpdated(true);
@@ -78,7 +82,6 @@ namespace visualizer
     Renderer->update( TimeManager->getTurn(), 0 );
 
   }
-
 
   void RenderWidget::mouseMoveEvent( QMouseEvent *e )
   {

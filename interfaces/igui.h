@@ -9,6 +9,26 @@
 namespace visualizer
 {
 
+  struct Input
+  {
+    Input()
+    {
+      clear();
+    }
+
+    void clear()
+    {
+      leftRelease = rightRelease = false;
+    }
+
+    float x, y;
+    float sx, sy;
+
+    bool leftRelease;
+    bool rightRelease;
+
+  };
+
   class IGUI
   { 
     public:
@@ -28,6 +48,8 @@ namespace visualizer
       virtual QTableWidget* getGlobalStats() = 0;
       virtual QTableWidget* getSelectionStats() = 0;
       virtual QTableWidget* getIndividualStats() = 0;
+
+      virtual const Input& getInput() const = 0;
   };
 
 } // visualizer

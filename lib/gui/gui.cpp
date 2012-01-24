@@ -679,5 +679,15 @@ namespace visualizer
     return m_globalStats;
   }
 
+  const Input& _GUI::getInput() const
+  {
+    return m_input;
+  }
+
+  void _GUI::clearInput()
+  {
+    m_input.clear();
+  }
+
 } // visualizer
 

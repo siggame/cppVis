@@ -194,6 +194,8 @@ namespace visualizer
       QTableWidget* getSelectionStats();
       QTableWidget* getIndividualStats();
 
+      void clearInput();
+
     private:
       QHttp* m_http;
 
@@ -254,6 +256,8 @@ namespace visualizer
 
       void turnPercentageCalc(int);
 
+      const Input& getInput() const;
+
       // Actions
       QAction *m_helpContents;     /// Help->Contents
 
@@ -266,6 +270,8 @@ namespace visualizer
 
       QString m_previousDirectory;
       QRect m_normalWindowGeometry;
+
+      Input m_input;
 
   };
 

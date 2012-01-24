@@ -1,4 +1,5 @@
 #include "animationengine.h"
+#include "gui/gui.h"
 
 namespace visualizer
 {
@@ -110,6 +111,8 @@ namespace visualizer
 
     if( m_currentGame )
       m_currentGame->postDraw();
+
+    GUI->clearInput();
 
     m_animMutex.unlock();
 
