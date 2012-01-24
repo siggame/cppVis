@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
     chooseOption->setLayout( new QBoxLayout( QBoxLayout::LeftToRight ) );
 
     QPushButton *load = new QPushButton( "Load Gamelog" );
-    QPushButton *spectate = new QPushButton( "Spectate" );
+    QPushButton *spectate = new QPushButton( "Spectate/Play" );
 
     chooseOption->layout()->addWidget( load );
     chooseOption->layout()->addWidget( spectate );
