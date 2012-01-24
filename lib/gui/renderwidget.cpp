@@ -31,6 +31,18 @@ namespace visualizer
     Renderer->resize( evt->size().width(), evt->size().height() );
   }
 
+  void RenderWidget::adjustInput( float& x, float& y )
+  {
+    float min = Renderer->width() < Renderer->height() ? Renderer->width():Renderer->height();
+
+    x /= min;
+    y /= min;
+
+    x *= Renderer->m_unitSzX;
+    y *= Renderer->m_unitSzY;
+
+  }
+
   void RenderWidget::mousePressEvent( QMouseEvent *e )
   {
     if( e->button() == Qt::LeftButton )
@@ -39,6 +51,8 @@ namespace visualizer
 
       GUI->m_input.x = e->x();
       GUI->m_input.y = e->y();
+
+      adjustInput( GUI->m_input.x, GUI->m_input.y );
 
       //SelectionRender->setSelectionBox(initialX, initialY, initialX+1, initialY+1);
       //+1 guarantees we create a box, rather than a point.
@@ -65,6 +79,8 @@ namespace visualizer
 
     GUI->m_input.sx = e->x()+1;
     GUI->m_input.sy = e->y()+1;
+    
+    adjustInput( GUI->m_input.sx, GUI->m_input.sy );
 
     if( e->button() == Qt::LeftButton )
     {
@@ -85,9 +101,12 @@ namespace visualizer
 
   void RenderWidget::mouseMoveEvent( QMouseEvent *e )
   {
-    currentX = e->x();
-    currentY = e->y();
+    GUI->m_input.sx = e->x();
+    GUI->m_input.sy = e->y();
 
+    adjustInput( GUI->m_input.sx, GUI->m_input.sy );
+
+#if 0
     // If Manhattan distance is m_DRAG_DISTANCE or greater, we're draggin
     if( e->buttons() & Qt::LeftButton &&
       abs(currentX-initialX)+abs(currentY-initialY) > m_DRAG_DISTANCE )
@@ -96,6 +115,7 @@ namespace visualizer
       SelectionRender->setDragging(true);
       SelectionRender->setSelectionBox(initialX, initialY, currentX, currentY);
     }
+#endif
   }
 
 } // visualizer

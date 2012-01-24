@@ -6,6 +6,8 @@
 #include <string>
 #include <QtPlugin>
 
+#include <iostream>
+
 namespace visualizer
 {
 

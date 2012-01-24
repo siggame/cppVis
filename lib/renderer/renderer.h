@@ -215,6 +215,8 @@ namespace visualizer
       std::map<int, renderObj*> m_renderConstant;
       RenderWidget *m_parent;
 
+      friend class RenderWidget;
+
   };
 
   extern _Renderer *Renderer;

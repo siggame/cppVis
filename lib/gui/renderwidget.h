@@ -78,6 +78,8 @@ namespace visualizer
       void mouseReleaseEvent( QMouseEvent *event );
       void mouseMoveEvent( QMouseEvent *event );
 
+      void adjustInput( float& x, float& y );
+
       bool leftButtonDown;
       bool leftButtonDrag;
 
