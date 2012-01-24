@@ -289,7 +289,7 @@ namespace visualizer
 
     if( spectators.size() == 0 )
     {
-      THROW( Exception, "No Games Supporting Spectate Mode Found!" );
+      THROW( Exception, "No Games Supporting Spectator Mode Found!" );
     } else if( spectators.size() == 1 )
     {
       Games->gameList()[ spectators[0].first ]->spectate( OptionsMan->getString( "SpectateServer" ) );
@@ -398,6 +398,8 @@ namespace visualizer
     show();
 
     m_previousDirectory = QDir::homePath();
+
+
 
     return true;
   }

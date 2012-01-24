@@ -108,7 +108,7 @@ namespace visualizer
   /// @TODO Turn this into a module
   class _GUI : public QMainWindow, public IGUI
   {
-    Q_OBJECT
+    Q_OBJECT;
     Q_INTERFACES( visualizer::IGUI );
 
     friend class RenderWidget;
@@ -154,6 +154,10 @@ namespace visualizer
       bool getFullScreen();
       void setFullScreen(bool);
 
+    public slots:
+      void fileOpen();
+      void fileSpectate();
+
     private slots:
 
       void displayError( const QAbstractSocket::SocketError& err );
@@ -161,8 +165,6 @@ namespace visualizer
 
       void closeEvent( QCloseEvent* event );
       void helpContents();
-      void fileOpen();
-      void fileSpectate();
       void toggleFullScreen();
       void togglePlayPause();
       void fastForwardShortcut();
