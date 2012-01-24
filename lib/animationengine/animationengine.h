@@ -7,7 +7,7 @@
 
 //#include "animator.h"
 #include "../timemanager/timeManager.h"
-#include "../../interfaces/ianimationengine.h"
+#include "../../interfaces/igame.h"
 #include "common.h"
 
 namespace visualizer

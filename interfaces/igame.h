@@ -27,6 +27,9 @@ namespace visualizer
     public:
       virtual LogRegex logFileInfo() = 0;
       virtual void loadGamelog( std::string gamelog ) = 0;
+
+      virtual void preDraw() {}
+      virtual void postDraw() {}
     
       IAnimationEngine *animationEngine;
       IGUI *gui;
@@ -40,7 +43,7 @@ namespace visualizer
 
 } // visualizer
 
-Q_DECLARE_INTERFACE( visualizer::IGame, "siggame.vis2.game/0.2" );
+Q_DECLARE_INTERFACE( visualizer::IGame, "siggame.vis2.game/0.3" );
 
 
 #endif

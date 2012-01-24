@@ -91,6 +91,10 @@ namespace visualizer
     m_animMutex.lock();
     if( m_frameList )
     {
+
+      if( m_currentGame )
+        m_currentGame->preDraw();
+     
       Frame& frame = (*m_frameList)[ TimeManager->getTurn() ];
 
       for
@@ -103,6 +107,10 @@ namespace visualizer
         drawAnim( *(*i) );
       }
     }
+
+    if( m_currentGame )
+      m_currentGame->postDraw();
+
     m_animMutex.unlock();
 
   } // _AnimationEngine::draw()
