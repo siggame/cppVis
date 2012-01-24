@@ -15,18 +15,44 @@
 namespace visualizer
 {
 
-  struct LogRegex
+  struct PluginInfo
   {
-    unsigned int  startSize;
-    std::string   regex;
-    bool          giveFilename;
+
+    PluginInfo()
+    {
+      searchLength = 0;
+      gamelogRegexPattern = "";
+      returnFilename = false;
+      spectateMode = false;
+      pluginName = "NO NAME GIVEN!";
+    }
+
+    // How many characters do we scan in the gamelog
+    // before we give up trying to match
+    unsigned int searchLength; 
+
+    // Gamelog regular expression pattern to check any given
+    // gamelog belongs to this plugin
+    std::string  gamelogRegexPattern;
+
+    // Do we want the filename or the raw gamelog string.
+    // returnFilename = true passes the visualizer the filepath
+    bool         returnFilename;
+
+    // Does this plugin support spectate mode?
+    bool         spectateMode;
+
+    // What is the human readable name of this plugin?
+    std::string  pluginName;
+
   };
 
   class IGame
   {
     public:
-      virtual LogRegex logFileInfo() = 0;
+      virtual PluginInfo getPluginInfo() = 0;
       virtual void loadGamelog( std::string gamelog ) = 0;
+      virtual void spectate( std::string ipAddress ) {}
 
       virtual void preDraw() {}
       virtual void postDraw() {}

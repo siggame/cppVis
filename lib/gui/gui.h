@@ -162,6 +162,7 @@ namespace visualizer
       void closeEvent( QCloseEvent* event );
       void helpContents();
       void fileOpen();
+      void fileSpectate();
       void toggleFullScreen();
       void togglePlayPause();
       void fastForwardShortcut();
@@ -262,6 +263,7 @@ namespace visualizer
       QAction *m_helpContents;     /// Help->Contents
 
       QAction *m_fileOpen;         /// File->Open
+      QAction *m_fileSpectate;     /// File->Spectate
       QAction *m_fileExit;         /// File->Exit
 
       QAction *m_editOptions;      /// Edit->Options

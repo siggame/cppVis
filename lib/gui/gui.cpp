@@ -101,13 +101,13 @@ namespace visualizer
       i++ 
       )
     {
-      QRegExp rx( (*i)->logFileInfo().regex.c_str() );
+      QRegExp rx( (*i)->getPluginInfo().gamelogRegexPattern.c_str() );
       rx.setPatternSyntax( QRegExp::RegExp2 );
       
       if( rx.indexIn( fullLog.c_str() ) != -1 )
       {
         TimeManager->setTurn( 0 );
-        if( (*i)->logFileInfo().giveFilename )
+        if( (*i)->getPluginInfo().returnFilename )
         {
           (*i)->loadGamelog( gamelog );
         }
@@ -272,6 +272,35 @@ namespace visualizer
 
   }
 
+  void _GUI::fileSpectate()
+  {
+    
+    // Game index/game name pair of those games supporting spectate mode
+    vector< pair<int, string> > spectators;
+
+    for( size_t i = 0; i < Games->gameList().size(); i++ )
+    {
+      if( Games->gameList()[ i ]->getPluginInfo().spectateMode )
+      {
+        spectators.push_back( pair<int, string>( i, Games->gameList()[ i ]->getPluginInfo().pluginName ) );
+      }
+
+    }
+
+    if( spectators.size() == 0 )
+    {
+      THROW( Exception, "No Games Supporting Spectate Mode Found!" );
+    } else if( spectators.size() == 1 )
+    {
+      Games->gameList()[ spectators[0].first ]->spectate( OptionsMan->getString( "SpectateServer" ) );
+    } else
+    {
+      THROW( Exception, "Jake Needs To Implement A Plugin Selection Dialog" );
+    }
+
+
+  }
+
   void _GUI::closeEvent( QCloseEvent* /* event */ )
   {
     Renderer->destroy();
@@ -410,6 +439,11 @@ namespace visualizer
       );
     connect( m_fileOpen, SIGNAL(triggered()), this, SLOT(fileOpen()) );
 
+    m_fileSpectate = new QAction( tr( "&Spectate" ), this );
+    m_fileSpectate->setShortcut( tr( "Ctrl+s" ) );
+    m_fileSpectate->setStatusTip( tr( "Spectate or Join a Game" ) );
+    connect( m_fileSpectate, SIGNAL(triggered()), this, SLOT(fileSpectate()) );
+
     toggleFullScreenAct = new QAction( tr("&Full Screen"), this );
     toggleFullScreenAct->setShortcut( tr("F11" ) );
     toggleFullScreenAct->setStatusTip( tr("Toggle Fullscreen Mode") );
@@ -452,6 +486,7 @@ namespace visualizer
     QMenu *menu;
     menu = menuBar()->addMenu( tr( "&File" ) );
     menu->addAction( m_fileOpen );
+    menu->addAction( m_fileSpectate );
     menu->addSeparator();
     menu->addAction( m_fileExit );
 
