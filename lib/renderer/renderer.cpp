@@ -434,6 +434,9 @@ namespace visualizer
     const float& z
     ) const
   {
+    glEnable( GL_BLEND );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+   
     // The percent bar
     glBegin( GL_QUADS );
       glVertex3f( x, y, z );
@@ -452,6 +455,8 @@ namespace visualizer
       glVertex3f( x, y+h, z );
       glVertex3f( x, y, z );
     glEnd();
+
+    glDisable( GL_BLEND );
   } // _Renderer::DrawProgressBar()
 
   void _Renderer::drawText
