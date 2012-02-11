@@ -2,7 +2,8 @@
 #include "textureloader.h"
 #include <cmath>
 
-#include <qgl.h>
+#include <QtOpenGL>
+#include <GL/glu.h>
 
 namespace visualizer
 {

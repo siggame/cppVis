@@ -45,6 +45,7 @@ void DumpUnfreed()
   long int totalSize = 0;
 
   cout << "UNFREEDS -----------------------------------------------------" << endl;
+#if 0
   for
     (
     list< ALLOC_INFO >::iterator i = allocMap.begin();
@@ -58,6 +59,7 @@ void DumpUnfreed()
 
   cout << "UNFREEDS -----------------------------------------------------" << endl;
   cout << "Total Unfreed: " << totalSize << " bytes." << endl;
+#endif
 
 };
 #endif
