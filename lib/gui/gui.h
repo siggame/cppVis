@@ -165,12 +165,15 @@ namespace visualizer
 
       void closeEvent( QCloseEvent* event );
       void helpContents();
+      void helpAbout();
       void toggleFullScreen();
       void togglePlayPause();
       void fastForwardShortcut();
       void rewindShortcut();
       void stepTurnForwardShortcut();
       void stepTurnBackShortcut();
+
+      void onClose();
 
       void optionsDialog();
 
@@ -263,6 +266,7 @@ namespace visualizer
 
       // Actions
       QAction *m_helpContents;     /// Help->Contents
+      QAction *m_helpAbout;        /// Help->About
 
       QAction *m_fileOpen;         /// File->Open
       QAction *m_fileSpectate;     /// File->Spectate

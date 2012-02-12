@@ -2,6 +2,7 @@
 #include "../games/games.h"
 #include "../renderer/renderer.h"
 #include "../beanstalker/beanstalker.h"
+#include "version.h"
 #include <QDesktopServices>
 #include <Qt>
 #include "optionsmanager/optionsdialog.h"
@@ -230,6 +231,12 @@ namespace visualizer
     QDesktopServices::openUrl( QUrl( OptionsMan->getString( "helpURL" ).c_str() ) );
   }
 
+  void _GUI::helpAbout()
+  {
+    //QMessageBox *about = new QMessageBox(
+    QMessageBox::about( this, "About Visualizer", VERSION_STRING );
+
+  }
 
   void _GUI::fileOpen()
   {
@@ -346,7 +353,10 @@ namespace visualizer
     m_http->setHost( url.host() );
     m_http->get( url.path() );
     
+  }
 
+  void _GUI::onClose()
+  {
   }
 
   bool _GUI::doSetup()
@@ -434,6 +444,13 @@ namespace visualizer
       );
     connect( m_helpContents, SIGNAL(triggered()), this, SLOT(helpContents()) );
 
+    m_helpAbout = new QAction( tr( "&About" ), this );
+    m_helpAbout->setStatusTip(
+      tr( "About The Visualizer" )
+      );
+    connect( m_helpAbout, SIGNAL(triggered()), this, SLOT(helpAbout()) );
+
+
     m_fileOpen = new QAction( tr( "&Open" ), this );
     m_fileOpen->setShortcut( tr( "Ctrl+O" ) );
     m_fileOpen->setStatusTip(
@@ -500,6 +517,8 @@ namespace visualizer
 
     menu = menuBar()->addMenu( tr( "&Help" ) );
     menu->addAction( m_helpContents );
+    menu->addSeparator();
+    menu->addAction( m_helpAbout );
 
   }
 
