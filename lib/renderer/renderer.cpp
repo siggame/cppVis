@@ -79,7 +79,8 @@ namespace visualizer
       factor = height()/(m_winH-m_winY);
     }
 
-    glScalef( factor*m_unitSzX/m_winW, factor*m_winH/m_unitSzY, 1 );
+    //glScalef( factor*m_unitSzX/m_winW, factor*m_winH/m_unitSzY, 1 );
+    glScalef( factor, factor, 1 );
 
     AnimationEngine->draw();
 

@@ -360,11 +360,14 @@ namespace visualizer
   void _GUI::updateDone( bool error )
   {
 
+    cout << "UPDATE" << endl;
     if( !error )
     {
       if( strcmp( m_updateBuffer->buffer().constData(), BUILD_NO ) )
       {
-        QMessageBox::critical( this, "Visualizer Update Available", "Please go to ftp://r99acm.device.mst.edu:2222/ to get the latest update" );
+        QMessageBox::critical( this, "Visualizer Update Available", 
+          "Update Available\n" \
+          "Go to ftp://r99acm.device.mst.edu:2222/ to get the latest update" );
       }
     }
     
@@ -378,6 +381,7 @@ namespace visualizer
     m_updateBuffer->open( QBuffer::ReadWrite );
 
     QFtp *ftp = new QFtp( this );
+    connect( ftp, SIGNAL(done(bool)), this, SLOT(updateDone(bool)) );
     ftp->connectToHost( "r99acm.device.mst.edu", 2121 );
     ftp->login();
 
