@@ -69,12 +69,14 @@ namespace visualizer
 
     float factor;
 
-    if( height()/m_unitSzY > width()/m_unitSzX )
+    if( 
+        height()/(m_winH-m_winY) > width()/(m_winW-m_winX)
+      )
     {
-      factor = width() / m_unitSzX;
+      factor = width()/(m_winW-m_winX);
     } else
     {
-      factor = height() / m_unitSzY;
+      factor = height()/(m_winH-m_winY);
     }
 
     glScalef( factor, factor, 1 );
@@ -161,7 +163,6 @@ namespace visualizer
     }
     else
     {
-
       resize( OptionsMan->getNumber( "renderWidth" ), OptionsMan->getNumber( "renderHeight" ) );
     }
 
