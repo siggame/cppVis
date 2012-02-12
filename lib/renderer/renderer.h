@@ -145,6 +145,14 @@ namespace visualizer
         const float& eY,
         const float& width = 1.0f
         ) const;
+        
+      void drawCircle
+        (
+        const float& centerX,
+        const float& centerY,
+        const float& raidus,
+        const float& width = 1.0f
+        ) const;
 
       void translate
         (
