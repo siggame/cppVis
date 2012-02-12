@@ -158,6 +158,8 @@ namespace visualizer
       void fileOpen();
       void fileSpectate();
 
+      void updateDone(bool);
+
     private slots:
 
       void displayError( const QAbstractSocket::SocketError& err );
@@ -204,8 +206,11 @@ namespace visualizer
 
     private:
       QHttp* m_http;
+      QBuffer *m_updateBuffer;
 
       bool m_loadInProgress;
+
+
 
 #if 0
       QTcpServer* m_server;

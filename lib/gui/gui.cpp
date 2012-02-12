@@ -5,6 +5,7 @@
 #include "version.h"
 #include <QDesktopServices>
 #include <Qt>
+#include <QFtp>
 #include "optionsmanager/optionsdialog.h"
 
 #include <iostream>
@@ -356,8 +357,33 @@ namespace visualizer
   {
   }
 
+  void _GUI::updateDone( bool error )
+  {
+
+    if( !error )
+    {
+      if( strcmp( m_updateBuffer->buffer().constData(), BUILD_NO ) )
+      {
+        QMessageBox::critical( this, "Visualizer Update Available", "Please go to ftp://r99acm.device.mst.edu:2222/ to get the latest update" );
+      }
+    }
+    
+    m_updateBuffer->close();
+  }
+
   bool _GUI::doSetup()
   {
+
+    m_updateBuffer = new QBuffer( this );
+    m_updateBuffer->open( QBuffer::ReadWrite );
+
+    QFtp *ftp = new QFtp( this );
+    ftp->connectToHost( "r99acm.device.mst.edu", 2121 );
+    ftp->login();
+
+    ftp->cd( "jenkins" );
+    ftp->get( VERSION_FILE, m_updateBuffer );
+    ftp->close();
 
     m_loadInProgress = false;
 

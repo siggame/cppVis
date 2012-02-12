@@ -7,4 +7,6 @@
   "Build Number: " BUILD_NO ".\n" \
   "http://megaminerai.com"
 
+#define VERSION_FILE "{VERSION_FILE}"
+
 #endif // VERSION_H
