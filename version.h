@@ -2,6 +2,9 @@
 #define VERSION_H
 
 #define BUILD_NO "{BUILD_NUMBER}"
-#define VERSION_STRING "Visualizer Build Number: " BUILD_NO
+#define VERSION_STRING "Missouri S&T ACM SIG-Game\n" \
+  "Visualizer for MegaMinerAI\n" \
+  "Build Number: " BUILD_NO ".\n" \
+  "http://megaminerai.com"
 
 #endif // VERSION_H
