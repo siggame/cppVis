@@ -366,8 +366,8 @@ namespace visualizer
       if( strcmp( m_updateBuffer->buffer().constData(), BUILD_NO ) )
       {
         QMessageBox::critical( this, "Visualizer Update Available", 
-          "Update Available\n" \
-          "Go to ftp://r99acm.device.mst.edu:2222/ to get the latest update" );
+          "Update Available At:\n" \
+          "ftp://r99acm.device.mst.edu:2222/" );
       }
     }
     
