@@ -363,7 +363,7 @@ namespace visualizer
     cout << "UPDATE" << endl;
     if( !error )
     {
-      if( strcmp( m_updateBuffer->buffer().constData(), BUILD_NO ) )
+      if( strcmp( m_updateBuffer->buffer().constData(), BUILD_NO"\n" ) )
       {
         QMessageBox::critical( this, "Visualizer Update Available", 
           "Update Available At:\n" \
