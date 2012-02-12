@@ -357,26 +357,49 @@ namespace visualizer
   {
   }
 
-  void _GUI::updateDone( bool error )
+  void _GUI::updateDone( QObject* obj )
   {
+    updateInfo* inf = (updateInfo*)obj;
 
-    cout << "UPDATE" << endl;
-    if( !error )
+    if( strcmp( inf->buffer->buffer().constData(), string( inf->version + "\n" ).c_str() ) )
     {
-      if( strcmp( m_updateBuffer->buffer().constData(), BUILD_NO"\n" ) )
-      {
-        QMessageBox::critical( this, "Visualizer Update Available", 
-          "Update Available At:\n" \
-          "ftp://r99acm.device.mst.edu:2222/" );
-      }
+      QMessageBox::critical( this, "Visualizer Update Available", 
+        inf->message.c_str() );
     }
+  
+    inf->buffer->close();
+  }
+
+  void _GUI::checkForUpdate( string message, string VERSION, string REMOTE )
+  {
+    QSignalMapper *map = new QSignalMapper(this);
+    updateInfo* i = new updateInfo;
+    i->buffer = new QBuffer(this);
+    i->buffer->open( QBuffer::ReadWrite );
+    i->message = message;
+    i->version = VERSION;
+    i->remote = REMOTE;
+
+    QFtp *ftp = new QFtp( this );
+    connect( ftp, SIGNAL(done(bool)), map, SLOT(map()) );
+    map->setMapping( ftp, i );
+    //connect( ftp, SIGNAL(done(bool)), this, SLOT(updateDone(bool)) );
+    connect( map, SIGNAL( mapped( QObject* ) ), this, SLOT(updateDone( QObject* )) ); 
+
+    ftp->connectToHost( "r99acm.device.mst.edu", 2121 );
+    ftp->login();
     
-    m_updateBuffer->close();
+    ftp->cd( "jenkins" );
+    ftp->get( VERSION_FILE, i->buffer );
+    ftp->close();
   }
 
   bool _GUI::doSetup()
   {
+    checkForUpdate( "Update Available At:\n" \
+          "ftp://r99acm.device.mst.edu:2121/", BUILD_NO, VERSION_FILE );
 
+#if 0
     m_updateBuffer = new QBuffer( this );
     m_updateBuffer->open( QBuffer::ReadWrite );
 
@@ -388,13 +411,14 @@ namespace visualizer
     ftp->cd( "jenkins" );
     ftp->get( VERSION_FILE, m_updateBuffer );
     ftp->close();
+#endif
 
     m_loadInProgress = false;
 
     m_http = new QHttp( this );
     connect( m_http, SIGNAL( done( bool) ), this, SLOT( loadThatShit(bool) ) );
 
-    connect( this, SIGNAL( close() ), this, SLOT( onClose() ) );
+    //connect( this, SIGNAL( close() ), this, SLOT( onClose() ) );
 
     setAcceptDrops( true );
 
