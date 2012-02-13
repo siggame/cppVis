@@ -1,6 +1,7 @@
 #include "renderer.h"
 #include "../selectionrender/selectionrender.h"
 #include <sstream>
+#include <math.h>
 
 using namespace std;
 
@@ -68,14 +69,17 @@ namespace visualizer
 
     float factor;
 
-    if( height()/m_unitSzY > width()/m_unitSzX )
+    if( 
+        height()/(m_winH-m_winY) > width()/(m_winW-m_winX)
+      )
     {
-      factor = width() / m_unitSzX;
+      factor = width()/(m_winW-m_winX);
     } else
     {
-      factor = height() / m_unitSzY;
+      factor = height()/(m_winH-m_winY);
     }
 
+    //glScalef( factor*m_unitSzX/m_winW, factor*m_winH/m_unitSzY, 1 );
     glScalef( factor, factor, 1 );
 
     AnimationEngine->draw();
@@ -156,7 +160,6 @@ namespace visualizer
     }
     else
     {
-
       resize( OptionsMan->getNumber( "renderWidth" ), OptionsMan->getNumber( "renderHeight" ) );
     }
 
@@ -416,6 +419,36 @@ namespace visualizer
     glEnd();
 
     glDisable( GL_BLEND );
+  }
+  
+  void _Renderer::drawCircle
+    (
+    const float& centerX,
+    const float& centerY,
+    const float& radius,
+    const float& width
+    ) const
+  {
+    glEnable( GL_BLEND );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+    glLineWidth( width );
+
+    //glBegin( GL_LINE_STRIP );
+    glBegin( GL_LINE_LOOP );
+        
+        const float DEG2RAD = 3.14159/180;
+        
+        //for (float i = 0.0; i < 360; i += 0.005)
+        for (int i=0; i < 360; i++)
+        {
+          glVertex2f(cos(i*DEG2RAD)*radius + centerX, sin(i*DEG2RAD)*radius + centerY);
+        }
+
+    glEnd();
+
+    //glDisable( GL_LINE_STRIP );
+    glDisable( GL_LINE_LOOP );
   }
 
   void _Renderer::drawProgressBar

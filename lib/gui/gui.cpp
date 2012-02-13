@@ -2,8 +2,10 @@
 #include "../games/games.h"
 #include "../renderer/renderer.h"
 #include "../beanstalker/beanstalker.h"
+#include "version.h"
 #include <QDesktopServices>
 #include <Qt>
+#include <QFtp>
 #include "optionsmanager/optionsdialog.h"
 
 #include <iostream>
@@ -212,11 +214,8 @@ namespace visualizer
         h = temp;
       }
 
-      //m_dockWidget->resize( Singleton<_GUI>::width() - Renderer<DupObj>::height(), -1 );
-      #if 1
       m_dockWidget->setMinimumWidth( w - h);
       m_dockWidget->hide();
-      #endif
     }
     QMainWindow::resizeEvent( evt );
   }
@@ -227,6 +226,12 @@ namespace visualizer
     QDesktopServices::openUrl( QUrl( OptionsMan->getString( "helpURL" ).c_str() ) );
   }
 
+  void _GUI::helpAbout()
+  {
+    //QMessageBox *about = new QMessageBox(
+    QMessageBox::about( this, "About Visualizer", VERSION_STRING );
+
+  }
 
   void _GUI::fileOpen()
   {
@@ -333,15 +338,57 @@ namespace visualizer
     m_http->setHost( url.host() );
     m_http->get( url.path() );
     
+  }
 
+  void _GUI::onClose()
+  {
+  }
+
+  void _GUI::updateDone( QObject* obj )
+  {
+    updateInfo* inf = (updateInfo*)obj;
+
+    if( strcmp( inf->buffer->buffer().constData(), string( inf->version + "\n" ).c_str() ) )
+    {
+      QMessageBox::critical( this, "Visualizer Update Available", 
+        inf->message.c_str() );
+    }
+  
+    inf->buffer->close();
+  }
+
+  void _GUI::checkForUpdate( string message, string VERSION, string REMOTE )
+  {
+    QSignalMapper *map = new QSignalMapper(this);
+    updateInfo* i = new updateInfo;
+    i->buffer = new QBuffer(this);
+    i->buffer->open( QBuffer::ReadWrite );
+    i->message = message;
+    i->version = VERSION;
+    i->remote = REMOTE;
+
+    QFtp *ftp = new QFtp( this );
+    connect( ftp, SIGNAL(done(bool)), map, SLOT(map()) );
+    map->setMapping( ftp, i );
+    //connect( ftp, SIGNAL(done(bool)), this, SLOT(updateDone(bool)) );
+    connect( map, SIGNAL( mapped( QObject* ) ), this, SLOT(updateDone( QObject* )) ); 
+
+    ftp->connectToHost( "r99acm.device.mst.edu", 2121 );
+    ftp->login();
+    
+    ftp->cd( "jenkins" );
+    ftp->get( VERSION_FILE, i->buffer );
+    ftp->close();
   }
 
   bool _GUI::doSetup()
   {
+    checkForUpdate( "Update Available At:\n" \
+          "ftp://r99acm.device.mst.edu:2121/", BUILD_NO, VERSION_FILE );
+
 
     m_loadInProgress = false;
 
-    connect( this, SIGNAL( close() ), this, SLOT( onClose() ) );
 
     setAcceptDrops( true );
 
@@ -418,6 +465,13 @@ namespace visualizer
       );
     connect( m_helpContents, SIGNAL(triggered()), this, SLOT(helpContents()) );
 
+    m_helpAbout = new QAction( tr( "&About" ), this );
+    m_helpAbout->setStatusTip(
+      tr( "About The Visualizer" )
+      );
+    connect( m_helpAbout, SIGNAL(triggered()), this, SLOT(helpAbout()) );
+
+
     m_fileOpen = new QAction( tr( "&Open" ), this );
     m_fileOpen->setShortcut( tr( "Ctrl+O" ) );
     m_fileOpen->setStatusTip(
@@ -484,6 +538,8 @@ namespace visualizer
 
     menu = menuBar()->addMenu( tr( "&Help" ) );
     menu->addAction( m_helpContents );
+    menu->addSeparator();
+    menu->addAction( m_helpAbout );
 
   }
 

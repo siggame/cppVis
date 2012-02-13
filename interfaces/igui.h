@@ -47,6 +47,8 @@ namespace visualizer
       virtual bool getFullScreen() = 0;
       virtual void setFullScreen( bool ) = 0;
 
+      virtual void checkForUpdate( string message, string VERSION, string REMOTE ) = 0;
+
       virtual QTableWidget* getGlobalStats() = 0;
       virtual QTableWidget* getSelectionStats() = 0;
       virtual QTableWidget* getIndividualStats() = 0;

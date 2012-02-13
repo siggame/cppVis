@@ -1,6 +1,7 @@
 INCLUDEPATH += ./interfaces/ \
     ./lib \
-    ./common
+    ./common \
+    .
 DEPENDPATH += ./common \
     ./lib/resourcemanager/
 PPATHS += ./lib/gameobject/ \
@@ -50,7 +51,7 @@ QMAKE_CXXFLAGS_DEBUG += -rdynamic
 QMAKE_LFLAGS_DEBUG += -rdynamic 
 }
 
-CONFIG += debug 
+CONFIG += debug console
 macx:CONFIG -= app_bundle
 QT += opengl network xml
 SUBDIRS += botnet piracy lightRevelation

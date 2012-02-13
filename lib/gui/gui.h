@@ -28,6 +28,15 @@ using namespace std;
 namespace visualizer
 {
 
+  struct updateInfo: public QObject
+  {
+    QBuffer *buffer;
+    string message;
+    string version;
+    string remote;
+
+  };
+
   ///////////////////////////////////////////////////////////////////////////////
   /// @class _GUI
   /// @brief GUI object for drawing debugging info along with the QOpenGL 
@@ -154,9 +163,13 @@ namespace visualizer
       bool getFullScreen();
       void setFullScreen(bool);
 
+      void checkForUpdate( string message, string VERSION, string REMOTE );
+
     public slots:
       void fileOpen();
       void fileSpectate();
+
+      void updateDone(QObject* obj);
 
     private slots:
 
@@ -165,12 +178,15 @@ namespace visualizer
 
       void closeEvent( QCloseEvent* event );
       void helpContents();
+      void helpAbout();
       void toggleFullScreen();
       void togglePlayPause();
       void fastForwardShortcut();
       void rewindShortcut();
       void stepTurnForwardShortcut();
       void stepTurnBackShortcut();
+
+      void onClose();
 
       void optionsDialog();
 
@@ -201,6 +217,8 @@ namespace visualizer
 
     private:
       QHttp* m_http;
+      QBuffer *m_updateBuffer;
+      
 
       bool m_loadInProgress;
 
@@ -263,6 +281,7 @@ namespace visualizer
 
       // Actions
       QAction *m_helpContents;     /// Help->Contents
+      QAction *m_helpAbout;        /// Help->About
 
       QAction *m_fileOpen;         /// File->Open
       QAction *m_fileSpectate;     /// File->Spectate
