@@ -29,10 +29,7 @@ namespace visualizer
     if( !GUI )
     {
       GUI = new _GUI;
-    } else
-    {
-      THROW( Exception, "GUI Already Setup" );
-    }
+    } 
 
     GUI->m_isSetup = GUI->doSetup();
     return GUI->m_isSetup;
@@ -122,7 +119,7 @@ namespace visualizer
 
     if( !parserFound )
     {
-      THROW( Exception, "An appropriate game player could not be found!" );
+      WARNING( "An appropriate game player could not be found!" );
     }
   }
 
@@ -289,13 +286,13 @@ namespace visualizer
 
     if( spectators.size() == 0 )
     {
-      THROW( Exception, "No Games Supporting Spectator Mode Found!" );
+      WARNING( "No Games Supporting Spectator Mode Found!" );
     } else if( spectators.size() == 1 )
     {
       Games->gameList()[ spectators[0].first ]->spectate( OptionsMan->getString( "SpectateServer" ) );
     } else
     {
-      THROW( Exception, "Jake Needs To Implement A Plugin Selection Dialog" );
+      WARNING( "Jake Needs To Implement A Plugin Selection Dialog" );
     }
 
 
@@ -318,17 +315,7 @@ namespace visualizer
 
   void _GUI::loadThatShit( bool err )
   {
-    if( !err )
-    {
-      QByteArray arr = m_http->readAll();
-      if( arr.size() == 0 )
-        return;
-      char *temp = new char[ arr.size() ];
-      memcpy( temp, arr.constData(), arr.size() );
-      loadGamestring( temp, arr.size(), "" );
-      m_loadInProgress = false;
-      delete [] temp;
-    }
+
   }
 
   void _GUI::requestGamelog()
@@ -353,9 +340,6 @@ namespace visualizer
   {
 
     m_loadInProgress = false;
-
-    m_http = new QHttp( this );
-    connect( m_http, SIGNAL( done( bool) ), this, SLOT( loadThatShit(bool) ) );
 
     connect( this, SIGNAL( close() ), this, SLOT( onClose() ) );
 

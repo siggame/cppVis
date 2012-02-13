@@ -123,10 +123,6 @@ namespace visualizer
     {
       ResourceMan = new _ResourceMan;
     }
-    else
-    {
-      THROW( Exception, "Resource Manager already initialized" );
-    }
 
   }
 

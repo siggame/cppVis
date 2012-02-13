@@ -18,10 +18,6 @@ namespace visualizer
     {
       AnimationEngine = new _AnimationEngine;
     }
-    else
-    {
-      THROW( Exception, "Animation Engine already initialized." );
-    }
 
   } // _AnimationEngine::setup()
 

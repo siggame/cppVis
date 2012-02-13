@@ -14,16 +14,12 @@ namespace visualizer
 
   void _TimeManager::setup()
   {
-    
-	if( !TimeManager )
-    {
-      TimeManager = new _TimeManager;
-      TimeManager->_setup();
-    } else
-    {
-      THROW( Exception, "Time Manager already initialized" );
-    }
-
+      
+    if( !TimeManager )
+      {
+        TimeManager = new _TimeManager;
+        TimeManager->_setup();
+      }   
   } // _TimeManager::setup()
 
   void _TimeManager::destroy()

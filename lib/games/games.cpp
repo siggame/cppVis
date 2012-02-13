@@ -16,10 +16,6 @@ namespace visualizer
     {
       Games = new _Games;
     }
-    else
-    {
-      THROW( Exception, "Games Loader is already initialized." );
-    }
 
     Games->_setup();
   } // _Games::setup()

@@ -17,11 +17,6 @@ namespace visualizer
     {
       OptionsMan = new _OptionsMan;
     }
-    else
-    {
-      THROW( Exception, "OptionsManager Already Initialized" );
-    }
-
   }
 
   void _OptionsMan::destroy()
@@ -38,12 +33,16 @@ namespace visualizer
     QFile file( filename.c_str() );
 
     if( !file.open( QIODevice::ReadOnly ) )
-      THROW( Exception, "%s options file could not be found.", filename.c_str() );
+    {
+      WARNING( "%s options file could not be found.", filename.c_str() ); 
+      return;
+    }
 
     if( !doc.setContent( &file ) )
     {
       file.close();
-      THROW( Exception, "%s was unable to parse the XML", filename.c_str() );
+      WARNING( "%s was unable to parse the XML", filename.c_str() );
+      return;
     }
 
     file.close();
@@ -51,7 +50,10 @@ namespace visualizer
     QDomElement root = doc.documentElement();
 
     if( root.tagName() != "options" )
-      THROW( Exception, "%s did not have an options root", filename.c_str() );
+    {
+      WARNING( "%s did not have an options root", filename.c_str() );
+      return;
+    }
 
     QDomNode n = root.firstChild();
     while( !n.isNull() )
@@ -130,7 +132,7 @@ endl;
         }
         else
         {
-          THROW( Exception, "Expecting an option.  Did not receive it." );
+          WARNING( "Expecting an option.  Did not receive it." );
         }
         
       }
@@ -264,7 +266,7 @@ endl;
         }
       break;
       default:
-        THROW( Exception, "Error, Unable to read option type, %d.", rhs.type );
+        WARNING( "Error, Unable to read option type, %d.", rhs.type );
 
     }
    
@@ -282,13 +284,15 @@ endl;
     map< string, Option >::iterator f = m_options.find( key );
     if( f == m_options.end() )
     {
-      THROW( Exception, "Could not find key %s", key.c_str() );
+      WARNING( "Could not find key %s. Please update your options.", key.c_str() );
+      return f->second.sValue;
     }
     else
     {
       if( f->second.type != OP_STRING && f->second.type != OP_COMBO )
       {
-        THROW( Exception, "Option not of type string" );
+        WARNING( "Option not of type string. Please update your options." );
+        return f->second.sValue;
       }
       else
       {
@@ -303,13 +307,15 @@ endl;
     map< string, Option >::const_iterator f = m_options.find( key );
     if( f == m_options.end() )
     {
-      THROW( Exception, "Could not find key %s", key.c_str() );
+      WARNING( "Could not find key %s", key.c_str() );
+      return f->second.sValue;
     }
     else
     {
       if( f->second.type != OP_STRING && f->second.type != OP_COMBO )
       {
-        THROW( Exception, "Option not of type string" );
+        WARNING( "Option not of type string" );
+        return f->second.sValue;
       }
       else
       {
@@ -324,13 +330,15 @@ endl;
     map< string, Option >::iterator f = m_options.find( key );
     if( f == m_options.end() )
     {
-      THROW( Exception, "Could not find key %s.", key.c_str() );
+      WARNING( "Could not find key %s.", key.c_str() );
+      return f->second.fValue;
     }
     else
     {
       if( f->second.type != OP_INT && f->second.type != OP_FLOAT )
       {
-        THROW( Exception, "Option not of type number." );
+        WARNING( "Option not of type number." );
+        return f->second.fValue;
       }
       else
       {
@@ -345,13 +353,15 @@ endl;
     map< string, Option >::const_iterator f = m_options.find( key );
     if( f == m_options.end() )
     {
-      THROW( Exception, "Could not find key %s", key.c_str() );
+      WARNING( "Could not find key %s", key.c_str() );
+      return f->second.fValue;
     }
     else
     {
       if( f->second.type != OP_INT && f->second.type != OP_FLOAT )
       {
-        THROW( Exception, "Option not of type number." );
+        WARNING( "Option not of type number." );
+        return f->second.fValue;
       }
       else
       {
@@ -394,7 +404,7 @@ endl;
         }
       break;
       default:
-        THROW( Exception, "Error, Option contains strange type, %d", rhs.type );
+        WARNING( "Error, Option contains strange type, %d", rhs.type );
     }
 
     return os;

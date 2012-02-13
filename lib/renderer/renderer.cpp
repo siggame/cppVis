@@ -109,7 +109,7 @@ namespace visualizer
       return;
 
     if (!Renderer->clear())
-      THROW( Exception, "FILL IN EXCEPTION DETAILS HERE" );
+      THROW( Exception, "Could Not Clear The Renderer" );
 
     TimeManager->removeRequest( Renderer );
 
@@ -137,11 +137,7 @@ namespace visualizer
       Renderer = new _Renderer;
       SETUP( "Renderer" )
     }
-    else
-    {
-      THROW( Exception, "Renderer Already Initialized" );
-    }
-
+        
     Renderer->_setup();
 
   }
