@@ -68,19 +68,21 @@ namespace visualizer
     float bigger = height()<width() ? height() : width();
 
     float factor;
+    float fx = (m_winW-m_winX)/m_unitSzX;
+    float fy = (m_winH-m_winY)/m_unitSzY;
 
     if( 
-        height()/(m_winH-m_winY) > width()/(m_winW-m_winX)
+        width()/m_unitSzX < height()/m_unitSzY
       )
     {
-      factor = width()/(m_winW-m_winX);
-    } else
+      factor = width()/m_unitSzX;
+    }
+    else
     {
-      factor = height()/(m_winH-m_winY);
+      factor = height()/m_unitSzY;
     }
 
-    //glScalef( factor*m_unitSzX/m_winW, factor*m_winH/m_unitSzY, 1 );
-    glScalef( factor, factor, 1 );
+    glScalef( factor*fx, factor*fy, 1 );
 
     AnimationEngine->draw();
 
