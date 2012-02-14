@@ -244,6 +244,8 @@ namespace visualizer
       /// Dock Widget For Debugging Info
       QDockWidget *m_dockWidget;
 
+      QDockWidget *m_updateBar;
+
       /// Frame used to hold layout for widgets in dock
       QFrame *m_dockLayoutFrame;
 
@@ -270,6 +272,7 @@ namespace visualizer
 
       bool doSetup();
       void buildControlBar();
+      void buildUpdateBar();
       void createActions();
       void createMenus();
       void buildToolSet();

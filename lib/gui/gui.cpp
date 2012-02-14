@@ -350,8 +350,11 @@ namespace visualizer
 
     if( strcmp( inf->buffer->buffer().constData(), string( inf->version + "\n" ).c_str() ) )
     {
-      QMessageBox::critical( this, "Visualizer Update Available", 
-        inf->message.c_str() );
+      m_updateBar->show();
+      QLabel *text = (QLabel*)m_updateBar->widget();
+      if( text->text().length() )
+        text->setText( text->text() + ", " );
+      text->setText( text->text() + inf->message.c_str() );
     }
   
     inf->buffer->close();
@@ -383,8 +386,7 @@ namespace visualizer
 
   bool _GUI::doSetup()
   {
-    checkForUpdate( "Update Available At:\n" \
-          "ftp://r99acm.device.mst.edu:2121/", BUILD_NO, VERSION_FILE );
+    checkForUpdate( "Visualizer Core", BUILD_NO, VERSION_FILE );
 
 
     m_loadInProgress = false;
@@ -396,6 +398,7 @@ namespace visualizer
     setCentralWidget( m_centralWidget );
     createActions();
     buildControlBar();
+    buildUpdateBar();
 
     setWindowIcon( QIcon( "icon.png" ) );
 
@@ -443,6 +446,18 @@ namespace visualizer
   void _GUI::newConnect()
   {
 
+  }
+
+  void _GUI::buildUpdateBar()
+  {
+    m_updateBar = 
+      new QDockWidget( "Updates Available For:", this );
+    m_updateBar->setFeatures( QDockWidget::DockWidgetClosable );
+    m_updateBar->setWidget( new QLabel( m_updateBar ) );
+    
+    addDockWidget( Qt::TopDockWidgetArea, m_updateBar );
+
+    m_updateBar->hide();
   }
 
   void _GUI::buildControlBar()
