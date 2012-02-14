@@ -349,6 +349,12 @@ namespace visualizer
 
     }
 
+    if( m_turn >= m_numTurns )
+    {
+      m_turn = m_numTurns-1;
+      m_turnCompletion = 0.9999f;
+    }
+
     updateChildren();
 
   } // _TimeManager::timerUpdate()
