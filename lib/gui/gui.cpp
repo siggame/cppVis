@@ -380,7 +380,7 @@ namespace visualizer
     ftp->login();
     
     ftp->cd( "jenkins" );
-    ftp->get( VERSION_FILE, i->buffer );
+    ftp->get( REMOTE, i->buffer );
     ftp->close();
   }
 
