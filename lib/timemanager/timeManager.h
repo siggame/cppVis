@@ -113,7 +113,9 @@ namespace visualizer
 
       QTimer *m_timer;
       QTime m_time;
-      float m_speed;
+
+      float m_speedModifier;
+
       float m_progress;
       bool loop_on;
       int loop_start;
