@@ -16,6 +16,7 @@ namespace visualizer
 
 int main(int argc, char *argv[])
 {
+
   ///////////////////////////////////////////////////////////////////
   // Must initialize things based on their dependency graphs
   ///////////////////////////////////////////////////////////////////
@@ -26,6 +27,16 @@ int main(int argc, char *argv[])
   OptionsMan->setup();
 
   OptionsMan->loadOptionFile( "./options.xml", "core" );
+
+  UpdateManager->setup();
+  if( argc > 1 )
+  {
+    if( !strcmp( argv[1], "--checksum" ) )
+    {
+      //UpdateManager->generateChecksumFile();
+    }
+  }
+  
   
   // NO MEMORY LEAKS AT THIS POINT
 
@@ -117,6 +128,7 @@ int main(int argc, char *argv[])
   GUI->destroy();
 	Renderer->destroy();
   TimeManager->destroy();
+  UpdateManager->destroy();
 	OptionsMan->destroy();
 
 	return retval;
