@@ -402,7 +402,6 @@ namespace visualizer
   {
     checkForUpdate( "Visualizer Core", "checkList.md5", VERSION_FILE );
 
-
     m_loadInProgress = false;
 
 
