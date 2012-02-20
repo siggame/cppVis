@@ -348,16 +348,30 @@ namespace visualizer
   {
     updateInfo* inf = (updateInfo*)obj;
 
-    if( strcmp( inf->buffer->buffer().constData(), string( inf->version + "\n" ).c_str() ) )
+    QFile compare( inf->version.c_str() );
+    if( !compare.open( QIODevice::ReadOnly | QIODevice::Text ) )
+      return;
+
+    QByteArray data = compare.readAll();
+
+#if 0
+    cout << data.constData() << endl;
+    cout << "=============" << endl;
+    cout << inf->buffer->buffer().constData() << endl;
+#endif
+
+    
+    if( strcmp( data.constData(), inf->buffer->buffer().constData() ) )
     {
       m_updateBar->show();
       QLabel *text = (QLabel*)m_updateBar->widget();
-      if( text->text().length() )
-        text->setText( text->text() + ", " );
-      text->setText( text->text() + inf->message.c_str() );
+      text->setText( inf->message.c_str() );
     }
-  
+
+    compare.close();
+    
     inf->buffer->close();
+    
   }
 
   void _GUI::checkForUpdate( string message, string VERSION, string REMOTE )
@@ -386,7 +400,7 @@ namespace visualizer
 
   bool _GUI::doSetup()
   {
-    checkForUpdate( "Visualizer Core", BUILD_NO, VERSION_FILE );
+    checkForUpdate( "Visualizer Core", "checkList.md5", VERSION_FILE );
 
 
     m_loadInProgress = false;

@@ -7,6 +7,6 @@
   "Build Number: " BUILD_NO ".\n" \
   "http://megaminerai.com"
 
-#define VERSION_FILE "{VERSION_FILE}"
+#define VERSION_FILE "visualizer-core.md5"
 
 #endif // VERSION_H
