@@ -14,16 +14,12 @@ namespace visualizer
 
   void _TimeManager::setup()
   {
-    
-	if( !TimeManager )
-    {
-      TimeManager = new _TimeManager;
-      TimeManager->_setup();
-    } else
-    {
-      THROW( Exception, "Time Manager already initialized" );
-    }
-
+      
+    if( !TimeManager )
+      {
+        TimeManager = new _TimeManager;
+        TimeManager->_setup();
+      }   
   } // _TimeManager::setup()
 
   void _TimeManager::destroy()
@@ -38,7 +34,7 @@ namespace visualizer
     /// @FIXME There's really no reason this shouldn't all be in a constructor
     m_turn = 0;
     m_progress = 0;
-    m_speed = 0;
+    m_speedModifier = 0;
     m_turnCompletion = 0;
     m_numTurns = 1;
     m_maxTurns = -1;
@@ -57,7 +53,7 @@ namespace visualizer
 
   void _TimeManager::setSpeed( const float& speed )
   {
-    m_speed = speed;
+    m_speedModifier = speed;
 
   } // _TimeManager::setSpeed()
 
@@ -198,13 +194,13 @@ namespace visualizer
 
   void _TimeManager::play()
   {
-    m_speed = OptionsMan->getNumber( "speed" );
+    m_speedModifier = 1; 
 
   } // _TimeManager::play()
 
   void _TimeManager::pause()
   {
-    m_speed = 0;
+    m_speedModifier = 0;
 
     m_turnCompletion = 0.99999f;
 
@@ -225,26 +221,26 @@ namespace visualizer
 
   void _TimeManager::fastForward()
   {
-    m_speed *= 1.5;
+    m_speedModifier++; 
 
   } // _TimeManager::fastForward()
 
   void _TimeManager::rewind()
   {
-    if( m_speed >= 0 )
+    if( m_speedModifier >= 0 )
     {
-      m_speed = -OptionsMan->getNumber( "speed" );
+      m_speedModifier = -1;
     }
     else
     {
-      m_speed *= 1.5;
+      m_speedModifier--;
     }
 
   } // _TimeManager::rewind()
 
   char _TimeManager::readyForGamelog()
   {
-    return (m_speed == 0);
+    return (m_speedModifier == 0);
 
   } // _TimeManager::readyForGamelog()
 
@@ -272,7 +268,8 @@ namespace visualizer
 
   const float& _TimeManager::getSpeed()
   {
-    return m_speed;
+    // TODO: Make this a logarithmic increase
+    return OptionsMan->getNumber( "speed" ) * m_speedModifier / 3;
 
   } // _TimeManager::getSpeed()
 
@@ -351,6 +348,12 @@ namespace visualizer
         pause();
       }
 
+    }
+
+    if( m_turn >= m_numTurns )
+    {
+      m_turn = m_numTurns-1;
+      m_turnCompletion = 0.9999f;
     }
 
     updateChildren();

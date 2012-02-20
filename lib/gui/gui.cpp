@@ -31,10 +31,7 @@ namespace visualizer
     if( !GUI )
     {
       GUI = new _GUI;
-    } else
-    {
-      THROW( Exception, "GUI Already Setup" );
-    }
+    } 
 
     GUI->m_isSetup = GUI->doSetup();
     return GUI->m_isSetup;
@@ -124,7 +121,7 @@ namespace visualizer
 
     if( !parserFound )
     {
-      THROW( Exception, "An appropriate game player could not be found!" );
+      WARNING( "An appropriate game player could not be found!" );
     }
   }
 
@@ -294,13 +291,13 @@ namespace visualizer
 
     if( spectators.size() == 0 )
     {
-      THROW( Exception, "No Games Supporting Spectator Mode Found!" );
+      WARNING( "No Games Supporting Spectator Mode Found!" );
     } else if( spectators.size() == 1 )
     {
       Games->gameList()[ spectators[0].first ]->spectate( OptionsMan->getString( "SpectateServer" ) );
     } else
     {
-      THROW( Exception, "Jake Needs To Implement A Plugin Selection Dialog" );
+      WARNING( "Jake Needs To Implement A Plugin Selection Dialog" );
     }
 
 
@@ -323,17 +320,7 @@ namespace visualizer
 
   void _GUI::loadThatShit( bool err )
   {
-    if( !err )
-    {
-      QByteArray arr = m_http->readAll();
-      if( arr.size() == 0 )
-        return;
-      char *temp = new char[ arr.size() ];
-      memcpy( temp, arr.constData(), arr.size() );
-      loadGamestring( temp, arr.size(), "" );
-      m_loadInProgress = false;
-      delete [] temp;
-    }
+
   }
 
   void _GUI::requestGamelog()
@@ -363,8 +350,11 @@ namespace visualizer
 
     if( strcmp( inf->buffer->buffer().constData(), string( inf->version + "\n" ).c_str() ) )
     {
-      QMessageBox::critical( this, "Visualizer Update Available", 
-        inf->message.c_str() );
+      m_updateBar->show();
+      QLabel *text = (QLabel*)m_updateBar->widget();
+      if( text->text().length() )
+        text->setText( text->text() + ", " );
+      text->setText( text->text() + inf->message.c_str() );
     }
   
     inf->buffer->close();
@@ -390,35 +380,17 @@ namespace visualizer
     ftp->login();
     
     ftp->cd( "jenkins" );
-    ftp->get( VERSION_FILE, i->buffer );
+    ftp->get( REMOTE.c_str(), i->buffer );
     ftp->close();
   }
 
   bool _GUI::doSetup()
   {
-    checkForUpdate( "Update Available At:\n" \
-          "ftp://r99acm.device.mst.edu:2121/", BUILD_NO, VERSION_FILE );
+    checkForUpdate( "Visualizer Core", BUILD_NO, VERSION_FILE );
 
-#if 0
-    m_updateBuffer = new QBuffer( this );
-    m_updateBuffer->open( QBuffer::ReadWrite );
-
-    QFtp *ftp = new QFtp( this );
-    connect( ftp, SIGNAL(done(bool)), this, SLOT(updateDone(bool)) );
-    ftp->connectToHost( "r99acm.device.mst.edu", 2121 );
-    ftp->login();
-
-    ftp->cd( "jenkins" );
-    ftp->get( VERSION_FILE, m_updateBuffer );
-    ftp->close();
-#endif
 
     m_loadInProgress = false;
 
-    m_http = new QHttp( this );
-    connect( m_http, SIGNAL( done( bool) ), this, SLOT( loadThatShit(bool) ) );
-
-    //connect( this, SIGNAL( close() ), this, SLOT( onClose() ) );
 
     setAcceptDrops( true );
 
@@ -426,6 +398,7 @@ namespace visualizer
     setCentralWidget( m_centralWidget );
     createActions();
     buildControlBar();
+    buildUpdateBar();
 
     setWindowIcon( QIcon( "icon.png" ) );
 
@@ -473,6 +446,18 @@ namespace visualizer
   void _GUI::newConnect()
   {
 
+  }
+
+  void _GUI::buildUpdateBar()
+  {
+    m_updateBar = 
+      new QDockWidget( "Updates Available For:", this );
+    m_updateBar->setFeatures( QDockWidget::DockWidgetClosable );
+    m_updateBar->setWidget( new QLabel( m_updateBar ) );
+    
+    addDockWidget( Qt::TopDockWidgetArea, m_updateBar );
+
+    m_updateBar->hide();
   }
 
   void _GUI::buildControlBar()
@@ -674,48 +659,6 @@ namespace visualizer
   void _GUI::initUnitStats()
   {
     //TODO Move this game-specific code out of _GUI
-
-    //Create unit Stats tab area
-    m_unitStatsArea = new QTabWidget( m_dockLayoutFrame );
-
-    //Create tables to fill tabs
-    m_globalStats = new QTableWidget(m_unitStatsArea);
-    m_selectionStats = new QTableWidget(m_unitStatsArea);
-    m_individualStats = new QTableWidget(m_unitStatsArea);
-
-    //Create headers for tables
-    m_globalStatsVerticalLabels<<"Player Gold"<<"Pirates"<<"Avg Pirate Health"<<"Avg Pirate Gold"
-      <<"Total Pirate Gold"<<"Ships"<<"Avg Ship Health"<<"Avg Ship Gold"<<"Treasure Boxes";
-    m_globalStatsHorizontalLabels<<"Total"<<"P0"<<"P1"<<"P2"<<"P3";
-    m_selectionStatsVerticalLabels<<"Player Gold"<<"Pirates"<<"Avg Pirate Health"<<"Avg Pirate Gold"
-      <<"Total Pirate Gold"<<"Ships"<<"Avg Ship Health"<<"Avg Ship Gold"<<"Treasure Boxes";
-    m_selectionStatsHorizontalLabels<<"Total"<<"P0"<<"P1"<<"P2"<<"P3";
-    m_individualStatsVerticalLabels<<"ID"<<"Owner"<<"Type"<<"Health"<<"Gold"<<"X"<<"Y";
-    m_individualStatsHorizontalLabels<<".";
-
-    //Set table properties and headers
-    m_globalStats->setRowCount(m_globalStatsVerticalLabels.size());
-    m_globalStats->setColumnCount(m_globalStatsHorizontalLabels.size());
-    m_globalStats->setVerticalHeaderLabels ( m_globalStatsVerticalLabels );
-    m_globalStats->setHorizontalHeaderLabels( m_globalStatsHorizontalLabels );
-
-    m_selectionStats->setRowCount(m_selectionStatsVerticalLabels.size());
-    m_selectionStats->setColumnCount(m_selectionStatsHorizontalLabels.size());
-    m_selectionStats->setVerticalHeaderLabels ( m_selectionStatsVerticalLabels );
-    m_selectionStats->setHorizontalHeaderLabels( m_selectionStatsHorizontalLabels );
-
-    m_individualStats->setRowCount(m_individualStatsVerticalLabels.size());
-    m_individualStats->setColumnCount(m_individualStatsHorizontalLabels.size());
-    m_individualStats->setVerticalHeaderLabels ( m_individualStatsVerticalLabels );
-    m_individualStats->setHorizontalHeaderLabels( m_individualStatsHorizontalLabels );
-
-    //Add tabs of tables to tab area
-    m_unitStatsArea->addTab( m_globalStats, "Global Stats" );
-    m_unitStatsArea->addTab( m_selectionStats, "Selection Stats" );
-    m_unitStatsArea->addTab( m_individualStats, "Individual Unit Stats" );
-
-    //Add tab area to dockLayout
-    m_dockLayout->addWidget( m_unitStatsArea );
   }
 
 

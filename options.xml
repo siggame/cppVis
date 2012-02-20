@@ -51,8 +51,8 @@
   <option>
     <key>speed</key>
     <type>Float</type>
-    <value>3</value>
+    <value>5</value>
     <minvalue>0.01</minvalue>
-    <maxvalue>20</maxvalue>
+    <maxvalue>50</maxvalue>
   </option>
 </options>

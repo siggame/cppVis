@@ -33,13 +33,36 @@ namespace visualizer
 
   void RenderWidget::adjustInput( float& x, float& y )
   {
-    float min = Renderer->width() < Renderer->height() ? Renderer->width():Renderer->height();
+    //float min = Renderer->width() < Renderer->height() ? Renderer->width():Renderer->height();
 
+    float fx = (Renderer->m_winW-Renderer->m_winX)/Renderer->m_unitSzX;
+    float fy = (Renderer->m_winH-Renderer->m_winY)/Renderer->m_unitSzY;
+    float factor = 1;
+
+    if( 
+        width()/Renderer->m_unitSzX < height()/Renderer->m_unitSzY
+      )
+    {
+      factor = width()/Renderer->m_unitSzX;
+    }
+    else
+    {
+      factor = height()/Renderer->m_unitSzY;
+    }
+
+    x /= factor*fx;
+    y /= factor*fy;
+
+    //x *= fx*factor*Renderer->m_unitSzX;
+    //y *= fx*factor*Renderer->m_unitSzY;
+
+#if 0
     x /= min;
     y /= min;
 
     x *= Renderer->m_unitSzX;
     y *= Renderer->m_unitSzY;
+#endif
 
   }
 

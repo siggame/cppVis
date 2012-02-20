@@ -4,6 +4,7 @@
 #include "exception.h"
 #include "smartpointer.h"
 #include <QtOpenGL>
+#include <QMessageBox>
 
 #if __DEBUG__
 
@@ -84,16 +85,18 @@ namespace visualizer
 
 #define THROW( x, y, ... ) \
   { \
-  char message[512]; \
+  char message[2048]; \
   sprintf( message, y, ##__VA_ARGS__ ); \
+  QMessageBox::critical( 0, "Critical!", message );\
   throw x( message, __FILE__, __LINE__ ); \
   } 
 
 #define WARNING( y, ... ) \
   { \
-  char message[512]; \
-  sprintf( message, y, ##__VA_ARGS__ ); \
+  char message[2048]; \
+  sprintf( message, y "\nLine: %s \nLine: %d", ##__VA_ARGS__, __FILE__, __LINE__ ); \
   cerr << "WARNING: " << message << endl; \
+  QMessageBox::critical( 0, "Warning!", message );\
   } 
 
 #if __DEBUG__
