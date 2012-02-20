@@ -350,7 +350,10 @@ namespace visualizer
 
     QFile compare( inf->version.c_str() );
     if( !compare.open( QIODevice::ReadOnly | QIODevice::Text ) )
+    {
+      WARNING( "Local Side MD5 Compare Sum Not Found: %s.", inf->version.c_str() );
       return;
+    }
 
     QByteArray data = compare.readAll();
 
@@ -366,6 +369,16 @@ namespace visualizer
       m_updateBar->show();
       QLabel *text = (QLabel*)m_updateBar->widget();
       text->setText( inf->message.c_str() );
+
+    
+      ofstream out1( "md5.in" );
+      out1  << data.constData();
+      out1.close();
+      ofstream out2( "md5.out" );
+      out2 << inf->buffer->buffer().constData();
+      out2.close();
+      
+
     }
 
     compare.close();
