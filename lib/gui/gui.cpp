@@ -351,7 +351,7 @@ namespace visualizer
     QFile compare( inf->version.c_str() );
     if( !compare.open( QIODevice::ReadOnly | QIODevice::Text ) )
     {
-      WARNING( "Local Side MD5 Compare Sum Not Found: %s.", inf->version.c_str() );
+      cerr << "Local Side MD5 Compare Sum Not Found: "<< inf->version.c_str() << endl;
       return;
     }
 
