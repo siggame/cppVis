@@ -222,10 +222,6 @@ namespace visualizer
 
       bool m_loadInProgress;
 
-#if 0
-      QTcpServer* m_server;
-      QTcpServer* m_visReadyServer;
-#endif
       QTcpSocket* m_sock;
 
       QTableWidget * m_globalStats;
