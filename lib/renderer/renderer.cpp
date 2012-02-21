@@ -87,6 +87,10 @@ namespace visualizer
     AnimationEngine->draw();
 
     glPopMatrix();
+      
+    setColor( Color( 0.75, 0, 0, 0.6 ) );
+
+    drawProgressBar( m_selectX, m_selectY, m_selectSX-m_selectX, m_selectSY-m_selectY, 1, Color( 1, 0, 0 ) );
 
     if( m_parent )
     {
@@ -165,6 +169,11 @@ namespace visualizer
       resize( OptionsMan->getNumber( "renderWidth" ), OptionsMan->getNumber( "renderHeight" ) );
     }
 
+
+    m_selectX = m_selectY
+     = m_selectSX
+     = m_selectSY = 0;
+     
     clear();
 
     glShadeModel( GL_SMOOTH );
@@ -279,6 +288,20 @@ namespace visualizer
     glColor4f( c.r, c.g, c.b, c.a );
   
   } // _Renderer::setColor()
+
+  void _Renderer::setSelectionBox(
+    const float& x,
+    const float& y,
+    const float& sx, 
+    const float& sy
+    ) 
+  {
+    m_selectX = x;
+    m_selectY = y;
+    m_selectSX = sx;
+    m_selectSY = sy;
+
+  } // _Renderer::setSelectionBox()
 
   void _Renderer::drawQuad
     (

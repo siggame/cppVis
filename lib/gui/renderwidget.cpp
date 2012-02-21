@@ -9,7 +9,7 @@ namespace visualizer
 {
 
   RenderWidget::RenderWidget( QWidget *parent )
-  : QGLWidget( QGLFormat( QGL::SampleBuffers ), parent )
+    : QGLWidget( QGLFormat( QGL::SampleBuffers ), parent )
   {
     Renderer->setup();
     glInit();
@@ -72,12 +72,11 @@ namespace visualizer
     {
       //QString line;
 
-      GUI->m_input.x = e->x();
-      GUI->m_input.y = e->y();
+      x = GUI->m_input.x = e->x();
+      y = GUI->m_input.y = e->y();
 
       adjustInput( GUI->m_input.x, GUI->m_input.y );
 
-      //SelectionRender->setSelectionBox(initialX, initialY, initialX+1, initialY+1);
       //+1 guarantees we create a box, rather than a point.
 
       //line.clear();
@@ -102,7 +101,9 @@ namespace visualizer
 
     GUI->m_input.sx = e->x()+1;
     GUI->m_input.sy = e->y()+1;
-    
+
+    Renderer->setSelectionBox( 0, 0, 0, 0 );
+
     adjustInput( GUI->m_input.sx, GUI->m_input.sy );
 
     if( e->button() == Qt::LeftButton )
@@ -127,12 +128,19 @@ namespace visualizer
     GUI->m_input.sx = e->x();
     GUI->m_input.sy = e->y();
 
+    Renderer->setSelectionBox( 
+      x, 
+      y, 
+      GUI->m_input.sx, 
+      GUI->m_input.sy
+      );
+
     adjustInput( GUI->m_input.sx, GUI->m_input.sy );
 
 #if 0
     // If Manhattan distance is m_DRAG_DISTANCE or greater, we're draggin
     if( e->buttons() & Qt::LeftButton &&
-      abs(currentX-initialX)+abs(currentY-initialY) > m_DRAG_DISTANCE )
+        abs(currentX-initialX)+abs(currentY-initialY) > m_DRAG_DISTANCE )
     {
       leftButtonDrag = true;
       SelectionRender->setDragging(true);

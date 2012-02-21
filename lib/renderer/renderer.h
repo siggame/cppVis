@@ -32,198 +32,210 @@ namespace visualizer
     Q_INTERFACES( IRenderer );
     public:
 
-      _Renderer()
-      {
-	  	  m_isSetup = false;
-        m_unitSzX = m_unitSzY = 1;
-        m_winX = m_winY = 0;
-        
-        m_winW = m_winH = 30;
+    _Renderer()
+    {
+      m_isSetup = false;
+      m_unitSzX = m_unitSzY = 1;
+      m_winX = m_winY = 0;
 
-        m_height = m_width = m_depth = 0;
-      }
+      m_winW = m_winH = 30;
 
-      bool registerConstantObj( const unsigned int& id, renderObj* obj );
-      bool deleteConstantObj( const unsigned int& id );
+      m_height = m_width = m_depth = 0;
+    }
 
-      static void setup();
-      static void destroy();
-      void _setup();
+    bool registerConstantObj( const unsigned int& id, renderObj* obj );
+    bool deleteConstantObj( const unsigned int& id );
 
-      bool clear();
+    static void setup();
+    static void destroy();
+    void _setup();
 
-      bool create();
+    bool clear();
 
-      void setParent( RenderWidget *parent );
+    bool create();
 
-      bool refresh();
-      bool resize
-        (
-        const unsigned int & width,
-        const unsigned int & height,
-        const unsigned int & depth = 1
-        );
+    void setParent( RenderWidget *parent );
 
-      bool isSetup() const;
+    bool refresh();
+    bool resize
+      (
+       const unsigned int & width,
+       const unsigned int & height,
+       const unsigned int & depth = 1
+      );
 
-      unsigned int height() const;
-      unsigned int width() const;
-      unsigned int depth() const;
+    bool isSetup() const;
 
-      bool update
-        (
-        const unsigned int & turn,
-        const unsigned int & frame
-        );
+    unsigned int height() const;
+    unsigned int width() const;
+    unsigned int depth() const;
 
-      void update();
+    bool update
+      (
+       const unsigned int & turn,
+       const unsigned int & frame
+      );
 
-      void viewport( int x, int y, int width, int height );
+    void update();
 
-      void setColor
-        (
-        const Color& c
-        ) const;
+    void viewport( int x, int y, int width, int height );
 
-      void drawQuad
-        (
-        const float& x,
-        const float& y,
-        const float& w,
-        const float& h,
-        const float& z = 0.0f
-        ) const;
+    void setColor
+      (
+       const Color& c
+      ) const;
 
-      void drawTexturedQuad
-        (
-        const float& x,
-        const float& y,
-        const float& w, 
-        const float& h, 
-        const std::string& resource,
-        const float& z = 0.0f
-        ) const;
+    void drawQuad
+      (
+       const float& x,
+       const float& y,
+       const float& w,
+       const float& h,
+       const float& z = 0.0f
+      ) const;
 
-      void drawAnimQuad
-        (
-        const float& x,
-        const float& y,
-        const float& w, 
-        const float& h, 
-        const std::string& resource, 
-        const int& frameNumber = 0,
-        const float& z = 0.0f
-        ) const;
+    void setSelectionBox(
+      const float& x,
+      const float& y,
+      const float& sx,
+      const float& sy
+      ) ;
 
-      void drawProgressBar
-        (
-        const float& x,
-        const float& y, 
-        const float& w, 
-        const float& h,
-        const float& percent,
-        const Color& color = Color( 0, 0, 0, 1 ),
-        const float& lineWidth = 1,
-        const float& z = 0.0f
-        ) const; 
+    void drawTexturedQuad
+      (
+       const float& x,
+       const float& y,
+       const float& w, 
+       const float& h, 
+       const std::string& resource,
+       const float& z = 0.0f
+      ) const;
 
-      void drawText
-        (
-        const float& x,
-        const float& y,
-        const std::string& fontName,
-        const std::string& line, 
-        const float& size = 15.0f, 
-        const Alignment& a = Left
-        ) const;
+    void drawAnimQuad
+      (
+       const float& x,
+       const float& y,
+       const float& w, 
+       const float& h, 
+       const std::string& resource, 
+       const int& frameNumber = 0,
+       const float& z = 0.0f
+      ) const;
 
-      void drawLine
-        (
-        const float& sX,
-        const float& sY,
-        const float& eX,
-        const float& eY,
-        const float& width = 1.0f
-        ) const;
-        
-      void drawCircle
-        (
-        const float& centerX,
-        const float& centerY,
-        const float& raidus,
-        const float& width = 1.0f
-        ) const;
+    void drawProgressBar
+      (
+       const float& x,
+       const float& y, 
+       const float& w, 
+       const float& h,
+       const float& percent,
+       const Color& color = Color( 0, 0, 0, 1 ),
+       const float& lineWidth = 1,
+       const float& z = 0.0f
+      ) const; 
 
-      void translate
-        (
-        const float& x,
-        const float& y,
-        const float& z = 0.0f
-        ) const;
+    void drawText
+      (
+       const float& x,
+       const float& y,
+       const std::string& fontName,
+       const std::string& line, 
+       const float& size = 15.0f, 
+       const Alignment& a = Left
+      ) const;
 
-      void scale
-        (
-        const float& x,
-        const float& y,
-        const float& z = 1.0f
-        ) const;
+    void drawLine
+      (
+       const float& sX,
+       const float& sY,
+       const float& eX,
+       const float& eY,
+       const float& width = 1.0f
+      ) const;
 
-      void rotate
-        (
-        const float& amount,
-        const float& x,
-        const float& y,
-        const float& z
-        ) const;
+    void drawCircle
+      (
+       const float& centerX,
+       const float& centerY,
+       const float& raidus,
+       const float& width = 1.0f
+      ) const;
 
-      void setCamera
-        (
-        const float& sX,
-        const float& sY,
-        const float& eX,
-        const float& eY
-        );
+    void translate
+      (
+       const float& x,
+       const float& y,
+       const float& z = 0.0f
+      ) const;
 
-      void beginList( const std::string& name ) const;
+    void scale
+      (
+       const float& x,
+       const float& y,
+       const float& z = 1.0f
+      ) const;
 
-      void endList( const std::string& name ) const;
+    void rotate
+      (
+       const float& amount,
+       const float& x,
+       const float& y,
+       const float& z
+      ) const;
 
-      void drawList( const std::string& name ) const;
+    void setCamera
+      (
+       const float& sX,
+       const float& sY,
+       const float& eX,
+       const float& eY
+      );
 
-      void push() const;
+    void beginList( const std::string& name ) const;
 
-      void pop() const;
+    void endList( const std::string& name ) const;
 
-      // void setCameraShape()
-      // void setCameraFocus()
-      // void setCameraZoom()
+    void drawList( const std::string& name ) const;
 
-      void setGridDimensions
-        (
-        const float& sX,
-        const float& sY
-        );
+    void push() const;
+
+    void pop() const;
+
+    // void setCameraShape()
+    // void setCameraFocus()
+    // void setCameraZoom()
+
+    void setGridDimensions
+      (
+       const float& sX,
+       const float& sY
+      );
 
     protected:
     private:
-      unsigned int m_height;
-      unsigned int m_width;
-      unsigned int m_depth;
+    unsigned int m_height;
+    unsigned int m_width;
+    unsigned int m_depth;
 
-      float m_unitSzX;
-      float m_unitSzY;
+    float m_unitSzX;
+    float m_unitSzY;
 
-      float m_winX;
-      float m_winY;
-      float m_winW;
-      float m_winH;
+    float m_winX;
+    float m_winY;
+    float m_winW;
+    float m_winH;
 
-      bool m_isSetup;
+    float m_selectX;
+    float m_selectY;
+    float m_selectSX;
+    float m_selectSY;
 
-      std::map<int, renderObj*> m_renderConstant;
-      RenderWidget *m_parent;
+    bool m_isSetup;
 
-      friend class RenderWidget;
+    std::map<int, renderObj*> m_renderConstant;
+    RenderWidget *m_parent;
+
+    friend class RenderWidget;
 
   };
 

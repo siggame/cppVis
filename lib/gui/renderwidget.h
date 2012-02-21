@@ -89,6 +89,8 @@ namespace visualizer
       int initialX;
       int initialY;
 
+      int x, y;
+
       static const int m_DRAG_DISTANCE = 6;
 
   };
