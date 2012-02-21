@@ -56,6 +56,11 @@ namespace visualizer
 
       virtual void preDraw() {}
       virtual void postDraw() {}
+
+      virtual list<int> getSelectedUnits()
+      {
+        return list<int>();
+      }
     
       IAnimationEngine *animationEngine;
       IGUI *gui;

@@ -23,13 +23,13 @@ namespace visualizer
       // @TODO: Change this to a smart pointer or something similar so we know when the game is dead and 
       // we don't accidentally use it once Piracy has been destroyed.
       virtual void registerGame( IGame* game, AnimSequence* frameList ) = 0;
- 
+
   }; // IAnimationEngine
 
   class IFrameContainer
   {
     public:
-      
+
   }; // IFrameContainer
 
 } // visualizer
