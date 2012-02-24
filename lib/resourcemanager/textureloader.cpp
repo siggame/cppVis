@@ -46,9 +46,9 @@ namespace visualizer
       default:
         THROW 
           (
-          Exception, 
-          "Image Type Unknown\n Texture: %s",
-          path.c_str()
+           Exception, 
+           "Image Type Unknown\n Texture: %s",
+           path.c_str()
           );
     }
 
@@ -67,9 +67,9 @@ namespace visualizer
     {
       THROW
         (
-        Exception,
-        "Could Not Load Texture.\n Path: %s",
-        path.c_str()
+         Exception,
+         "Could Not Load Texture.\n Path: %s",
+         path.c_str()
         );
     }
 
@@ -77,10 +77,6 @@ namespace visualizer
     size_t height = powers[ (size_t)log2( buffer.height()-1 ) ];
 
     QImage fixed( width, height, QImage::Format_ARGB32 );
-#if __DEBUG__
-    cout << path << endl;
-    cout << "w: " << width << " h: " << height << endl;
-#endif
     QPainter painter(&fixed);
 
     painter.setCompositionMode(QPainter::CompositionMode_Source);
@@ -96,8 +92,8 @@ namespace visualizer
     {
       THROW
         (
-        Exception,
-        "OpenGL Rendering Context Not Valid.  This is Causing glGenTextures to return 0."
+         Exception,
+         "OpenGL Rendering Context Not Valid.  This is Causing glGenTextures to return 0."
         );
     }
 
@@ -155,8 +151,8 @@ namespace visualizer
     {
       THROW
         (
-        Exception,
-        "glGenTextures returned a texture id of 0.  This typically means the OpenGL Rendering Context Not Valid. Make sure you're not running this function from a separate thread."
+         Exception,
+         "glGenTextures returned a texture id of 0.  This typically means the OpenGL Rendering Context Not Valid. Make sure you're not running this function from a separate thread."
         );
     }
 
@@ -180,10 +176,10 @@ namespace visualizer
     else
     {
       THROW
-      (
-      Exception,
-      "Texture Loader is already initialized."
-      );
+        (
+         Exception,
+         "Texture Loader is already initialized."
+        );
     }
   } // _TextureLoader::setup()
 

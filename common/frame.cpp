@@ -14,9 +14,6 @@ namespace visualizer
 
   std::list<SmartPointer<Animatable> >& Frame::getAnimations()
   {
-    // @TODO Remove me
-    //cout <<"Anims" << endl;
-    //cout << (*m_frame.begin())->numKeyFrames() << endl;
     return m_frame;
   }
 

@@ -52,17 +52,17 @@ namespace visualizer
         return m_references.size();
       }
 
-    #ifdef DEBUG
+#ifdef DEBUG
       void printReferences()
       {
-        std::cout << "References:\n"
+        MESSAGE( "References:" );
           for (std::set<std::string>::iterator it = m_references.begin();
-          it != m_references.end(); it++)
-        {
-          std::cout << *it << '\n';
-        }
+              it != m_references.end(); it++)
+          {
+            MESSAGE( "%s", it->c_str() );
+          }
       }
-    #endif
+#endif
 
       inline bool reference(const std::string & referencer)
       {
@@ -72,9 +72,9 @@ namespace visualizer
           return true;
         }
 
-      #ifdef DEBUG
-        std::cout << "Referencer: \"" << reference << "\" already exists\n";
-      #endif
+#ifdef DEBUG
+        MESSAGE( "Referencer: \"%s\" already exists", reference.c_str() );
+#endif
         return false;
       }
 
@@ -86,9 +86,9 @@ namespace visualizer
           return true;
         }
 
-      #ifdef DEBUG
-        std::cout << "Referencer: \"" << reference << "\" doesn't exist\n";
-      #endif
+#ifdef DEBUG
+        MESSAGE( "Referencer: \"%s\" doesn't exist.", reference.c_str() );
+#endif
         return false;
       }
 
@@ -116,21 +116,21 @@ namespace visualizer
 
       virtual void loadTexture
         ( 
-        const std::string& filename, 
-        const std::string& name 
+         const std::string& filename, 
+         const std::string& name 
         )= 0;
 
       virtual void loadTexture
         ( 
-        QImage& image, 
-        const std::string& name 
+         QImage& image, 
+         const std::string& name 
         ) = 0;
 
       virtual void loadFont
         ( 
-        const std::string& fontWidths, 
-        const std::string& fontTexture, 
-        const std::string& name
+         const std::string& fontWidths, 
+         const std::string& fontTexture, 
+         const std::string& name
         ) = 0;
 
   };

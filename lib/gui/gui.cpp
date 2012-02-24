@@ -122,8 +122,8 @@ namespace visualizer
     if( !parserFound )
     {
       WARNING( "An appropriate game player could not be found!" );
-      cout << "Log Size: " << fullLog.size() << endl;
-      cout << fullLog << endl;
+      MESSAGE( "Log Size: %d", fullLog.size() );
+      MESSAGE( "%s", fullLog.c_str() );
     }
   }
 
@@ -312,7 +312,7 @@ namespace visualizer
 
   void _GUI::displayError( const QAbstractSocket::SocketError& err )
   {
-    cout << err << endl;
+    WARNING( "%d", err );
   }
 
   bool _GUI::loadInProgress() const
@@ -353,18 +353,11 @@ namespace visualizer
     QFile compare( inf->version.c_str() );
     if( !compare.open( QIODevice::ReadOnly | QIODevice::Text ) )
     {
-      cerr << "Local Side MD5 Compare Sum Not Found: "<< inf->version.c_str() << endl;
+      MESSAGE( "Local Side MD5 Compare Sum Not Found: %s", inf->version.c_str() );
       return;
     }
 
     QByteArray data = compare.readAll();
-
-#if 0
-    cout << data.constData() << endl;
-    cout << "=============" << endl;
-    cout << inf->buffer->buffer().constData() << endl;
-#endif
-
     
     if( strcmp( data.constData(), inf->buffer->buffer().constData() ) )
     {

@@ -94,8 +94,7 @@ namespace visualizer
             } 
             else if( s.toElement().tagName() == "value" )
             {
-              cout << o.key << ":" << qPrintable( s.toElement().text() ) << 
-endl;
+              MESSAGE( "%s:%s", o.key.c_str(), qPrintable( s.toElement().text() ) );
               if( o.type == OP_INT || o.type == OP_FLOAT )
               {
                 o.fValue = s.toElement().text().toFloat();
@@ -123,7 +122,7 @@ endl;
               }
 
             }
-            
+
             s = s.nextSibling();
           }
 
@@ -134,13 +133,13 @@ endl;
         {
           WARNING( "Expecting an option.  Did not receive it." );
         }
-        
+
       }
 
       n = n.nextSibling();
 
     }
-   
+
   }
 
   void _OptionsMan::saveOptions()
@@ -201,13 +200,13 @@ endl;
           out << "    <combos>" << endl;
           for
             ( 
-              vector<string>::iterator j = i->second.sOptions.begin();
-              j != i->second.sOptions.end();
-              j++
+             vector<string>::iterator j = i->second.sOptions.begin();
+             j != i->second.sOptions.end();
+             j++
             )
-          {
-            out << "      <op>" << *j << "</op>" << endl;
-          }
+            {
+              out << "      <op>" << *j << "</op>" << endl;
+            }
           out << "    </combos>" << endl;
           break;
       }
@@ -245,7 +244,7 @@ endl;
         os.read( (char*)&rhs.fMinRange, sizeof( float ) );
         os.read( (char*)&rhs.fMaxRange, sizeof( float ) );
         os.read( (char*)&rhs.fValue, sizeof( float ) );
-      break;
+        break;
       case OP_STRING:
         os.read( (char*)&len, sizeof( unsigned int ) );
         str = new char[len+1];
@@ -264,12 +263,12 @@ endl;
           rhs.sOptions.push_back( str );
           delete str;
         }
-      break;
+        break;
       default:
         WARNING( "Error, Unable to read option type, %d.", rhs.type );
 
     }
-   
+
     return os;
   } // _OptionsMan::loadOptionFile()
 
@@ -379,7 +378,7 @@ endl;
     unsigned int sz = rhs.key.size();
     os.write( (const char*)&sz, sizeof( unsigned int ) );
     os << rhs.key;
-    
+
     switch( rhs.type )
     {
       case OP_INT:
@@ -388,7 +387,7 @@ endl;
         os.write( (const char*)&rhs.fMaxRange, sizeof( float ) );
         os.write( (const char*)&rhs.fValue, sizeof( float ) );
         //os << (float)rhs.fMinRange << (float)rhs.fMaxRange << (float)rhs.fValue;
-      break;
+        break;
       case OP_STRING:
         sz = rhs.sValue.size();
         os.write( (const char*)&sz, sizeof( unsigned int ) );
@@ -402,7 +401,7 @@ endl;
           os.write( (const char*)&sz, sizeof( unsigned int ) );
           os << *i;
         }
-      break;
+        break;
       default:
         WARNING( "Error, Option contains strange type, %d", rhs.type );
     }

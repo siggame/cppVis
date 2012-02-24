@@ -108,18 +108,25 @@ int main(int argc, char *argv[])
 
 	int retval = app.exec();
 
-  cout << "Destroying Games" << endl;
+  MESSAGE( "Destroying Games..." );
   Games->destroy();
-  cout << "Destroying Animation Engine" << endl;
+  MESSAGE( "Destroying Animation Engine..." );
   AnimationEngine->destroy();
+  MESSAGE( "Destroying Texture Loader..." );
   TextureLoader->destroy();
+  MESSAGE( "Destroying Resource Manager..." );
   ResourceMan->destroy();
-
+  MESSAGE( "Destroying GUI..." );
   GUI->destroy();
+  MESSAGE( "Destroying Renderer..." );
 	Renderer->destroy();
+  MESSAGE( "Destroying Time..." );
   TimeManager->destroy();
+  MESSAGE( "Destroying Options Manager..." );
 	OptionsMan->destroy();
 
+
+  MESSAGE( "Exit Successful!" );
 	return retval;
 
 }

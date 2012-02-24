@@ -18,8 +18,6 @@ namespace visualizer
       Frame( const Frame& frame )
       {
         /// @TODO Remove me
-//        cout << "Copy Frame" << endl;
-        m_frame = frame.m_frame;
 
       }
 

@@ -19,7 +19,6 @@ void AddTrack(long int addr,  long int asize,  const char *fname, long int lnum)
 
 void RemoveTrack( long int addr )
 {
-  cout << allocMap.size() << endl;
   for
     ( 
     list< ALLOC_INFO >::iterator i = allocMap.begin();
@@ -44,7 +43,6 @@ void DumpUnfreed()
 {
   long int totalSize = 0;
 
-  cout << "UNFREEDS -----------------------------------------------------" << endl;
 #if 0
   for
     (
@@ -53,12 +51,9 @@ void DumpUnfreed()
     i++
     )
   {
-    cout << "File: " << i->file << ", Line: " << i->line << " unfreed." << endl;
     totalSize += i->size;
   }
 
-  cout << "UNFREEDS -----------------------------------------------------" << endl;
-  cout << "Total Unfreed: " << totalSize << " bytes." << endl;
 #endif
 
 };

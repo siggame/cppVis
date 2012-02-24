@@ -40,9 +40,9 @@ namespace visualizer
     Resource * ref = (*(dt))[rName];
     if (ref->numReferences())
     {
-      #ifdef __DEBUG__
-      std::cout << "Resource \"" << rName << "\" still has a reference:\n";
-      #endif
+#ifdef __DEBUG__
+      WARNING( "Resource \"%s\" still has a reference", rName.c_str() );
+#endif
       return false;
     }
 
@@ -85,8 +85,8 @@ namespace visualizer
     {
       THROW
         (
-        Exception,
-        "Resource Could Not Be Found: \n  %s", rName.c_str()
+         Exception,
+         "Resource Could Not Be Found: \n  %s", rName.c_str()
         );
       return NULL;
     }
@@ -95,8 +95,8 @@ namespace visualizer
     {
       THROW
         (
-        Exception,
-        "Resource Could Not Be Found: \n  %s", rName.c_str()
+         Exception,
+         "Resource Could Not Be Found: \n  %s", rName.c_str()
         );
       return NULL;
     }
@@ -106,10 +106,10 @@ namespace visualizer
 
     THROW
       (
-      Exception,
-      "Could not retrieve resource because it is already in use.  Please make sure \
-      that you have released the resource once you're done.  This also occurs, when \
-      you do multithreading."
+       Exception,
+       "Could not retrieve resource because it is already in use.  Please make sure \
+       that you have released the resource once you're done.  This also occurs, when \
+       you do multithreading."
       );
 
     return NULL;
@@ -146,47 +146,47 @@ namespace visualizer
 
   void _ResourceMan::loadFont
     ( 
-    const std::string& fontWidths, 
-    const std::string& fontTexture, 
-    const std::string& name 
+     const std::string& fontWidths, 
+     const std::string& fontTexture, 
+     const std::string& name 
     )
-  {
-    static size_t fontNum = 0;
-    std::stringstream fontName;
-    fontName << "MEGAMINERVISUALIZER_UNIQUEFONTNAME_" << fontNum++;
-    loadTexture( fontTexture, fontName.str() );
-    Text t( fontName.str(), fontWidths );
+    {
+      static size_t fontNum = 0;
+      std::stringstream fontName;
+      fontName << "MEGAMINERVISUALIZER_UNIQUEFONTNAME_" << fontNum++;
+      loadTexture( fontTexture, fontName.str() );
+      Text t( fontName.str(), fontWidths );
 
-    Resource *res = (Resource*)( new ResFont( t ) );
-    reg( name, res );
+      Resource *res = (Resource*)( new ResFont( t ) );
+      reg( name, res );
 
-  } // _ResourceMan::loadFont()
+    } // _ResourceMan::loadFont()
 
   void _ResourceMan::loadTexture
     ( 
-    const std::string& filename, 
-    const std::string& name 
+     const std::string& filename, 
+     const std::string& name 
     )
-  {
-    Resource * res = 0;
-    QImage texture;
-    int id = 0;
-
-    if( ( id = TextureLoader->load( filename.c_str(), texture ) ) )
     {
-      res = (Resource*)( new ResTexture( texture, id ) );
-      reg( name, res );
-    }
-    else
-    {
-      THROW
-        (
-        Exception,
-        "Texture: '%s' did not load correctly", filename.c_str()
-        );
-    }
+      Resource * res = 0;
+      QImage texture;
+      int id = 0;
 
-  } // _ResourceMan::loadTexture()
+      if( ( id = TextureLoader->load( filename.c_str(), texture ) ) )
+      {
+        res = (Resource*)( new ResTexture( texture, id ) );
+        reg( name, res );
+      }
+      else
+      {
+        THROW
+          (
+           Exception,
+           "Texture: '%s' did not load correctly", filename.c_str()
+          );
+      }
+
+    } // _ResourceMan::loadTexture()
 
   void _ResourceMan::loadAnimation( const std::string& filename, const std::string& name )
   {
@@ -213,8 +213,8 @@ namespace visualizer
     {
       THROW
         (
-        Exception,
-        "Animation '%s' did not load correctly", filename.c_str()
+         Exception,
+         "Animation '%s' did not load correctly", filename.c_str()
         );
     }
 

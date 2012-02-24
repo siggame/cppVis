@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 
 #ifdef __GNUC__ 
 #ifndef __MINGW32__
@@ -58,21 +59,22 @@ namespace visualizer
 
       void printException
         ( 
-        std::string e, 
-        std::string fileName, 
-        unsigned int lineNum, 
-        std::string exceptionType 
+         std::string e, 
+         std::string fileName, 
+         unsigned int lineNum, 
+         std::string exceptionType 
         )
       {
-        cerr << endl;
-        cerr << "=================== " << exceptionType << " =================== " << endl;
-        cerr << " Error: " << e << endl;
-        cerr << " File:  " << fileName << ":" << lineNum << endl;
-#if __DEBUG__
-        errorLog << ( "=================== " + exceptionType + " =================== " );
-        errorLog << ( " Error: " + e );
+        stringstream ss;
 
-#endif
+        ss << endl;
+        ss << "=================== " << exceptionType << " =================== " << endl;
+        ss << " Error: " << e << endl;
+        ss << " File:  " << fileName << ":" << lineNum << endl;
+
+        cerr << ss.str();
+        errorLog << ss.str();
+
 #ifdef __STACKTRACE__ 
         // Exception is closing everything down anyway.  May as well use up some memory
         void *array[256];
@@ -81,7 +83,6 @@ namespace visualizer
         size = backtrace( array, 10 );
         backtrace_symbols_fd( array, size, 2 );
 #endif
-        cerr << endl;
       }
   };
 
