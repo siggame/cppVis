@@ -122,6 +122,7 @@ namespace visualizer
     if( !parserFound )
     {
       WARNING( "An appropriate game player could not be found!" );
+      cout << fullLog << endl;
     }
   }
 
