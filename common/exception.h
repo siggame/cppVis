@@ -44,7 +44,7 @@ namespace visualizer
       std::ofstream out_file;
   };
 
-  extern Log errorLog;
+  extern Log* errorLog;
 
 
   class Exception
@@ -77,7 +77,7 @@ namespace visualizer
         ss << " File:  " << fileName << ":" << lineNum << endl;
 
         cerr << ss.str();
-        errorLog << ss.str();
+        errorLog->write(ss.str());
 
 #ifdef __STACKTRACE__ 
         // Exception is closing everything down anyway.  May as well use up some memory

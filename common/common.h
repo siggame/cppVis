@@ -89,7 +89,7 @@ namespace visualizer
     sprintf( message, y "\nFile: %s \nLine: %d", ##__VA_ARGS__, __FILE__, __LINE__ ); \
     ss << "WARNING: " << message << endl; \
     cerr << ss.str(); \
-    errorLog << ss.str(); \
+    errorLog->write( ss.str() ); \
     QMessageBox::critical( 0, "Warning!", message );\
   } 
 
@@ -101,7 +101,7 @@ namespace visualizer
     ss << "MESSAGE: " << message << endl; \
     cerr << ss.str(); \
     ss << "File: " << __FILE__ << " Line: " << __LINE__ << endl; \
-    errorLog << ss.str(); \
+    errorLog->write( ss.str() ); \
   }
 
 #if __DEBUG__

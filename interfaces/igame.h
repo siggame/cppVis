@@ -69,6 +69,7 @@ namespace visualizer
       IResourceMan *resourceManager;
       ITextureLoader *textureLoader;
       ITimeManager *timeManager;
+      Log *errorLog;
 
   };
 

@@ -53,6 +53,7 @@ namespace visualizer
           game->resourceManager = ResourceMan;
           game->textureLoader = TextureLoader;
           game->timeManager = TimeManager;
+          game->errorLog = errorLog;
         } 
         else
         {
