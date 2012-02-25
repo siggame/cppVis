@@ -86,7 +86,7 @@ namespace visualizer
   { \
     char message[2048]; \
     stringstream ss; \
-    sprintf( message, y "\nLine: %s \nLine: %d", ##__VA_ARGS__, __FILE__, __LINE__ ); \
+    sprintf( message, y "\nFile: %s \nLine: %d", ##__VA_ARGS__, __FILE__, __LINE__ ); \
     ss << "WARNING: " << message << endl; \
     cerr << ss.str(); \
     errorLog << ss.str(); \
@@ -97,9 +97,10 @@ namespace visualizer
   { \
     char message[2048]; \
     stringstream ss; \
-    sprintf( message, y "\nLine: %s \nLine: %d", ##__VA_ARGS__, __FILE__, __LINE__ ); \
+    sprintf( message, y, ##__VA_ARGS__ ); \
     ss << "MESSAGE: " << message << endl; \
-    cerr << ss.str() << endl; \
+    cerr << ss.str(); \
+    ss << "File: " << __FILE__ << " Line: " << __LINE__ << endl; \
     errorLog << ss.str(); \
   }
 

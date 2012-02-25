@@ -123,7 +123,7 @@ namespace visualizer
     {
       WARNING( "An appropriate game player could not be found!" );
       MESSAGE( "Log Size: %d", fullLog.size() );
-      MESSAGE( "%s", fullLog.c_str() );
+      errorLog.write( fullLog );
     }
   }
 

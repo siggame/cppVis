@@ -27,10 +27,14 @@ namespace visualizer
 
       ~Log()
       {
-        out_file.close();
       }
 
       Log& operator << ( const std::string& line )
+      {
+        return write( line );
+      }
+
+      Log& write( const std::string& line )
       {
         out_file << line << endl;
         return *this;

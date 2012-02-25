@@ -11,7 +11,7 @@
 using namespace visualizer;
 namespace visualizer
 {
-  Log errorLog( "visualizerErrors.log" );
+  Log errorLog( "visualizer.log" );
 }
 
 int main(int argc, char *argv[])

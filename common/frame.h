@@ -17,7 +17,7 @@ namespace visualizer
 
       Frame( const Frame& frame )
       {
-        /// @TODO Remove me
+        m_frame = frame.m_frame;
 
       }
 
