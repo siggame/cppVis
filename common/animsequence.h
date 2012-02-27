@@ -20,6 +20,11 @@ namespace visualizer
         return m_frames.size();
       }
 
+      void clear()
+      {
+        m_frames.clear();
+      }
+
       Frame& operator [] (int frameNum)
       {
         /// @TODO Fix this.  It's not a vector because it
@@ -35,7 +40,6 @@ namespace visualizer
       virtual ~AnimSequence() {}
 
      private:
-
       std::list<Frame> m_frames;
 
   }; // AnimSequence
