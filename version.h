@@ -8,5 +8,4 @@
   "http://megaminerai.com"
 
 #define VERSION_FILE "visualizer-core.md5"
-
 #endif // VERSION_H
