@@ -6,6 +6,7 @@
 #include <set>
 #include <QTableWidget>
 #include <QtOpenGL>
+#include <QGLShader>
 #include <string>
 #include "textRenderer/drawGLFont.h"
 #include "../optionsmanager/optionsman.h"
@@ -79,6 +80,8 @@ namespace visualizer
     void update();
 
     void viewport( int x, int y, int width, int height );
+
+    bool shaderSupport() const;
 
     void setColor
       (

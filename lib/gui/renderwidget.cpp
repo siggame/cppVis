@@ -13,6 +13,7 @@ namespace visualizer
   {
     Renderer->setup();
     glInit();
+    MESSAGE( "Shader Support: %d", Renderer->shaderSupport() );
   }
 
   RenderWidget::~RenderWidget()

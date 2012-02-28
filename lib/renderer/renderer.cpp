@@ -303,6 +303,13 @@ namespace visualizer
 
   } // _Renderer::setSelectionBox()
 
+  bool _Renderer::shaderSupport() const
+  {
+    return QGLShader::hasOpenGLShaders( QGLShader::Vertex ) 
+        && QGLShader::hasOpenGLShaders( QGLShader::Fragment );
+
+  } // _Renderer::shaderSupport()
+
   void _Renderer::drawQuad
     (
     const float& x,

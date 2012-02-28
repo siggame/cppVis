@@ -103,7 +103,6 @@ int main(int argc, char *argv[])
     chooseOption->exec();
   }
 
-
   TimeManager->timerStart();
 
 	int retval = app.exec();
