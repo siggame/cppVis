@@ -192,16 +192,7 @@ namespace visualizer
 
       void catchEscapeKey();
 
-      void turnPercentageShortcut1();
-      void turnPercentageShortcut2();
-      void turnPercentageShortcut3();
-      void turnPercentageShortcut4();
-      void turnPercentageShortcut5();
-      void turnPercentageShortcut6();
-      void turnPercentageShortcut7();
-      void turnPercentageShortcut8();
-      void turnPercentageShortcut9();
-      void turnPercentageShortcut0();
+      void turnPercentageCalc(int);
 
       void newConnect();
       void newReadyConnect();
@@ -274,7 +265,6 @@ namespace visualizer
       void buildToolSet();
       void initUnitStats();
 
-      void turnPercentageCalc(int);
 
       const Input& getInput() const;
 

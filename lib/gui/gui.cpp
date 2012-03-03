@@ -95,29 +95,29 @@ namespace visualizer
 
     for
       ( 
-      std::vector<IGame*>::iterator i = Games->gameList().begin(); 
-      i != Games->gameList().end() && !parserFound;
-      i++ 
+       std::vector<IGame*>::iterator i = Games->gameList().begin(); 
+       i != Games->gameList().end() && !parserFound;
+       i++ 
       )
-    {
-      QRegExp rx( (*i)->getPluginInfo().gamelogRegexPattern.c_str() );
-      rx.setPatternSyntax( QRegExp::RegExp2 );
-      
-      if( rx.indexIn( fullLog.c_str() ) != -1 )
       {
-        TimeManager->setTurn( 0 );
-        if( (*i)->getPluginInfo().returnFilename )
-        {
-          (*i)->loadGamelog( gamelog );
-        }
-        else
-        {
-          (*i)->loadGamelog( fullLog );
-        }
-        parserFound = true;
-      }
+        QRegExp rx( (*i)->getPluginInfo().gamelogRegexPattern.c_str() );
+        rx.setPatternSyntax( QRegExp::RegExp2 );
 
-    }
+        if( rx.indexIn( fullLog.c_str() ) != -1 )
+        {
+          TimeManager->setTurn( 0 );
+          if( (*i)->getPluginInfo().returnFilename )
+          {
+            (*i)->loadGamelog( gamelog );
+          }
+          else
+          {
+            (*i)->loadGamelog( fullLog );
+          }
+          parserFound = true;
+        }
+
+      }
 
     if( !parserFound )
     {
@@ -132,7 +132,7 @@ namespace visualizer
     ifstream file_gamelog( gamelog.c_str(), ifstream::in );
     if( file_gamelog.is_open() )
     {
-      
+
       size_t length;
       file_gamelog.seekg( 0, ios::end );
       length = file_gamelog.tellg();
@@ -161,7 +161,7 @@ namespace visualizer
   void _GUI::dropEvent( QDropEvent* evt )
   {
     const QMimeData* mimeData = evt->mimeData();
-    
+
     if( mimeData->hasUrls() )
     {
       QStringList pathList;
@@ -258,10 +258,10 @@ namespace visualizer
     QFileDialog fileDialog;
 
     QString filename = fileDialog.getOpenFileName(
-      this,
-      tr( "Open Gamelog" ),
-      m_previousDirectory,
-      tr( "Gamelogs (*.gamelog *.glog);;All Files (*.*)") ).toAscii().constData();
+        this,
+        tr( "Open Gamelog" ),
+        m_previousDirectory,
+        tr( "Gamelogs (*.gamelog *.glog);;All Files (*.*)") ).toAscii().constData();
 
     if( filename.size() > 0 )
     {
@@ -278,7 +278,7 @@ namespace visualizer
 
   void _GUI::fileSpectate()
   {
-    
+
     // Game index/game name pair of those games supporting spectate mode
     vector< pair<int, string> > spectators;
 
@@ -334,12 +334,12 @@ namespace visualizer
     string glogPath = b.reserve();
     b.sendCommand( string( "delete ") + b.lastJob() );
     QUrl url( glogPath.c_str() );
-    
+
     m_loadInProgress = true;
 
     m_http->setHost( url.host() );
     m_http->get( url.path() );
-    
+
   }
 
   void _GUI::onClose()
@@ -358,28 +358,28 @@ namespace visualizer
     }
 
     QByteArray data = compare.readAll();
-    
+
     if( strcmp( data.constData(), inf->buffer->buffer().constData() ) )
     {
       m_updateBar->show();
       QLabel *text = (QLabel*)m_updateBar->widget();
       text->setText( inf->message.c_str() );
 
-    
+
       ofstream out1( "md5.in" );
       out1  << data.constData();
       out1.close();
       ofstream out2( "md5.out" );
       out2 << inf->buffer->buffer().constData();
       out2.close();
-      
+
 
     }
 
     compare.close();
-    
+
     inf->buffer->close();
-    
+
   }
 
   void _GUI::checkForUpdate( string message, string VERSION, string REMOTE )
@@ -400,7 +400,7 @@ namespace visualizer
 
     ftp->connectToHost( "r99acm.device.mst.edu", 2121 );
     ftp->login();
-    
+
     ftp->cd( "jenkins" );
     ftp->get( REMOTE.c_str(), i->buffer );
     ftp->close();
@@ -445,10 +445,10 @@ namespace visualizer
     }
 
     setWindowState(
-      windowState()
-      | Qt::WindowActive
-      | Qt::WindowMaximized
-      );
+        windowState()
+        | Qt::WindowActive
+        | Qt::WindowMaximized
+        );
 
     show();
 
@@ -475,7 +475,7 @@ namespace visualizer
       new QDockWidget( "Updates Available For:", this );
     m_updateBar->setFeatures( QDockWidget::DockWidgetClosable );
     m_updateBar->setWidget( new QLabel( m_updateBar ) );
-    
+
     addDockWidget( Qt::TopDockWidgetArea, m_updateBar );
 
     m_updateBar->hide();
@@ -497,22 +497,22 @@ namespace visualizer
     m_helpContents = new QAction( tr( "&Contents" ), this );
     m_helpContents->setShortcut( tr( "F1" ) );
     m_helpContents->setStatusTip(
-      tr( "Open Online Help For This Game" )
-      );
+        tr( "Open Online Help For This Game" )
+        );
     connect( m_helpContents, SIGNAL(triggered()), this, SLOT(helpContents()) );
 
     m_helpAbout = new QAction( tr( "&About" ), this );
     m_helpAbout->setStatusTip(
-      tr( "About The Visualizer" )
-      );
+        tr( "About The Visualizer" )
+        );
     connect( m_helpAbout, SIGNAL(triggered()), this, SLOT(helpAbout()) );
 
 
     m_fileOpen = new QAction( tr( "&Open" ), this );
     m_fileOpen->setShortcut( tr( "Ctrl+O" ) );
     m_fileOpen->setStatusTip(
-      tr( "Open A Gamelog" )
-      );
+        tr( "Open A Gamelog" )
+        );
     connect( m_fileOpen, SIGNAL(triggered()), this, SLOT(fileOpen()) );
 
     m_fileSpectate = new QAction( tr( "&Spectate" ), this );
@@ -532,8 +532,8 @@ namespace visualizer
     m_fileExit = new QAction( tr( "&Quit" ), this );
     m_fileExit->setShortcut( tr( "Ctrl+Q" ) );
     m_fileExit->setStatusTip(
-      tr( "Close the Visualizer" )
-      );
+        tr( "Close the Visualizer" )
+        );
     connect( m_fileExit, SIGNAL(triggered()), this, SLOT(close()) );
 
     (void) new QShortcut( QKeySequence( tr( "Space" ) ), this, SLOT( togglePlayPause() ) );
@@ -543,17 +543,19 @@ namespace visualizer
     (void) new QShortcut( QKeySequence( tr( "Left" ) ), this, SLOT( stepTurnBackShortcut() ) );
     (void) new QShortcut( QKeySequence( tr("Escape") ), this, SLOT( catchEscapeKey() ) );
 
-    //Ugly hack
-    (void) new QShortcut( QKeySequence( Qt::Key_1 ), this, SLOT( turnPercentageShortcut1() ) );
-    (void) new QShortcut( QKeySequence( Qt::Key_2 ), this, SLOT( turnPercentageShortcut2() ) );
-    (void) new QShortcut( QKeySequence( Qt::Key_3 ), this, SLOT( turnPercentageShortcut3() ) );
-    (void) new QShortcut( QKeySequence( Qt::Key_4 ), this, SLOT( turnPercentageShortcut4() ) );
-    (void) new QShortcut( QKeySequence( Qt::Key_5 ), this, SLOT( turnPercentageShortcut5() ) );
-    (void) new QShortcut( QKeySequence( Qt::Key_6 ), this, SLOT( turnPercentageShortcut6() ) );
-    (void) new QShortcut( QKeySequence( Qt::Key_7 ), this, SLOT( turnPercentageShortcut7() ) );
-    (void) new QShortcut( QKeySequence( Qt::Key_8 ), this, SLOT( turnPercentageShortcut8() ) );
-    (void) new QShortcut( QKeySequence( Qt::Key_9 ), this, SLOT( turnPercentageShortcut9() ) );
-    (void) new QShortcut( QKeySequence( Qt::Key_0 ), this, SLOT( turnPercentageShortcut0() ) );
+    QSignalMapper* mapper = new QSignalMapper(this);
+
+
+    QShortcut *cut; 
+    for( size_t i = 0; i < 10; i++ )
+    {
+      cut = new QShortcut( QKeySequence( Qt::Key_0+i ), this );
+      mapper->setMapping( cut, i-1 );
+      connect( cut, SIGNAL( activated() ), mapper, SLOT( map() ) );
+    }
+
+    connect( mapper, SIGNAL( mapped( int ) ), this, SLOT( turnPercentageCalc(int) ) );
+
   }
 
 
@@ -642,6 +644,8 @@ namespace visualizer
 
   void _GUI::turnPercentageCalc(int value)
   {
+    if( value < 0 )
+      value = 9;
     float turnPercent = value /9.0;
     TimeManager->setTurn((int) floor(turnPercent * TimeManager->getNumTurns()));
   }
@@ -722,7 +726,8 @@ namespace visualizer
   }
 
 
-  void _GUI::turnPercentageShortcut1(){turnPercentageCalc(0);};
+#if 0
+  void _GUI::turnPercentageShortcut( int i ){turnPercentageCalc(0);};
   void _GUI::turnPercentageShortcut2(){turnPercentageCalc(1);};
   void _GUI::turnPercentageShortcut3(){turnPercentageCalc(2);};
   void _GUI::turnPercentageShortcut4(){turnPercentageCalc(3);};
@@ -732,6 +737,7 @@ namespace visualizer
   void _GUI::turnPercentageShortcut8(){turnPercentageCalc(7);};
   void _GUI::turnPercentageShortcut9(){turnPercentageCalc(8);};
   void _GUI::turnPercentageShortcut0(){turnPercentageCalc(9);};
+#endif
 
   QTableWidget * _GUI::getIndividualStats()
   {
