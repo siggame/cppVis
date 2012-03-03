@@ -82,6 +82,7 @@ namespace visualizer
     void viewport( int x, int y, int width, int height );
 
     bool shaderSupport() const;
+    bool fboSupport() const;
 
     void setColor
       (

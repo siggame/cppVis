@@ -13,7 +13,20 @@ namespace visualizer
   {
     Renderer->setup();
     glInit();
+
+    MESSAGE( "" );
+    MESSAGE( "============System OpenGL Information=======" );
     MESSAGE( "Shader Support: %d", Renderer->shaderSupport() );
+    MESSAGE( "FBO Support: %d", Renderer->fboSupport() );
+    MESSAGE( "OpenGL Vendor: %s", glGetString(GL_VENDOR) );
+    MESSAGE( "OpenGL Renderer: %s", glGetString(GL_RENDERER) );
+    MESSAGE( "OpenGL Version: %s", glGetString(GL_VERSION) );
+    MESSAGE( "GLSL Version: %s", glGetString(GL_SHADING_LANGUAGE_VERSION) );
+    MESSAGE( "Extensions Supported: " );
+    cerr << glGetString(GL_EXTENSIONS) << endl;
+    errorLog->write( (char*)glGetString(GL_EXTENSIONS) );
+    MESSAGE( "============System OpenGL Information=======" );
+
   }
 
   RenderWidget::~RenderWidget()

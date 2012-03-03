@@ -310,6 +310,15 @@ namespace visualizer
 
   } // _Renderer::shaderSupport()
 
+  bool _Renderer::fboSupport() const
+  {
+    if( string((char*)glGetString(GL_EXTENSIONS)).find( "GL_EXT_framebuffer_object" ) != -1 )
+    {
+      return true;
+    }
+    return false;
+  }
+
   void _Renderer::drawQuad
     (
     const float& x,
