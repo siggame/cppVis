@@ -17,10 +17,10 @@ namespace visualizer
       void drawCenter( const std::string& line ) const;
 
     private:
-      size_t getLineWidth( const std::string& line ) const;
-      size_t getCharWidth( const size_t& c ) const;
+      float getLineWidth( const std::string& line ) const;
+      float getCharWidth( const size_t& c ) const;
       
-      unsigned char m_width[256];
+      float m_width[256];
       std::string m_resource;
       unsigned int m_list;
 

@@ -188,12 +188,10 @@ namespace visualizer
     appendConsole( param );
   }
 
-
   void _GUI::appendConsole( QString line )
   {
     _GUI::m_consoleArea->append( line );
   }
-
 
   void _GUI::clearConsole()
   {
@@ -201,10 +199,10 @@ namespace visualizer
     _GUI::m_consoleArea->clear();
   }
 
-
   void _GUI::resizeEvent( QResizeEvent* evt )
   {
-    if(!m_dockWidget->isFloating())//competitor hasn't torn off our dock window
+    //competitor hasn't torn off our dock window
+    if(!m_dockWidget->isFloating())
     {
       int w = width();
       int h = height();
@@ -216,12 +214,11 @@ namespace visualizer
         h = temp;
       }
 
-      m_dockWidget->setMinimumWidth( w - h);
+      m_dockWidget->setMinimumWidth(w - h);
       m_dockWidget->hide();
     }
     QMainWindow::resizeEvent( evt );
   }
-
 
   void _GUI::helpContents()
   {
@@ -230,7 +227,6 @@ namespace visualizer
 
   void _GUI::helpAbout()
   {
-    //QMessageBox *about = new QMessageBox(
     QMessageBox::about( this, "About Visualizer", VERSION_STRING );
 
   }
@@ -412,7 +408,6 @@ namespace visualizer
 
     m_loadInProgress = false;
 
-
     setAcceptDrops( true );
 
     m_centralWidget = new CentralWidget( this );
@@ -454,8 +449,6 @@ namespace visualizer
 
     m_previousDirectory = QDir::homePath();
 
-
-
     return true;
   }
 
@@ -490,7 +483,6 @@ namespace visualizer
     m_statusBar->addPermanentWidget( m_controlBar, 100 );
 
   }
-
 
   void _GUI::createActions()
   {
@@ -558,7 +550,6 @@ namespace visualizer
 
   }
 
-
   void _GUI::createMenus()
   {
     QMenu *menu;
@@ -580,7 +571,6 @@ namespace visualizer
     menu->addAction( m_helpAbout );
 
   }
-
 
   void _GUI::buildToolSet()
   {
@@ -611,36 +601,30 @@ namespace visualizer
 
   }
 
-
   void _GUI::closeGUI()
   {
     close();
   }
-
 
   void _GUI::toggleFullScreen()
   {
     setFullScreen(!fullScreen);
   }
 
-
   void _GUI::togglePlayPause()
   {
     m_controlBar->play();
   }
-
 
   void _GUI::fastForwardShortcut()
   {
     m_controlBar->fastForward();
   }
 
-
   void _GUI::rewindShortcut()
   {
     m_controlBar -> rewind();
   }
-
 
   void _GUI::turnPercentageCalc(int value)
   {
@@ -649,7 +633,6 @@ namespace visualizer
     float turnPercent = value /9.0;
     TimeManager->setTurn((int) floor(turnPercent * TimeManager->getNumTurns()));
   }
-
 
   void _GUI::stepTurnForwardShortcut()
   {

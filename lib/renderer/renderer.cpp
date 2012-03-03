@@ -545,7 +545,7 @@ namespace visualizer
     // Scale to camera stuff. 
     // Then scale proportionally to size
     glTranslatef( x, y, 0 );
-    scale( size, size );
+    scale( size/3.f, size/3.0f );
 
     switch( a )
     {

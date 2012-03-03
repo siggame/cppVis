@@ -9,43 +9,45 @@ using namespace std;
 namespace visualizer
 {
 
-  const float defaultSize = 0.25;
-  const float widthMultiplier = 0.5f;
+  const float defaultSize = 1.0f;
   const float off = 1.0f/16.0f;
+
   Text::Text( const std::string& resource, const std::string& fontWidthsFile )
   {
     ifstream fin( fontWidthsFile.c_str() );
 
     if( !fin.is_open() )
-      return;
+      WARNING( "Could not find font widths file: %s", fontWidthsFile.c_str() );
 
+    ResTexture *r = (ResTexture*)ResourceMan->reference( resource, "text" );
+    float w = r->getWidth()/16;
     m_list = glGenLists( 256 );
 
     for( size_t i = 0; i < 256; i++ )
     {
-      unsigned char temp;
-      fin.read( (char*)&temp, sizeof( char ) );
-      m_width[ i ] = temp;
-      m_width[ i ] = m_width[ i ]/1.75;
+      int temp;
+      fin >> temp;
+      m_width[i] = temp/w;
+      //cout << m_width[i] << endl;
 
       glNewList( m_list+i, GL_COMPILE );
         
-        float x = 1-((float)(i%16)/16.0f)-off;
-        float y = 1-((float)((int)i/16)/16.0f)+off;
+      float x = 1-((float)(i%16)/16.0f)-off;
+      float y = 1-((float)((int)i/16)/16.0f)+off;
 
-        glBegin( GL_QUADS );
-          glTexCoord2f( x+off, y+off );
-          glVertex3f( 0, 0, 0 );
-          glTexCoord2f( x, y+off );
-          glVertex3f( defaultSize, 0, 0 );
-          glTexCoord2f( x, y );
-          glVertex3f( defaultSize, defaultSize, 0 );
-          glTexCoord2f( x+off, y );
-          glVertex3f( 0, defaultSize, 0 );
-        glEnd();
+      glBegin( GL_QUADS );
+        glTexCoord2f( x+off, y+off );
+        glVertex3f( 0, 0, 0 );
+        glTexCoord2f( x, y+off );
+        glVertex3f( defaultSize, 0, 0 );
+        glTexCoord2f( x, y );
+        glVertex3f( defaultSize, defaultSize, 0 );
+        glTexCoord2f( x+off, y );
+        glVertex3f( 0, defaultSize, 0 );
+      glEnd();
 
-        float t = (float)getCharWidth( i )/32*defaultSize*widthMultiplier;
-        glTranslatef( t, 0, 0 );     
+      float t = getCharWidth( i )*defaultSize;
+      glTranslatef( t, 0, 0 ); 
 
       glEndList();
       
@@ -53,6 +55,7 @@ namespace visualizer
     }
     
     m_resource = resource;
+    ResourceMan->release( m_resource, "text" );
 
   } // Text::Text()
 
@@ -71,7 +74,7 @@ namespace visualizer
 
     glBindTexture( GL_TEXTURE_2D, r->getTexture() );
 
-    glListBase( m_list );
+    glListBase( m_list+32 );
     glCallLists( line.size(), GL_UNSIGNED_BYTE, line.c_str() ); 
 
     ResourceMan->release( m_resource, "text" );
@@ -88,8 +91,6 @@ namespace visualizer
     glPushMatrix();
     float width = getLineWidth( line )/2;
 
-    width *= defaultSize/32*widthMultiplier;
-
     glTranslatef( -width, 0, 0 );
     drawLeft( line );
     glPopMatrix();
@@ -100,16 +101,15 @@ namespace visualizer
   {
     glPushMatrix();
     float width = getLineWidth( line );
-    width *= defaultSize/32*widthMultiplier;
     glTranslatef( -width, 0, 0 );
     drawLeft( line );
     glPopMatrix();
 
   } // Text::drawRight()
 
-  size_t Text::getLineWidth( const std::string& line ) const
+  float Text::getLineWidth( const std::string& line ) const
   {
-    size_t width = 0;
+    float width = 0;
     for( size_t i = 0; i < line.size(); i++ )
     {
       width += getCharWidth( line[ i ] );
@@ -119,7 +119,7 @@ namespace visualizer
 
   } // Text::getLineWidth()
 
-  size_t Text::getCharWidth( const size_t& c ) const
+  float Text::getCharWidth( const size_t& c ) const
   {
     return m_width[ c-32 ];
   }
