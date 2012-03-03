@@ -11,7 +11,7 @@ def buildFont(path, size, fontsize, offset, buffer, lines, widths):
 
   base = basename(path)[0:-4]
 
-  font = ImageFont.truetype('lindenhill.ttf', fontsize)
+  font = ImageFont.truetype(path, fontsize)
   f = open('{0}.dat'.format(base), 'w')
 
   for y in range(16):
