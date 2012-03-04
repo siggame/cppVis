@@ -3,6 +3,7 @@
 
 #include "exception.h"
 #include "smartpointer.h"
+#include "glew/glew.h"
 #include <QtOpenGL>
 #include <QMessageBox>
 #include <sstream>

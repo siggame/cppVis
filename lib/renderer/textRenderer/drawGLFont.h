@@ -1,6 +1,7 @@
 #ifndef DRAWGLFONT_H
 #define DRAWGLFONT_H
 
+#include "glew/glew.h"
 #include <QtOpenGL>
 #include <fstream>
 #include <string>

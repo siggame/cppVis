@@ -13,6 +13,11 @@ namespace visualizer
   {
     Renderer->setup();
     glInit();
+    GLenum err = glewInit();
+    if( GLEW_OK != err )
+    {
+      WARNING( "FAILED TO INIT GLEW" );
+    }
 
     MESSAGE( "" );
     MESSAGE( "============System OpenGL Information=======" );

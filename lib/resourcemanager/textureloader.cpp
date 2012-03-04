@@ -2,6 +2,7 @@
 #include "textureloader.h"
 #include <cmath>
 
+#include "glew/glew.h"
 #include <QtOpenGL>
 #include <GL/glu.h>
 

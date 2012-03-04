@@ -3,8 +3,6 @@
 #include "renderer/text.h"
 #include "resource.h"
 
-#include <GL/glext.h>
-#include <QtOpenGL>
 #include <sstream>
 #include <fstream>
 #include <string>

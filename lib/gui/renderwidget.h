@@ -6,6 +6,7 @@
 #ifndef RENDERWIDGET_H
 #define RENDERWIDGET_H
 
+#include "glew/glew.h"
 #include <QtOpenGL>
 #include "../selectionrender/selectionrender.h"
 

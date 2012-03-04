@@ -2,6 +2,7 @@
 #define RESOURCE_H
 #include <string>
 #include <QImage>
+#include "glew/glew.h"
 #include <QtOpenGL>
 #include "common.h"
 #include "interfaces/iresourceman.h"

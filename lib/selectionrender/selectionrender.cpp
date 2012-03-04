@@ -1,4 +1,5 @@
 #include "selectionrender.h"
+#include "glew/glew.h"
 #include <QtOpenGL>
 using namespace std;
 

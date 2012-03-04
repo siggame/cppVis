@@ -5,6 +5,7 @@
 #include <list>
 #include <set>
 #include <QTableWidget>
+#include "glew/glew.h"
 #include <QtOpenGL>
 #include <QGLShader>
 #include <string>
