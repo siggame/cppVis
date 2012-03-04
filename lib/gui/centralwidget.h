@@ -7,6 +7,7 @@
 #define CENTRALWIDGET_H
 
 #include <QWidget>
+#include <QVBoxLayout>
 #include "renderwidget.h"
 #include "controlbar.h"
 #include "../../interfaces/icentralwidget.h"

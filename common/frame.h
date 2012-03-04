@@ -5,6 +5,7 @@
 #include "animatable.h"
 #include <list>
 #include <string>
+#include <map>
 
 namespace visualizer
 {

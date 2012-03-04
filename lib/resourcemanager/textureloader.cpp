@@ -5,6 +5,8 @@
 #include "glew/glew.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <QPainter>
+#include <QGLWidget>
 
 namespace visualizer
 {

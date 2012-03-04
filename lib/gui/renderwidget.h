@@ -8,6 +8,7 @@
 
 #include "glew/glew.h"
 #include <GL/gl.h>
+#include <QGLWidget>
 #include "../selectionrender/selectionrender.h"
 
 //////////////////////////////////////////////////////////////////////////////
