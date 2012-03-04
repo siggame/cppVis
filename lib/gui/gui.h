@@ -240,8 +240,14 @@ namespace visualizer
       /// Layout For the Dock Widget
       QVBoxLayout *m_dockLayout;
 
+      /// Tabs
+      QTabWidget *m_debugTabs;
+
       /// Console Area
       QTextEdit *m_consoleArea;
+      
+      /// Debug Table
+      QTableView *m_debugTable;
 
       /// Unit Stats Area
       QTabWidget * m_unitStatsArea;

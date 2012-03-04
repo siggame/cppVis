@@ -584,22 +584,33 @@ namespace visualizer
     m_dockLayoutFrame = new QFrame( m_dockWidget );
     // Give this frame a layout
     m_dockLayout = new QVBoxLayout( m_dockLayoutFrame );
-    // Console area to the left
-    m_consoleArea = new QTextEdit( m_dockLayoutFrame );
-    m_consoleArea -> setReadOnly(1);
 
     // Add Buffer so we don't feel claustrophobic
     m_dockLayout->setContentsMargins( 2, 0, 2, 0 );
 
+    // Console area to the left
+    m_consoleArea = new QTextEdit( m_dockLayoutFrame );
+    m_consoleArea->setReadOnly(1);
+
+    m_debugTable = new QTableView();
+
+    m_debugTabs = new QTabWidget();
+    m_debugTabs->insertTab( 0, m_consoleArea, "Console" );
+    m_debugTabs->insertTab( 1, m_debugTable, "Debug Table" );
+
+    m_dockLayout->addWidget( m_debugTabs );
+
+
     // Add the console to the layout
-    m_dockLayout->addWidget( m_consoleArea );
+    //m_dockLayout->addWidget( m_consoleArea, 1 );
+    
+    //m_dockLayout->addWidget( new QLabel( "HELLOW" ) );
 
     // Add the frame to the actual dock
     m_dockWidget->setWidget( m_dockLayoutFrame );
 
     // Add the dock to the main window
     addDockWidget( Qt::RightDockWidgetArea, m_dockWidget );
-    
 
     if( OptionsMan->getNumber( "showDebugWindowOnStart" ) )
     {

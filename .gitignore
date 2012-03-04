@@ -1,4 +1,12 @@
 *.o
+*.gch
 moc_*.cpp
 Makefile
 visualizer
+chess.log
+visualizer.log
+dirinfo.txt
+plugins
+tools/fontbuilder/*.ttf
+tools/fontbuilder/*.png
+tools/fontbuilder/*.dat
