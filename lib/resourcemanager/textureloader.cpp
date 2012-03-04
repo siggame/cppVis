@@ -3,7 +3,7 @@
 #include <cmath>
 
 #include "glew/glew.h"
-#include <QtOpenGL>
+#include <GL/gl.h>
 #include <GL/glu.h>
 
 namespace visualizer

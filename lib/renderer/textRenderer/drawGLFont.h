@@ -2,7 +2,7 @@
 #define DRAWGLFONT_H
 
 #include "glew/glew.h"
-#include <QtOpenGL>
+#include <GL/gl.h>
 #include <fstream>
 #include <string>
 #include <vector>

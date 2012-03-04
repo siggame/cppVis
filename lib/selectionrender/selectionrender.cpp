@@ -1,6 +1,6 @@
 #include "selectionrender.h"
 #include "glew/glew.h"
-#include <QtOpenGL>
+#include <GL/gl.h>
 using namespace std;
 
 namespace visualizer

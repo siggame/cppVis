@@ -2,7 +2,7 @@
 #include "resourcemanager/resourceman.h"
 #include <iostream>
 #include <fstream>
-#include <QtOpenGL>
+#include <GL/gl.h>
 
 using namespace std;
 

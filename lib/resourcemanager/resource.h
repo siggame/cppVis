@@ -3,7 +3,7 @@
 #include <string>
 #include <QImage>
 #include "glew/glew.h"
-#include <QtOpenGL>
+#include <GL/gl.h>
 #include "common.h"
 #include "interfaces/iresourceman.h"
 #include "renderer/text.h"

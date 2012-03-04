@@ -6,7 +6,7 @@
 #include <set>
 #include <QTableWidget>
 #include "glew/glew.h"
-#include <QtOpenGL>
+#include <GL/gl.h>
 #include <QGLShader>
 #include <string>
 #include "textRenderer/drawGLFont.h"
