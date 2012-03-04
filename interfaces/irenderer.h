@@ -168,6 +168,11 @@ namespace visualizer
         const float& eY
         ) = 0;
 
+      virtual int createShaderProgram() const = 0;
+      virtual void attachShader( const int& program, const string& name ) const = 0;
+      virtual void buildShaderProgram( const int& id ) const = 0;
+      virtual void useShader( const int& id ) const = 0;
+
       virtual void setGridDimensions
         (
         const float& sX,

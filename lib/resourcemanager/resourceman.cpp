@@ -182,6 +182,8 @@ namespace visualizer
       glGetShaderInfoLog( id, logLength, 0, log );
       MESSAGE( "'%s' info log: \n %s", name.c_str(), log );
       delete [] log;
+      ResShader *res = new ResShader(id);
+      reg( name, res );
 
     } else
     {

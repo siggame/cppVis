@@ -619,6 +619,45 @@ namespace visualizer
 
   } // _Renderer::setCamera()
 
+  int _Renderer::createShaderProgram() const
+  {
+    return glCreateProgram();
+  }
+
+  void _Renderer::attachShader( const int& program, const string& name ) const
+  {
+    ResShader *r = (ResShader*)ResourceMan->reference( name, "renderer" );
+    glAttachShader( program, r->getShader() );
+    ResourceMan->release( name, "renderer" );
+  }
+
+  void _Renderer::buildShaderProgram( const int& id ) const
+  {
+    glLinkProgram( id );
+    int status;
+    glGetProgramiv( id, GL_LINK_STATUS, &status );
+
+    if( !status )
+    {
+      WARNING( "Program did not link correctly." );
+
+      int logLength;
+      glGetProgramiv( id, GL_INFO_LOG_LENGTH, &logLength );
+
+      char *log = new char[logLength+1]; 
+      glGetShaderInfoLog( id, logLength, 0, log );
+      MESSAGE( "Linker Log: \n %s", log );
+      delete [] log;
+
+    }
+
+  }
+
+  void _Renderer::useShader( const int& id ) const
+  {
+    glUseProgram( id );
+  }
+
   void _Renderer::beginList( const std::string& name ) const
   {
     ResourceMan->newDisplayList( name );

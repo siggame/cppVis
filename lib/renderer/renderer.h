@@ -200,6 +200,11 @@ namespace visualizer
        const float& eY
       );
 
+    int createShaderProgram() const;
+    void attachShader( const int& program, const string& name ) const;
+    void buildShaderProgram( const int& id ) const;
+    void useShader( const int& id ) const;
+
     void beginList( const std::string& name ) const;
 
     void endList( const std::string& name ) const;
