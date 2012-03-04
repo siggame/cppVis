@@ -9,6 +9,9 @@ namespace visualizer
     RT_NONE, 
     RT_TEXTURE, 
     RT_ANIMATION, 
+    RS_VERTSHADER,
+    RS_FRAGSHADER,
+    RS_GEOSHADER,
     RS_FONT,
     RT_DISPLAY_LIST
   };

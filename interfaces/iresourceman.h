@@ -132,6 +132,15 @@ namespace visualizer
          const std::string& fontTexture, 
          const std::string& name
         ) = 0;
+      
+      virtual void loadShader
+        (
+         const size_t& type, 
+         const std::string& path, 
+         const std::string& name
+        ) = 0;
+
+
 
   };
 

@@ -3,8 +3,12 @@
 #include "renderer/text.h"
 #include "resource.h"
 
+#include <QtOpenGL>
 #include <sstream>
 #include <fstream>
+#include <string>
+
+using namespace std;
 
 namespace visualizer
 {
@@ -143,6 +147,49 @@ namespace visualizer
     return false;
 
   } // _ResourceMan::release()
+
+  void _ResourceMan::loadShader
+    (
+     const size_t& type, 
+     const std::string& path, 
+     const std::string& name
+    )
+  {
+
+    ifstream shader( path.c_str() );
+    
+    if( shader.is_open() )
+    {
+      std::string shaderSource((std::istreambuf_iterator<char>(shader)), std::istreambuf_iterator<char>());
+      
+      unsigned int id = glCreateShader(type);
+
+      const char *source = shaderSource.c_str();
+      glShaderSource( id, 1, &source, 0 );
+      glCompileShader( id );
+
+      int status;
+      glGetShaderiv( id, GL_COMPILE_STATUS, &status );
+
+      if( !status )
+      {
+        WARNING( "Shader '%s' did not compile correctly", name.c_str() );
+      }
+
+      int logLength;
+      glGetShaderiv( id, GL_INFO_LOG_LENGTH, &logLength );
+
+      char *log = new char[logLength+1]; 
+      glGetShaderInfoLog( id, logLength, 0, log );
+      MESSAGE( "'%s' info log: \n %s", name.c_str(), log );
+      delete [] log;
+
+    } else
+    {
+      WARNING( "Shader could not be found: %s", path.c_str() );
+    }
+
+  }
 
   void _ResourceMan::loadFont
     ( 

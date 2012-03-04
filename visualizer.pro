@@ -55,4 +55,5 @@ CONFIG += debug
 macx:CONFIG -= app_bundle
 QT += opengl network xml
 OTHER_FILES += 
+DEFINES += GL_GLEXT_PROTOTYPES
 #debug:DEFINES += __DEBUG__ GLIBCXX_FORCE_NEW

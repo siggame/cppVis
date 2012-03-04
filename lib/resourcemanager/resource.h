@@ -65,6 +65,19 @@ namespace visualizer
       unsigned int listNum;
   };
 
+  class ResShader: public Resource
+  {
+    public:
+      ResShader( const unsigned int& id )
+        : Resource( RS_VERTSHADER ), m_shaderId(id) { }
+
+      const unsigned int& getShader() const { return m_shaderId; }
+
+    private:
+      unsigned int m_shaderId;
+
+  };
+
   class ResFont : public Resource 
   {
     public: 
@@ -119,6 +132,7 @@ namespace visualizer
         return texId;
       }
   };
+
 
   class ResAnimation : public ResTexture 
   {

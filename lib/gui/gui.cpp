@@ -521,6 +521,7 @@ namespace visualizer
     connect( showDebugWindowAct, SIGNAL(triggered()), this, SLOT(showDebugWindow()) );
 
     m_editOptions = new QAction( tr( "&Options" ), this );
+    m_editOptions->setShortcut( tr("F10") );
     m_editOptions->setStatusTip( tr( "Edit Program Options" ) );
     connect( m_editOptions, SIGNAL( triggered() ), this, SLOT( optionsDialog() ) );
 

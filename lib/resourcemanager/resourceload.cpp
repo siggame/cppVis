@@ -6,6 +6,7 @@
 
 #include "resourceman.h"
 #include "typedefs.h"
+#include "renderer/renderer.h"
 #include <QDir>
 #include <QFileInfo>
 #include <QString>
@@ -26,6 +27,12 @@ namespace visualizer
 
     if( "font" == typeBuff )
       return RS_FONT;
+
+    if( "vshader" == typeBuff )
+      return RS_VERTSHADER;
+
+    if( "fshader" == typeBuff )
+      return RS_FRAGSHADER;
 
     return RT_NONE;
   }
@@ -105,6 +112,17 @@ namespace visualizer
                   fontPath += "/";
                   fontPath += fontWidthFile;
                   loadFont( fontPath, pathBuff, namebuff );
+                } break;
+                case RS_VERTSHADER:
+                case RS_FRAGSHADER:
+                {
+                  if( Renderer->shaderSupport() )
+                  {
+                    if( rt == RS_VERTSHADER )
+                      loadShader( GL_VERTEX_SHADER, pathBuff, namebuff );
+                    else if( rt == RS_FRAGSHADER )
+                      loadShader( GL_FRAGMENT_SHADER, pathBuff, namebuff );
+                  }
                 } break;
                 default:
                   THROW
