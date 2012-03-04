@@ -28,12 +28,11 @@ namespace visualizer
       int temp;
       fin >> temp;
       m_width[i] = temp/w;
-      //cout << m_width[i] << endl;
 
       glNewList( m_list+i, GL_COMPILE );
         
       float x = 1-((float)(i%16)/16.0f)-off;
-      float y = 1-((float)((int)i/16)/16.0f)+off;
+      float y = 1-((float)((int)i/16)/16.0f)-off;
 
       glBegin( GL_QUADS );
         glTexCoord2f( x+off, y+off );
@@ -46,12 +45,10 @@ namespace visualizer
         glVertex3f( 0, defaultSize, 0 );
       glEnd();
 
-      float t = getCharWidth( i )*defaultSize;
-      glTranslatef( t, 0, 0 ); 
+      glTranslatef( getCharWidth( i ), 0, 0 ); 
 
       glEndList();
       
-      fin.read( (char*)&temp, sizeof( char ) );
     }
     
     m_resource = resource;
@@ -74,7 +71,7 @@ namespace visualizer
 
     glBindTexture( GL_TEXTURE_2D, r->getTexture() );
 
-    glListBase( m_list+32 );
+    glListBase( m_list );
     glCallLists( line.size(), GL_UNSIGNED_BYTE, line.c_str() ); 
 
     ResourceMan->release( m_resource, "text" );
@@ -121,7 +118,7 @@ namespace visualizer
 
   float Text::getCharWidth( const size_t& c ) const
   {
-    return m_width[ c-32 ];
+    return m_width[ c ];
   }
 
   const Text& Text::operator << ( const std::string& line ) const

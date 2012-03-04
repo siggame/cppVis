@@ -598,6 +598,8 @@ namespace visualizer
     m_dockWidget->setWidget( m_dockLayoutFrame );
     // Add the dock to the main window
     addDockWidget( Qt::RightDockWidgetArea, m_dockWidget );
+    
+    m_dockWidget->show();
 
   }
 
