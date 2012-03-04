@@ -14,7 +14,7 @@ PPATHS += ./lib/gameobject/ \
     ./lib/gui/ \
     ./lib/beanstalker/ \
     ./common/ \
-    ./lib/glew/
+    ./common/glew/
 SOURCES += main.cpp \
     ./lib/gameobject/*.cpp \
     ./lib/optionsmanager/*.cpp \
@@ -28,7 +28,7 @@ SOURCES += main.cpp \
     ./lib/renderer/*.cpp \
     ./common/*.cpp \
     ./lib/animationengine/*.cpp \
-    ./lib/glew/*.c
+    ./common/glew/*.c
 MOC = moc
 HEADERS += ./lib/manager/*.h \
     ./lib/timemanager/*.h \
@@ -43,7 +43,7 @@ HEADERS += ./lib/manager/*.h \
     ./lib/decompress/*.h \
     ./common/*.h \
     ./interfaces/*.h \
-    ./lib/glew/*.h
+    ./common/glew/*.h
 win32: {
 #QMAKE_CFLAGS_DEBUG += -pg
 #QMAKE_CXXFLAGS_DEBUG += -pg
