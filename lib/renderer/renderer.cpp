@@ -462,7 +462,43 @@ namespace visualizer
     glDisable( GL_BLEND );
   }
   
-  void _Renderer::drawCircle
+  void _Renderer::drawArc
+    (
+     const float& centerX,
+     const float& centerY,
+     const float& radius,
+     const int&   segments,
+     const float& startAngle, 
+     const float& endAngle,
+     const float& lineWidth,
+     const Color& fillColor
+    ) const
+  {
+    glEnable( GL_BLEND );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+    glLineWidth( lineWidth );
+    const float convert = 3.14159265358f / 180.0f;
+    const float interval = (endAngle-startAngle)/segments;
+
+    glBegin( GL_LINE_STRIP);
+    for( size_t i = 0; i < segments+1; i++ )
+    {
+      float angle = startAngle + interval*i;
+      angle *= convert;
+      float x = cos(angle)*radius + centerX;
+      float y = sin(angle)*radius + centerY;
+      glVertex2f( x, y );
+    }
+    glEnd();
+
+
+    glDisable( GL_BLEND );
+  }
+
+
+#if 0
+  void _Renderer::drawArc
     (
     const float& centerX,
     const float& centerY,
@@ -491,6 +527,7 @@ namespace visualizer
     //glDisable( GL_LINE_STRIP );
     glDisable( GL_LINE_LOOP );
   }
+#endif
 
   void _Renderer::drawProgressBar
     (

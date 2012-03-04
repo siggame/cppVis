@@ -126,12 +126,16 @@ namespace visualizer
         const float& width = 1.0f
         ) const = 0;
         
-      virtual void drawCircle
+      virtual void drawArc
         (
-        const float& centerX,
-        const float& centerY,
-        const float& raidus,
-        const float& width = 1.0f
+         const float& centerX,
+         const float& centerY,
+         const float& radius,
+         const int&   segments = 10,
+         const float& startAngle = 0, 
+         const float& endAngle = 360,
+         const float& lineWidth = 1.0f,
+         const Color& fillColor = Color( 0, 0, 0, 1 )
         ) const = 0;
 
       virtual void translate
