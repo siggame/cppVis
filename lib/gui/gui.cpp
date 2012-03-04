@@ -214,8 +214,6 @@ namespace visualizer
         h = temp;
       }
 
-      m_dockWidget->setMinimumWidth(w - h);
-      m_dockWidget->hide();
     }
     QMainWindow::resizeEvent( evt );
   }
@@ -517,6 +515,11 @@ namespace visualizer
     toggleFullScreenAct->setStatusTip( tr("Toggle Fullscreen Mode") );
     connect( toggleFullScreenAct, SIGNAL(triggered()), this, SLOT(toggleFullScreen()) );
 
+    showDebugWindowAct = new QAction( tr("&Show Debug Window"), this );
+    showDebugWindowAct->setShortcut( tr("Ctrl+d") );
+    showDebugWindowAct->setStatusTip( tr( "Show the debug window." ) );
+    connect( showDebugWindowAct, SIGNAL(triggered()), this, SLOT(showDebugWindow()) );
+
     m_editOptions = new QAction( tr( "&Options" ), this );
     m_editOptions->setStatusTip( tr( "Edit Program Options" ) );
     connect( m_editOptions, SIGNAL( triggered() ), this, SLOT( optionsDialog() ) );
@@ -564,6 +567,7 @@ namespace visualizer
 
     menu = menuBar()->addMenu( tr( "&View" ) );
     menu->addAction(toggleFullScreenAct);
+    menu->addAction(showDebugWindowAct);
 
     menu = menuBar()->addMenu( tr( "&Help" ) );
     menu->addAction( m_helpContents );
@@ -584,10 +588,6 @@ namespace visualizer
     m_consoleArea = new QTextEdit( m_dockLayoutFrame );
     m_consoleArea -> setReadOnly(1);
 
-    // Allow users to stupidly move this as small as they like
-    m_dockWidget->setMinimumHeight( 0 );
-    m_dockWidget->setMinimumWidth( 0 );
-
     // Add Buffer so we don't feel claustrophobic
     m_dockLayout->setContentsMargins( 2, 0, 2, 0 );
 
@@ -599,7 +599,15 @@ namespace visualizer
     // Add the dock to the main window
     addDockWidget( Qt::RightDockWidgetArea, m_dockWidget );
     
-    m_dockWidget->show();
+
+    if( OptionsMan->getNumber( "showDebugWindowOnStart" ) )
+    {
+      m_dockWidget->show();
+    }
+    else
+    {
+      m_dockWidget->hide();
+    }
 
   }
 
@@ -611,6 +619,11 @@ namespace visualizer
   void _GUI::toggleFullScreen()
   {
     setFullScreen(!fullScreen);
+  }
+
+  void _GUI::showDebugWindow()
+  {
+    m_dockWidget->show();
   }
 
   void _GUI::togglePlayPause()

@@ -180,6 +180,7 @@ namespace visualizer
       void helpContents();
       void helpAbout();
       void toggleFullScreen();
+      void showDebugWindow();
       void togglePlayPause();
       void fastForwardShortcut();
       void rewindShortcut();
@@ -279,6 +280,7 @@ namespace visualizer
       QAction *m_editOptions;      /// Edit->Options
 
       QAction *toggleFullScreenAct;/// View -> Toggle Full Screen
+      QAction *showDebugWindowAct; /// View -> Show Debug Window
 
       QString m_previousDirectory;
       QRect m_normalWindowGeometry;

@@ -49,6 +49,13 @@
     <maxvalue>2048</maxvalue>
   </option>
   <option>
+    <key>showDebugWindowOnStart</key>
+    <type>Integer</type>
+    <value>0</value>
+    <minvalue>0</minvalue>
+    <maxvalue>1</maxvalue>
+  </option>
+  <option>
     <key>speed</key>
     <type>Float</type>
     <value>5</value>
