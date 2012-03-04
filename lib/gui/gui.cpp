@@ -596,6 +596,7 @@ namespace visualizer
 
     // Add the frame to the actual dock
     m_dockWidget->setWidget( m_dockLayoutFrame );
+
     // Add the dock to the main window
     addDockWidget( Qt::RightDockWidgetArea, m_dockWidget );
     
