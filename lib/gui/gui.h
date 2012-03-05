@@ -247,7 +247,7 @@ namespace visualizer
       QTextEdit *m_consoleArea;
       
       /// Debug Table
-      QTableView *m_debugTable;
+      QTableWidget *m_debugTable;
 
       /// Unit Stats Area
       QTabWidget * m_unitStatsArea;

@@ -593,11 +593,19 @@ namespace visualizer
     m_consoleArea = new QTextEdit( m_dockLayoutFrame );
     m_consoleArea->setReadOnly(1);
 
-    m_debugTable = new QTableView();
 
-    m_debugTabs = new QTabWidget();
+    m_debugTabs = new QTabWidget(m_dockWidget);
+    m_debugTable = new QTableWidget(m_dockWidget);
     m_debugTabs->insertTab( 0, m_consoleArea, "Console" );
     m_debugTabs->insertTab( 1, m_debugTable, "Debug Table" );
+
+    QStringList labels;
+    labels << "ID" << "x" << "y";
+    m_debugTable->setVerticalHeaderLabels(labels);
+    m_debugTable->setCellWidget( 0, 0, new QLabel( "lskdfj" ) );
+    m_debugTable->setShowGrid(true);
+
+    m_debugTable->show();
 
     m_dockLayout->addWidget( m_debugTabs );
 
