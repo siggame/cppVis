@@ -78,6 +78,7 @@ namespace visualizer
 #define THROW( x, y, ... ) \
   { \
     char message[2048]; \
+    stringstream ss; \
     sprintf( message, y, ##__VA_ARGS__ ); \
     ss << "CRITICAL: " << message << endl; \
     cerr << ss.str(); \
