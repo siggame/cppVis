@@ -79,6 +79,9 @@ namespace visualizer
   { \
     char message[2048]; \
     sprintf( message, y, ##__VA_ARGS__ ); \
+    ss << "CRITICAL: " << message << endl; \
+    cerr << ss.str(); \
+    errorLog->write( ss.str() ); \
     QMessageBox::critical( 0, "Critical!", message );\
     throw x( message, __FILE__, __LINE__ ); \
   } 
