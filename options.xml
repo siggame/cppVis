@@ -31,13 +31,13 @@
   <option>
     <key>mapSize</key>
     <type>Integer</type>
-    <value>320</value>
+    <value>1</value>
     <minvalue>1</minvalue>
   </option>
   <option>
     <key>renderHeight</key>
     <type>Integer</type>
-    <value>443</value>
+    <value>473</value>
     <minvalue>1</minvalue>
     <maxvalue>2048</maxvalue>
   </option>
