@@ -746,8 +746,6 @@ namespace visualizer
   {
     TimeManager->pause();
     TimeManager->setTurnPercent( float(value)/1000 );
-
-
   } // _GUI::sliderChanged()
 
   void _GUI::setFullScreen(bool value)

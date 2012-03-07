@@ -106,7 +106,11 @@ namespace visualizer
     }
 
     if( m_currentGame )
+    {
       m_currentGame->postDraw();
+      m_currentGame->getSelectedUnits();
+
+    }
 
     GUI->clearInput();
 

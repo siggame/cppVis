@@ -71,18 +71,6 @@ namespace visualizer
 
     x /= factor*fx;
     y /= factor*fy;
-
-    //x *= fx*factor*Renderer->m_unitSzX;
-    //y *= fx*factor*Renderer->m_unitSzY;
-
-#if 0
-    x /= min;
-    y /= min;
-
-    x *= Renderer->m_unitSzX;
-    y *= Renderer->m_unitSzY;
-#endif
-
   }
 
   void RenderWidget::mousePressEvent( QMouseEvent *e )
@@ -96,21 +84,8 @@ namespace visualizer
 
       adjustInput( GUI->m_input.x, GUI->m_input.y );
 
-      //+1 guarantees we create a box, rather than a point.
-
-      //line.clear();
-      //line.append("Left click: ( ");
-      //line.append(QString::number(initialX));
-      //line.append(", ");
-      //line.append(QString::number(initialY));
-      //line.append(")");
-
       leftButtonDown = true;
 
-      /* Thus, dragX and dragY become our starting point,
-       * and curX and curY will be contiuously updated, eventually becoming
-       * our ending point if dragging.
-       */
     }
 
   }
@@ -118,6 +93,7 @@ namespace visualizer
   void RenderWidget::mouseReleaseEvent( QMouseEvent *e )
   {
 
+    //+1 guarantees we create a box, rather than a point.
     GUI->m_input.sx = e->x()+1;
     GUI->m_input.sy = e->y()+1;
 
@@ -132,8 +108,6 @@ namespace visualizer
     {
       GUI->m_input.rightRelease = true;
     }
-
-    //+1 guarantees we create a box, rather than a point.
 
     SelectionRender->setUpdated(true);
     SelectionRender->setDragging(false);
@@ -156,16 +130,6 @@ namespace visualizer
 
     adjustInput( GUI->m_input.sx, GUI->m_input.sy );
 
-#if 0
-    // If Manhattan distance is m_DRAG_DISTANCE or greater, we're draggin
-    if( e->buttons() & Qt::LeftButton &&
-        abs(currentX-initialX)+abs(currentY-initialY) > m_DRAG_DISTANCE )
-    {
-      leftButtonDrag = true;
-      SelectionRender->setDragging(true);
-      SelectionRender->setSelectionBox(initialX, initialY, currentX, currentY);
-    }
-#endif
   }
 
 } // visualizer
