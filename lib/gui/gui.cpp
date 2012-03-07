@@ -589,15 +589,22 @@ namespace visualizer
     // Add Buffer so we don't feel claustrophobic
     m_dockLayout->setContentsMargins( 2, 0, 2, 0 );
 
+    m_debugTabs = new QTabWidget(m_dockLayoutFrame);
+
     // Console area to the left
     m_consoleArea = new QTextEdit( m_dockLayoutFrame );
     m_consoleArea->setReadOnly(1);
 
 
-    m_debugTabs = new QTabWidget(m_dockWidget);
-    m_debugTable = new QTableWidget(m_dockWidget);
+    m_debugTable = new QTableWidget(m_dockLayoutFrame);
     m_debugTabs->insertTab( 0, m_consoleArea, "Console" );
     m_debugTabs->insertTab( 1, m_debugTable, "Debug Table" );
+
+    m_debugTable->setRowCount( 10 );
+    m_debugTable->setColumnCount( 10 );
+
+    
+    m_consoleArea->setText( "Text value" );
 
     QStringList labels;
     labels << "ID" << "x" << "y";
@@ -607,7 +614,16 @@ namespace visualizer
 
     m_debugTable->show();
 
+    m_frameSlider = new QSlider( Qt::Horizontal );
+    m_frameSlider->setMinimum(1);
+    m_frameSlider->setMaximum(999);
+    m_frameSlider->setTracking(true);
+    connect( m_frameSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderChanged(int)) );
+
+    //connect( m_slider, SIGNAL(slider
+
     m_dockLayout->addWidget( m_debugTabs );
+    m_dockLayout->addWidget( m_frameSlider );
 
 
     // Add the console to the layout
@@ -726,6 +742,13 @@ namespace visualizer
     return fullScreen;
   }
 
+  void _GUI::sliderChanged(int value)
+  {
+    TimeManager->pause();
+    TimeManager->setTurnPercent( float(value)/1000 );
+
+
+  } // _GUI::sliderChanged()
 
   void _GUI::setFullScreen(bool value)
   {
@@ -743,20 +766,6 @@ namespace visualizer
     show();
 
   }
-
-
-#if 0
-  void _GUI::turnPercentageShortcut( int i ){turnPercentageCalc(0);};
-  void _GUI::turnPercentageShortcut2(){turnPercentageCalc(1);};
-  void _GUI::turnPercentageShortcut3(){turnPercentageCalc(2);};
-  void _GUI::turnPercentageShortcut4(){turnPercentageCalc(3);};
-  void _GUI::turnPercentageShortcut5(){turnPercentageCalc(4);};
-  void _GUI::turnPercentageShortcut6(){turnPercentageCalc(5);};
-  void _GUI::turnPercentageShortcut7(){turnPercentageCalc(6);};
-  void _GUI::turnPercentageShortcut8(){turnPercentageCalc(7);};
-  void _GUI::turnPercentageShortcut9(){turnPercentageCalc(8);};
-  void _GUI::turnPercentageShortcut0(){turnPercentageCalc(9);};
-#endif
 
   QTableWidget * _GUI::getIndividualStats()
   {

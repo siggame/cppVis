@@ -198,6 +198,8 @@ namespace visualizer
       void newConnect();
       void newReadyConnect();
 
+      void sliderChanged(int value);
+
     public:
 
       /// @TODO This will probably have to change.
@@ -248,6 +250,9 @@ namespace visualizer
       
       /// Debug Table
       QTableWidget *m_debugTable;
+
+      /// 0 - 1 Slider
+      QSlider *m_frameSlider;
 
       /// Unit Stats Area
       QTabWidget * m_unitStatsArea;
