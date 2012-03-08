@@ -178,6 +178,7 @@ namespace visualizer
 
       void closeEvent( QCloseEvent* event );
       void helpContents();
+      void helpLikeUs();
       void helpAbout();
       void toggleFullScreen();
       void showDebugWindow();
@@ -283,6 +284,7 @@ namespace visualizer
       // Actions
       QAction *m_helpContents;     /// Help->Contents
       QAction *m_helpAbout;        /// Help->About
+      QAction *m_helpLikeUs;       /// Help->Like Us
 
       QAction *m_fileOpen;         /// File->Open
       QAction *m_fileSpectate;     /// File->Spectate
