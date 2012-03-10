@@ -201,13 +201,8 @@ namespace visualizer
       void sliderChanged(int value);
 
     public:
-
-      /// @TODO This will probably have to change.
-      QTableWidget* getGlobalStats();
-      QTableWidget* getSelectionStats();
-      QTableWidget* getIndividualStats();
-
       void clearInput();
+      void splashScreen();
 
     private:
       QHttp* m_http;
@@ -217,10 +212,6 @@ namespace visualizer
       bool m_loadInProgress;
 
       QTcpSocket* m_sock;
-
-      QTableWidget * m_globalStats;
-      QTableWidget * m_selectionStats;
-      QTableWidget * m_individualStats;
 
       /// Setup?
       bool m_isSetup;
@@ -251,13 +242,14 @@ namespace visualizer
       /// Debug Table
       QTableWidget *m_debugTable;
 
+      /// Playlist
+      QListWidget *m_playList;
+
       /// 0 - 1 Slider
       QSlider *m_frameSlider;
 
       /// Unit Stats Area
       QTabWidget * m_unitStatsArea;
-      QStringList m_globalStatsVerticalLabels;
-      QStringList m_globalStatsHorizontalLabels;
       QStringList m_selectionStatsVerticalLabels;
       QStringList m_selectionStatsHorizontalLabels;
       QStringList m_individualStatsVerticalLabels;
@@ -269,6 +261,8 @@ namespace visualizer
       /// Control Bar
       ControlBar *m_controlBar;
 
+      QDialog *m_chooseDialog;
+
       bool doSetup();
       void buildControlBar();
       void buildUpdateBar();
@@ -276,7 +270,6 @@ namespace visualizer
       void createMenus();
       void buildToolSet();
       void initUnitStats();
-
 
       const Input& getInput() const;
 

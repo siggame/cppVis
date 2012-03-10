@@ -86,21 +86,7 @@ int main(int argc, char *argv[])
 	  GUI->loadGamelog( argv[1] );
 	} else
   {
-    QDialog *chooseOption = new QDialog();
-    chooseOption->setLayout( new QBoxLayout( QBoxLayout::LeftToRight ) );
-
-    QPushButton *load = new QPushButton( "Load Gamelog" );
-    QPushButton *spectate = new QPushButton( "Spectate/Play" );
-
-    chooseOption->layout()->addWidget( load );
-    chooseOption->layout()->addWidget( spectate );
-
-    GUI->connect( load, SIGNAL( clicked() ), GUI, SLOT( fileOpen() ) );
-    GUI->connect( load, SIGNAL( clicked() ), chooseOption, SLOT( close() ) );
-    GUI->connect( spectate, SIGNAL( clicked() ), GUI, SLOT( fileSpectate() ) );
-    GUI->connect( spectate, SIGNAL( clicked() ), chooseOption, SLOT( close() ) );
-
-    chooseOption->exec();
+    GUI->splashScreen();
   }
 
   TimeManager->timerStart();

@@ -49,10 +49,6 @@ namespace visualizer
 
       virtual void checkForUpdate( string message, string VERSION, string REMOTE ) = 0;
 
-      virtual QTableWidget* getGlobalStats() = 0;
-      virtual QTableWidget* getSelectionStats() = 0;
-      virtual QTableWidget* getIndividualStats() = 0;
-
       virtual const Input& getInput() const = 0;
   };
 

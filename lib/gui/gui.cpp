@@ -74,6 +74,8 @@ namespace visualizer
   {
     bool parserFound = false;
 
+    m_chooseDialog->hide();
+
     std::string fullLog;
     if( log[ 0 ] == 'B' && log[ 1 ] == 'Z' && ( log[ 2 ] == 'h' || log[ 2 ] == '0' ) )
     {
@@ -447,6 +449,8 @@ namespace visualizer
 
     m_previousDirectory = QDir::homePath();
 
+    m_chooseDialog = 0;
+
     return true;
   }
 
@@ -595,10 +599,13 @@ namespace visualizer
     m_consoleArea = new QTextEdit( m_dockLayoutFrame );
     m_consoleArea->setReadOnly(1);
 
+    m_playList = new QListWidget( m_dockLayoutFrame );
+
 
     m_debugTable = new QTableWidget(m_dockLayoutFrame);
     m_debugTabs->insertTab( 0, m_consoleArea, "Console" );
     m_debugTabs->insertTab( 1, m_debugTable, "Debug Table" );
+    m_debugTabs->insertTab( 2, m_playList, "Playlist" );
 
     m_debugTable->setRowCount( 10 );
     m_debugTable->setColumnCount( 10 );
@@ -765,21 +772,25 @@ namespace visualizer
 
   }
 
-  QTableWidget * _GUI::getIndividualStats()
+  void _GUI::splashScreen()
   {
-    return m_individualStats;
-  }
+    m_chooseDialog = new QDialog(this, Qt::Tool);
+    m_chooseDialog->setLayout( new QBoxLayout( QBoxLayout::LeftToRight ) );
 
+    QPushButton *load = new QPushButton( "Load Gamelog" );
+    QPushButton *spectate = new QPushButton( "Spectate/Play" );
 
-  QTableWidget * _GUI::getSelectionStats()
-  {
-    return m_selectionStats;
-  }
+    m_chooseDialog->layout()->addWidget( load );
+    m_chooseDialog->layout()->addWidget( spectate );
 
+    GUI->connect( load, SIGNAL( clicked() ), GUI, SLOT( fileOpen() ) );
+    GUI->connect( load, SIGNAL( clicked() ), m_chooseDialog, SLOT( close() ) );
+    GUI->connect( spectate, SIGNAL( clicked() ), GUI, SLOT( fileSpectate() ) );
+    GUI->connect( spectate, SIGNAL( clicked() ), m_chooseDialog, SLOT( close() ) );
 
-  QTableWidget * _GUI::getGlobalStats()
-  {
-    return m_globalStats;
+    m_chooseDialog->show();
+    m_chooseDialog->move( QApplication::desktop()->screenGeometry(0).center() - m_chooseDialog->rect().center() );
+
   }
 
   const Input& _GUI::getInput() const
