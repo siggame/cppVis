@@ -53,6 +53,7 @@ namespace visualizer
       virtual PluginInfo getPluginInfo() = 0;
       virtual void loadGamelog( std::string gamelog ) = 0;
       virtual void spectate( std::string ipAddress ) {}
+      virtual void destroy() = 0;
 
       virtual void preDraw() {}
       virtual void postDraw() {}

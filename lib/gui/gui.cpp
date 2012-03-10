@@ -74,7 +74,8 @@ namespace visualizer
   {
     bool parserFound = false;
 
-    m_chooseDialog->hide();
+    if( m_chooseDialog )
+      m_chooseDialog->hide();
 
     std::string fullLog;
     if( log[ 0 ] == 'B' && log[ 1 ] == 'Z' && ( log[ 2 ] == 'h' || log[ 2 ] == '0' ) )
@@ -129,7 +130,27 @@ namespace visualizer
     }
   }
 
-  void _GUI::loadGamelog( std::string gamelog )
+  void _GUI::addToPlaylist( const std::string& gamelog )
+  {
+    QFileInfo file( gamelog.c_str() );
+    
+    QListWidgetItem *item = new QListWidgetItem( file.fileName() );
+    item->setData( 1, QVariant( gamelog.c_str() ) );
+
+    if( m_playList->count() == 0 )
+      loadGamelog( gamelog );
+
+    m_playList->addItem( item );
+
+
+  }
+
+  void _GUI::playItem( QListWidgetItem* item )
+  {
+    loadGamelog( std::string( item->data(1).toByteArray().constData() ) );
+  }
+
+  void _GUI::loadGamelog( const std::string& gamelog )
   {
     ifstream file_gamelog( gamelog.c_str(), ifstream::in );
     if( file_gamelog.is_open() )
@@ -610,6 +631,12 @@ namespace visualizer
 
     m_playList = new QListWidget( m_dockLayoutFrame );
 
+    connect( 
+        m_playList, 
+        SIGNAL(itemDoubleClicked(QListWidgetItem *)), 
+        this, 
+        SLOT(playItem(QListWidgetItem*))
+        );
 
     m_debugTable = new QTableWidget(m_dockLayoutFrame);
     m_debugTabs->insertTab( 0, m_consoleArea, "Console" );

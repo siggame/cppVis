@@ -146,8 +146,10 @@ namespace visualizer
       void requestGamelog();
       bool loadInProgress() const;
 
+      void addToPlaylist( const std::string& gamelog );
+
       /// GAME SPECIFIC.  NEED TO BE MOVED ELSEWHERE
-      void loadGamelog( std::string gamelog );
+      void loadGamelog( const std::string& gamelog );
       void loadGamestring( char *log, const size_t& length, const string& gamelog );
 
       void update();
@@ -168,6 +170,7 @@ namespace visualizer
     public slots:
       void fileOpen();
       void fileSpectate();
+      void playItem( QListWidgetItem* item );
 
       void updateDone(QObject* obj);
 
