@@ -225,6 +225,11 @@ namespace visualizer
     QDesktopServices::openUrl( QUrl( OptionsMan->getString( "helpURL" ).c_str() ) );
   }
 
+  void _GUI::helpLikeUs()
+  {
+    QDesktopServices::openUrl( QUrl( "http://facebook.com/megaminerai/" ) );
+  }
+
   void _GUI::helpAbout()
   {
     QMessageBox::about( this, "About Visualizer", VERSION_STRING );
@@ -495,6 +500,9 @@ namespace visualizer
         );
     connect( m_helpContents, SIGNAL(triggered()), this, SLOT(helpContents()) );
 
+    m_helpLikeUs = new QAction( tr( "&Like Us On Facebook!" ), this );
+    connect( m_helpLikeUs, SIGNAL(triggered()), this, SLOT(helpLikeUs()) );
+
     m_helpAbout = new QAction( tr( "&About" ), this );
     m_helpAbout->setStatusTip(
         tr( "About The Visualizer" )
@@ -576,6 +584,7 @@ namespace visualizer
 
     menu = menuBar()->addMenu( tr( "&Help" ) );
     menu->addAction( m_helpContents );
+    menu->addAction( m_helpLikeUs );
     menu->addSeparator();
     menu->addAction( m_helpAbout );
 
