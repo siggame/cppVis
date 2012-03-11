@@ -109,6 +109,7 @@ namespace visualizer
         if( rx.indexIn( fullLog.c_str() ) != -1 )
         {
           TimeManager->setTurn( 0 );
+          (*i)->destroy();
           if( (*i)->getPluginInfo().returnFilename )
           {
             (*i)->loadGamelog( gamelog );
