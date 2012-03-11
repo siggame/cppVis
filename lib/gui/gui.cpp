@@ -190,7 +190,7 @@ namespace visualizer
     {
       QList<QUrl> urlList = mimeData->urls();
 
-      for( size_t i = 0; i < (unsigned int)urlList.size() && i < 32; ++i )
+      for( size_t i = 0; i < (unsigned int)urlList.size(); ++i )
       {
         string path = urlList.at( i ).toLocalFile().toAscii().constData();
         addToPlaylist( path );
