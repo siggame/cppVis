@@ -193,12 +193,13 @@ namespace visualizer
 
       for( size_t i = 0; i < (unsigned int)urlList.size() && i < 32; ++i )
       {
-        pathList.append( urlList.at( i ).toLocalFile() );
+        addToPlaylist( urlList.at( i ).toLocalFile().toAscii().constData() );
+        //pathList.append( urlList.at( i ).toLocalFile() );
       }
 
-      string path = urlList.at( 0 ).toLocalFile().toAscii().constData();
-      loadGamelog( path );
+      //string path = urlList.at( 0 ).toLocalFile().toAscii().constData();
 
+      //loadGamelog( path );
 
     }
 
