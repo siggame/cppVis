@@ -190,17 +190,12 @@ namespace visualizer
     {
       QList<QUrl> urlList = mimeData->urls();
 
+      m_playList->clear();
+
       for( size_t i = 0; i < (unsigned int)urlList.size(); ++i )
       {
         string path = urlList.at( i ).toLocalFile().toAscii().constData();
         addToPlaylist( path );
-        if( i == 0 )
-        {
-          if( m_playList->count() )
-          {
-            loadGamelog( path );
-          }
-        }
         //pathList.append( urlList.at( i ).toLocalFile() );
       }
 
@@ -286,23 +281,28 @@ namespace visualizer
       dirinfoIN.close();
     }
 
-    QFileDialog fileDialog;
-
-    QString filename = fileDialog.getOpenFileName(
+    QStringList filenames = QFileDialog::getOpenFileNames(
         this,
         tr( "Open Gamelog" ),
         m_previousDirectory,
-        tr( "Gamelogs (*.gamelog *.glog);;All Files (*.*)") ).toAscii().constData();
+        tr( "Gamelogs (*.gamelog *.glog);;All Files (*.*)") );
 
-    if( filename.size() > 0 )
+    if( filenames.count() )
     {
-      m_previousDirectory = filename;
+      m_playList->clear();
+      for( size_t i = 0; i < filenames.count(); i++ )
+      {
+        if( i == 0 )
+        {
+          m_previousDirectory = filenames[i];
+          ofstream dirinfoOUT;
+          dirinfoOUT.open("dirinfo.txt");
+          dirinfoOUT << m_previousDirectory.toStdString();
+          dirinfoOUT.close();
+        }
+        addToPlaylist( filenames[i].toStdString() );
 
-      ofstream dirinfoOUT;
-      dirinfoOUT.open("dirinfo.txt");
-      dirinfoOUT << m_previousDirectory.toStdString();
-      dirinfoOUT.close();
-      loadGamelog( filename.toStdString() );
+      }
     }
 
   }
