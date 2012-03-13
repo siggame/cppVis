@@ -439,7 +439,6 @@ namespace visualizer
 
   bool _GUI::doSetup()
   {
-    checkForUpdate( "Visualizer Core", "checkList.md5", VERSION_FILE );
 
     m_loadInProgress = false;
 
@@ -485,6 +484,7 @@ namespace visualizer
     m_previousDirectory = QDir::homePath();
 
     m_chooseDialog = 0;
+    checkForUpdate( "Visualizer Core", "checkList.md5", VERSION_FILE );
 
     return true;
   }

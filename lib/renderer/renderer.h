@@ -50,7 +50,7 @@ namespace visualizer
 
     static void setup();
     static void destroy();
-    void _setup();
+    void init();
 
     bool clear();
 
@@ -204,7 +204,7 @@ namespace visualizer
     void attachShader( const int& program, const string& name ) const;
     void buildShaderProgram( const int& id ) const;
     void useShader( const int& id ) const;
-
+    
     void beginList( const std::string& name ) const;
 
     void endList( const std::string& name ) const;
@@ -212,12 +212,9 @@ namespace visualizer
     void drawList( const std::string& name ) const;
 
     void push() const;
-
     void pop() const;
 
-    // void setCameraShape()
-    // void setCameraFocus()
-    // void setCameraZoom()
+    void checkGLError() const;
 
     void setGridDimensions
       (
@@ -245,6 +242,14 @@ namespace visualizer
     float m_selectSY;
 
     bool m_isSetup;
+
+    unsigned int fbo0;
+    unsigned int fbo1;
+    unsigned int fboTexture0;
+    unsigned int fboTexture1;
+
+    unsigned int m_screenWidth;
+    unsigned int m_screenHeight;
 
     std::map<int, renderObj*> m_renderConstant;
     RenderWidget *m_parent;

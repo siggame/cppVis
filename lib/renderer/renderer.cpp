@@ -2,6 +2,7 @@
 #include "../selectionrender/selectionrender.h"
 #include <sstream>
 #include <math.h>
+#include "gui/gui.h"
 
 using namespace std;
 
@@ -47,6 +48,17 @@ namespace visualizer
     }
   }
 
+  void _Renderer::checkGLError() const
+  {
+    GLenum errCode;
+    const char* errString;
+
+    if( (errCode = glGetError()) != GL_NO_ERROR )
+    {
+      WARNING( "OpenGL Error: %s", gluErrorString(errCode) );
+    }
+  }
+
   bool _Renderer::refresh()
   {
     if (!isSetup())
@@ -57,7 +69,17 @@ namespace visualizer
       update( TimeManager->getTurn(), 0 );
     }
 
+    glBindFramebuffer( GL_FRAMEBUFFER, 0 );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+    if( fboSupport() )
+    {
+      glBindFramebuffer( GL_FRAMEBUFFER, fbo1 );
+      glClear( GL_COLOR_BUFFER_BIT );
+
+      glBindFramebuffer( GL_FRAMEBUFFER, fbo0 );
+      glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    }
 
     /// @TODO Need to clean up this code a bit.
     glPushMatrix();
@@ -91,6 +113,38 @@ namespace visualizer
     setColor( Color( 0.75, 0, 0, 0.6 ) );
 
     drawProgressBar( m_selectX, m_selectY, m_selectSX-m_selectX, m_selectSY-m_selectY, 1, Color( 1, 0, 0 ) );
+
+    if( fboSupport() )
+    {
+      glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+
+      glPushAttrib( GL_VIEWPORT_BIT );
+      glViewport( 0, 0, m_screenWidth, m_screenHeight );
+
+      glMatrixMode(GL_PROJECTION);
+      glPushMatrix();
+      glLoadIdentity();
+      glOrtho( 0, 1, 1, 0, -1, 1 );
+
+      glDisable( GL_BLEND );
+      glDisable( GL_DEPTH_TEST );
+      glEnable( GL_TEXTURE_2D );
+      glBindTexture( GL_TEXTURE_2D, fboTexture0 );
+      float t = 1;
+      glBegin( GL_QUADS );
+        glColor3f( 1, 1, 1 );
+        glTexCoord2f( 0, 1 ); glVertex3f( 0, 0, 0 );
+        glTexCoord2f( 1, 1 ); glVertex3f( t, 0, 0 );
+        glTexCoord2f( 1, 0 ); glVertex3f( t, t, 0 );
+        glTexCoord2f( 0, 0 ); glVertex3f( 0, t, 0 );
+      glEnd();
+      glDisable( GL_TEXTURE_2D );
+
+      glPopMatrix();
+      glMatrixMode(GL_MODELVIEW);
+      
+      glPopAttrib();
+    }
 
     if( m_parent )
     {
@@ -147,13 +201,11 @@ namespace visualizer
       Renderer = new _Renderer;
       SETUP( "Renderer" )
     }
-        
-    Renderer->_setup();
 
   }
 
 
-  void _Renderer::_setup()
+  void _Renderer::init()
   {
     /** @todo fill this in with more setup information */
     if ( m_width && m_height && m_depth )
@@ -192,6 +244,76 @@ namespace visualizer
     TimeManager->requestUpdate( Renderer );
 
     m_isSetup = true;
+
+    GLenum err = glewInit();
+    if( GLEW_OK != err )
+    {
+      WARNING( "FAILED TO INIT GLEW" );
+    }
+
+    int maxT;
+    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxT);
+
+    MESSAGE( "" );
+    MESSAGE( "============System OpenGL Information=======" );
+    MESSAGE( "Shader Support: %d", shaderSupport() );
+    MESSAGE( "FBO Support: %d", fboSupport() );
+    MESSAGE( "OpenGL Vendor: %s", glGetString(GL_VENDOR) );
+    MESSAGE( "OpenGL Renderer: %s", glGetString(GL_RENDERER) );
+    MESSAGE( "OpenGL Version: %s", glGetString(GL_VERSION) );
+    MESSAGE( "GLSL Version: %s", glGetString(GL_SHADING_LANGUAGE_VERSION) );
+    MESSAGE( "Max GLSL Textures: %i", maxT );
+    MESSAGE( "Extensions Supported: " );
+    cerr << glGetString(GL_EXTENSIONS) << endl;
+    errorLog->write( (char*)glGetString(GL_EXTENSIONS) );
+    MESSAGE( "============System OpenGL Information=======" );
+
+
+    m_screenWidth = QApplication::desktop()->screenGeometry().width();
+    m_screenHeight = QApplication::desktop()->screenGeometry().height();
+
+    if( fboSupport() )
+    {
+      MESSAGE( "Using frame buffers." );
+      glGenFramebuffers(1, &fbo0);
+      glGenFramebuffers(1, &fbo1);
+
+      glGenTextures(1, &fboTexture0);
+      glGenTextures(1, &fboTexture1);
+
+      glBindTexture(GL_TEXTURE_2D, fboTexture0);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_screenWidth, m_screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+      checkGLError();
+
+      glBindFramebuffer( GL_FRAMEBUFFER, fbo0 );
+      glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTexture0, 0);
+      checkGLError();
+
+      unsigned int depthBuffer;
+      glGenRenderbuffers(1, &depthBuffer);
+      glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
+      glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_screenWidth, m_screenHeight);
+      glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+
+      if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+      {
+        WARNING( "FRAME BUFFER NOT WORKING" );
+      }
+
+      glBindFramebuffer( GL_FRAMEBUFFER, fbo1 );
+      glBindTexture( GL_TEXTURE_2D, fboTexture1 );
+      glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, m_screenWidth, m_screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0 );
+      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTexture1, 0 );
+      
+      if( glCheckFramebufferStatus( GL_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE )
+      {
+        WARNING( "FRAME BUFFER NOT WORKING" );
+      }
+    }
       
 	}
 
