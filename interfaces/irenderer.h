@@ -189,6 +189,7 @@ namespace visualizer
 
       virtual void pop() const = 0;
 
+      virtual bool fboSupport() const= 0;
       virtual void swapFBO() = 0;
 
   };

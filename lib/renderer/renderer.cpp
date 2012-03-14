@@ -28,6 +28,7 @@ namespace visualizer
     m_width = width;
     m_depth = depth;
     refresh();
+
     return true;
   }
 
@@ -61,32 +62,38 @@ namespace visualizer
 
   void _Renderer::drawFBO( int fboNum )
   {
-    glPushAttrib(GL_VIEWPORT_BIT);
-    glViewport(0, 0, m_screenWidth, m_screenHeight);
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+    glViewport( 0, 0, m_screenWidth, m_screenHeight );
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
     glOrtho(0, 1, 1, 0, -1, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
 
     glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, fboTexture[fboNum]);
-    const float t = 1;
+
     glBegin(GL_QUADS);
       glColor3f(1, 1, 1);
       glTexCoord2f(0, 1); glVertex3f(0, 0, 0);
-      glTexCoord2f(1, 1); glVertex3f(t, 0, 0);
-      glTexCoord2f(1, 0); glVertex3f(t, t, 0);
-      glTexCoord2f(0, 0); glVertex3f(0, t, 0);
+      glTexCoord2f(1, 1); glVertex3f(1, 0, 0);
+      glTexCoord2f(1, 0); glVertex3f(1, 1, 0);
+      glTexCoord2f(0, 0); glVertex3f(0, 1, 0);
     glEnd();
     glDisable(GL_TEXTURE_2D);
 
     glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
     
-    glPopAttrib();
+    glViewport( 0, 0, width(), height() );
 
   }
 
@@ -98,10 +105,9 @@ namespace visualizer
   void _Renderer::swapFBO()
   {
     
-    attachFBO(fbo[1-m_currentFBO]);
-    drawFBO(m_currentFBO);
-
     m_currentFBO = 1-m_currentFBO;
+    attachFBO(fbo[m_currentFBO]);
+    drawFBO(1-m_currentFBO);
 
   }
 
@@ -122,12 +128,13 @@ namespace visualizer
     {
       for( size_t i = 0; i < 2; i++ )
       {
-        attachFBO(fbo[1-i]);
+        attachFBO(fbo[i]);
         glClear( GL_COLOR_BUFFER_BIT );
       }
+      m_currentFBO = 0;
+      attachFBO( fbo[m_currentFBO] );
     }
 
-    m_currentFBO = 0;
 
     /// @TODO Need to clean up this code a bit.
     glPushMatrix();
@@ -157,16 +164,16 @@ namespace visualizer
     AnimationEngine->draw();
 
     glPopMatrix();
-      
-    setColor( Color( 0.75, 0, 0, 0.6 ) );
-
-    drawProgressBar( m_selectX, m_selectY, m_selectSX-m_selectX, m_selectSY-m_selectY, 1, Color( 1, 0, 0 ) );
-
+ 
     if( fboSupport() )
     {
       attachFBO(0);
       drawFBO(m_currentFBO);
     }
+     
+    setColor( Color( 0.75, 0, 0, 0.6 ) );
+
+    drawProgressBar( m_selectX, m_selectY, m_selectSX-m_selectX, m_selectSY-m_selectY, 1, Color( 1, 0, 0 ) );
 
     if( m_parent )
     {
@@ -226,9 +233,35 @@ namespace visualizer
 
   }
 
-
   void _Renderer::init()
   {
+
+    fbo[0] = fbo[1] = 0;
+
+    GLenum err = glewInit();
+    if( GLEW_OK != err )
+    {
+      WARNING( "FAILED TO INIT GLEW" );
+    }
+
+    int maxT;
+    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxT);
+
+    MESSAGE( "" );
+    MESSAGE( "============System OpenGL Information=======" );
+    MESSAGE( "Shader Support: %d", shaderSupport() );
+    MESSAGE( "FBO Support: %d", fboSupport() );
+    MESSAGE( "OpenGL Vendor: %s", glGetString(GL_VENDOR) );
+    MESSAGE( "OpenGL Renderer: %s", glGetString(GL_RENDERER) );
+    MESSAGE( "OpenGL Version: %s", glGetString(GL_VERSION) );
+    MESSAGE( "GLSL Version: %s", glGetString(GL_SHADING_LANGUAGE_VERSION) );
+    MESSAGE( "Max GLSL Textures: %i", maxT );
+    MESSAGE( "Extensions Supported: " );
+    cerr << glGetString(GL_EXTENSIONS) << endl;
+    errorLog->write( (char*)glGetString(GL_EXTENSIONS) );
+    MESSAGE( "============System OpenGL Information=======" );
+
+
     /** @todo fill this in with more setup information */
     if ( m_width && m_height && m_depth )
     {
@@ -267,36 +300,21 @@ namespace visualizer
 
     m_isSetup = true;
 
-    GLenum err = glewInit();
-    if( GLEW_OK != err )
+    m_screenWidth = 0;
+    m_screenHeight = 0;
+    for( size_t i = 0; i < QApplication::desktop()->screenCount(); i++ )
     {
-      WARNING( "FAILED TO INIT GLEW" );
+      int width = QApplication::desktop()->screenGeometry(i).width();
+      int height = QApplication::desktop()->screenGeometry(i).height();
+      if( width > m_screenWidth )
+        m_screenWidth = width;
+      if( height > m_screenHeight )
+        m_screenHeight = height;
     }
 
-    int maxT;
-    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxT);
-
-    MESSAGE( "" );
-    MESSAGE( "============System OpenGL Information=======" );
-    MESSAGE( "Shader Support: %d", shaderSupport() );
-    MESSAGE( "FBO Support: %d", fboSupport() );
-    MESSAGE( "OpenGL Vendor: %s", glGetString(GL_VENDOR) );
-    MESSAGE( "OpenGL Renderer: %s", glGetString(GL_RENDERER) );
-    MESSAGE( "OpenGL Version: %s", glGetString(GL_VERSION) );
-    MESSAGE( "GLSL Version: %s", glGetString(GL_SHADING_LANGUAGE_VERSION) );
-    MESSAGE( "Max GLSL Textures: %i", maxT );
-    MESSAGE( "Extensions Supported: " );
-    cerr << glGetString(GL_EXTENSIONS) << endl;
-    errorLog->write( (char*)glGetString(GL_EXTENSIONS) );
-    MESSAGE( "============System OpenGL Information=======" );
-
-
-    m_screenWidth = QApplication::desktop()->screenGeometry().width();
-    m_screenHeight = QApplication::desktop()->screenGeometry().height();
-
+      
     if( fboSupport() )
     {
-      MESSAGE( "Using frame buffers." );
 
       // Generate the fbo's we need
       glGenFramebuffers(2, fbo);
@@ -324,7 +342,7 @@ namespace visualizer
       }
 
     }
-      
+
 	}
 
   bool _Renderer::isSetup() const
