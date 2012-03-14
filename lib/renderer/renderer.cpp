@@ -59,6 +59,52 @@ namespace visualizer
     }
   }
 
+  void _Renderer::drawFBO( int fboNum )
+  {
+    glPushAttrib(GL_VIEWPORT_BIT);
+    glViewport(0, 0, m_screenWidth, m_screenHeight);
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, 1, 1, 0, -1, 1);
+
+    glDisable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, fboTexture[fboNum]);
+    const float t = 1;
+    glBegin(GL_QUADS);
+      glColor3f(1, 1, 1);
+      glTexCoord2f(0, 1); glVertex3f(0, 0, 0);
+      glTexCoord2f(1, 1); glVertex3f(t, 0, 0);
+      glTexCoord2f(1, 0); glVertex3f(t, t, 0);
+      glTexCoord2f(0, 0); glVertex3f(0, t, 0);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    
+    glPopAttrib();
+
+  }
+
+  void _Renderer::attachFBO(int fbo)
+  {
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+  }
+
+  void _Renderer::swapFBO()
+  {
+    
+    attachFBO(fbo[1-m_currentFBO]);
+    drawFBO(m_currentFBO);
+
+    m_currentFBO = 1-m_currentFBO;
+
+  }
+
   bool _Renderer::refresh()
   {
     if (!isSetup())
@@ -74,12 +120,14 @@ namespace visualizer
 
     if( fboSupport() )
     {
-      glBindFramebuffer( GL_FRAMEBUFFER, fbo1 );
-      glClear( GL_COLOR_BUFFER_BIT );
-
-      glBindFramebuffer( GL_FRAMEBUFFER, fbo0 );
-      glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+      for( size_t i = 0; i < 2; i++ )
+      {
+        attachFBO(fbo[1-i]);
+        glClear( GL_COLOR_BUFFER_BIT );
+      }
     }
+
+    m_currentFBO = 0;
 
     /// @TODO Need to clean up this code a bit.
     glPushMatrix();
@@ -116,34 +164,8 @@ namespace visualizer
 
     if( fboSupport() )
     {
-      glBindFramebuffer( GL_FRAMEBUFFER, 0 );
-
-      glPushAttrib( GL_VIEWPORT_BIT );
-      glViewport( 0, 0, m_screenWidth, m_screenHeight );
-
-      glMatrixMode(GL_PROJECTION);
-      glPushMatrix();
-      glLoadIdentity();
-      glOrtho( 0, 1, 1, 0, -1, 1 );
-
-      glDisable( GL_BLEND );
-      glDisable( GL_DEPTH_TEST );
-      glEnable( GL_TEXTURE_2D );
-      glBindTexture( GL_TEXTURE_2D, fboTexture0 );
-      float t = 1;
-      glBegin( GL_QUADS );
-        glColor3f( 1, 1, 1 );
-        glTexCoord2f( 0, 1 ); glVertex3f( 0, 0, 0 );
-        glTexCoord2f( 1, 1 ); glVertex3f( t, 0, 0 );
-        glTexCoord2f( 1, 0 ); glVertex3f( t, t, 0 );
-        glTexCoord2f( 0, 0 ); glVertex3f( 0, t, 0 );
-      glEnd();
-      glDisable( GL_TEXTURE_2D );
-
-      glPopMatrix();
-      glMatrixMode(GL_MODELVIEW);
-      
-      glPopAttrib();
+      attachFBO(0);
+      drawFBO(m_currentFBO);
     }
 
     if( m_parent )
@@ -275,44 +297,32 @@ namespace visualizer
     if( fboSupport() )
     {
       MESSAGE( "Using frame buffers." );
-      glGenFramebuffers(1, &fbo0);
-      glGenFramebuffers(1, &fbo1);
 
-      glGenTextures(1, &fboTexture0);
-      glGenTextures(1, &fboTexture1);
+      // Generate the fbo's we need
+      glGenFramebuffers(2, fbo);
 
-      glBindTexture(GL_TEXTURE_2D, fboTexture0);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_screenWidth, m_screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-      checkGLError();
+      // Generate the fbo textures we need.
+      glGenTextures(2, fboTexture);
 
-      glBindFramebuffer( GL_FRAMEBUFFER, fbo0 );
-      glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTexture0, 0);
-      checkGLError();
-
-      unsigned int depthBuffer;
-      glGenRenderbuffers(1, &depthBuffer);
-      glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
-      glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_screenWidth, m_screenHeight);
-      glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
-
-      if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+      for( size_t i = 0; i < 2; i++ )
       {
-        WARNING( "FRAME BUFFER NOT WORKING" );
+        glBindTexture(GL_TEXTURE_2D, fboTexture[i]);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_screenWidth, m_screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
+        // Attach fboTexture 0 to fbo 0
+        glBindFramebuffer( GL_FRAMEBUFFER, fbo[i] );
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTexture[i], 0);
+
+        if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        {
+          WARNING( "FRAME BUFFER NOT WORKING" );
+        }
       }
 
-      glBindFramebuffer( GL_FRAMEBUFFER, fbo1 );
-      glBindTexture( GL_TEXTURE_2D, fboTexture1 );
-      glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, m_screenWidth, m_screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0 );
-      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTexture1, 0 );
-      
-      if( glCheckFramebufferStatus( GL_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE )
-      {
-        WARNING( "FRAME BUFFER NOT WORKING" );
-      }
     }
       
 	}
@@ -476,7 +486,7 @@ namespace visualizer
   {
     glEnable( GL_BLEND );
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    glDisable( GL_DEPTH_TEST );
+    //glDisable( GL_DEPTH_TEST );
     glEnable( GL_TEXTURE_2D );
 
     ResTexture *r = (ResTexture*)ResourceMan->reference( resource, "renderer" );
@@ -508,7 +518,7 @@ namespace visualizer
   {
     glEnable( GL_BLEND );
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    glDisable( GL_DEPTH_TEST );
+    //glDisable( GL_DEPTH_TEST );
     glEnable( GL_TEXTURE_2D );
 
     ResAnimation *r = (ResAnimation*)ResourceMan->reference( resource, "renderer" );
@@ -618,38 +628,6 @@ namespace visualizer
     glDisable( GL_BLEND );
   }
 
-
-#if 0
-  void _Renderer::drawArc
-    (
-    const float& centerX,
-    const float& centerY,
-    const float& radius,
-    const float& width
-    ) const
-  {
-    glEnable( GL_BLEND );
-    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-
-    glLineWidth( width );
-
-    //glBegin( GL_LINE_STRIP );
-    glBegin( GL_LINE_LOOP );
-        
-        const float DEG2RAD = 3.14159/180;
-        
-        //for (float i = 0.0; i < 360; i += 0.005)
-        for (int i=0; i < 360; i++)
-        {
-          glVertex2f(cos(i*DEG2RAD)*radius + centerX, sin(i*DEG2RAD)*radius + centerY);
-        }
-
-    glEnd();
-
-    //glDisable( GL_LINE_STRIP );
-    glDisable( GL_LINE_LOOP );
-  }
-#endif
 
   void _Renderer::drawProgressBar
     (

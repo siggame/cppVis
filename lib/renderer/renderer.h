@@ -243,10 +243,14 @@ namespace visualizer
 
     bool m_isSetup;
 
-    unsigned int fbo0;
-    unsigned int fbo1;
-    unsigned int fboTexture0;
-    unsigned int fboTexture1;
+    int m_currentFBO;
+
+    unsigned int fbo[2];
+    unsigned int fboTexture[2];
+
+    void swapFBO();
+    void drawFBO( int fboNum );
+    void attachFBO( int fbo );
 
     unsigned int m_screenWidth;
     unsigned int m_screenHeight;
