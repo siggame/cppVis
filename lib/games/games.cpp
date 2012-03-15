@@ -57,17 +57,15 @@ namespace visualizer
         } 
         else
         {
-          cerr << "Plugin Is Not Valid For Usage" << endl;
-          cerr << " Path: " << qPrintable( pluginsDir.absoluteFilePath( fileName ) ) << endl;
-          cerr << " Error String: " << endl << "  " << qPrintable( pluginLoader.errorString() ) << endl;
+          MESSAGE( "Plugin is not valid: %s", qPrintable( pluginsDir.absoluteFilePath( fileName ) ) );
+          WARNING( "Plugin couldn't load. Reason: \n%s", qPrintable( pluginLoader.errorString() ) );
         }
       }
       else
       {
-        cerr << "Plugin Could Not Be Loaded Into Memory" << endl;
-        cerr << " Path:  " << qPrintable( pluginsDir.absoluteFilePath( fileName ) ) << endl;
-        cerr << " Error String: " << endl;
-        cerr << "  " << qPrintable( pluginLoader.errorString() ) << endl;
+        MESSAGE( "Plugin could not be loaded into memory. %s", qPrintable( pluginsDir.absoluteFilePath( fileName ) ) );
+        WARNING( "Plugin couldn't load. Reason: \n%s", qPrintable( pluginLoader.errorString() ) );
+
       }
     }
     
