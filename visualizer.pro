@@ -54,6 +54,9 @@ QMAKE_CXXFLAGS_DEBUG += -rdynamic
 QMAKE_LFLAGS_DEBUG += -rdynamic 
 }
 
+QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS_DEBUG += -std=c++0x
+
 CONFIG += debug
 macx:CONFIG -= app_bundle
 QT += opengl network xml
