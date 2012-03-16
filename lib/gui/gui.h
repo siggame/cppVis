@@ -214,6 +214,7 @@ namespace visualizer
       {
         return m_debugTable;
       }
+
       const Input& getInput() const;
       void splashScreen();
 

@@ -217,13 +217,13 @@ namespace visualizer
 
   void _GUI::appendConsole( QString line )
   {
-    _GUI::m_consoleArea->append( line );
+    m_consoleArea->append( line );
   }
 
   void _GUI::clearConsole()
   {
 
-    _GUI::m_consoleArea->clear();
+    m_consoleArea->clear();
   }
 
   void _GUI::resizeEvent( QResizeEvent* evt )

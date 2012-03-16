@@ -116,25 +116,36 @@ namespace visualizer
         if( TimeManager->getTurn() != last_state )
         {
           GUI->getDebugTable()->clearContents();
+          GUI->clearConsole();
           last_state = TimeManager->getTurn();
 
           for( auto& i : units )
           {
-            if( frame.unitAvailable( i ) )
+
+            if( i >= 0 )
             {
-              GUI->getDebugTable()->setRowCount(count+1);
-              GUI->getDebugTable()->setVerticalHeaderItem( count, new QTableWidgetItem( QVariant(i).toString() ) );
-              for( size_t j = 0; j < GUI->getDebugTable()->columnCount(); j++ )
+              if( frame.unitAvailable( i ) )
               {
-                string key = GUI->m_header[j].toStdString();
-                GUI->getDebugTable()->setCellWidget( count, 
-                    j,  
-                    new QLabel( frame[i][key].toString() ) );
+                GUI->getDebugTable()->setRowCount(count+1);
+                GUI->getDebugTable()->setVerticalHeaderItem( count, new QTableWidgetItem( QVariant(i).toString() ) );
+                for( size_t j = 0; j < GUI->getDebugTable()->columnCount(); j++ )
+                {
+                  string key = GUI->m_header[j].toStdString();
+                  GUI->getDebugTable()->setCellWidget( count, 
+                      j,  
+                      new QLabel( frame[i][key].toString() ) );
 
+                }
+
+                count++;
+                
               }
-
-              count++;
-              
+            } else
+            {
+              for( auto& j : frame[i] )
+              {
+                GUI->appendConsole( j.second.toString() );
+              }
             }
           }
         }
