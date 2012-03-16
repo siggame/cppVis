@@ -655,13 +655,8 @@ namespace visualizer
     m_debugTable->setRowCount( 10 );
     m_debugTable->setColumnCount( 10 );
 
-    
-    m_consoleArea->setText( "Text value" );
-
-    QStringList labels;
-    labels << "ID" << "x" << "y";
-    m_debugTable->setVerticalHeaderLabels(labels);
-    m_debugTable->setCellWidget( 0, 0, new QLabel( "lskdfj" ) );
+    //m_debugTable->setVerticalHeaderLabels(labels);
+    m_debugTable->setCellWidget( 0, 0, new QLabel( "" ) );
     m_debugTable->setShowGrid(true);
 
     m_debugTable->show();
@@ -676,12 +671,6 @@ namespace visualizer
 
     m_dockLayout->addWidget( m_debugTabs );
     m_dockLayout->addWidget( m_frameSlider );
-
-
-    // Add the console to the layout
-    //m_dockLayout->addWidget( m_consoleArea, 1 );
-    
-    //m_dockLayout->addWidget( new QLabel( "HELLOW" ) );
 
     // Add the frame to the actual dock
     m_dockWidget->setWidget( m_dockLayoutFrame );

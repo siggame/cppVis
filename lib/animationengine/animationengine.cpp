@@ -103,12 +103,19 @@ namespace visualizer
       {
         drawAnim( *(*i) );
       }
-    }
 
-    if( m_currentGame )
-    {
-      m_currentGame->postDraw();
-      m_currentGame->getSelectedUnits();
+      if( m_currentGame )
+      {
+        m_currentGame->postDraw();
+        list<int> units = m_currentGame->getSelectedUnits();
+        for( auto& i : units )
+        {
+          if( frame.unitAvailable( i ) )
+          {
+          }
+        }
+
+      }
 
     }
 

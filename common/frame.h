@@ -19,6 +19,7 @@ namespace visualizer
       Frame( const Frame& frame )
       {
         m_frame = frame.m_frame;
+        m_unitInfo = frame.m_unitInfo;
 
       }
 
@@ -26,6 +27,11 @@ namespace visualizer
 
       void addAnimatable( const SmartPointer<Animatable>& animatable );
       void addAnimatableFront( const SmartPointer<Animatable>& animatable );
+
+      bool unitAvailable( const int& unitId )
+      {
+        return (m_unitInfo.find( unitId ) != m_unitInfo.end());
+      }
 
       map<string, string>& operator[] ( const int& unitId )
       {
