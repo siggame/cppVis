@@ -50,6 +50,8 @@ namespace visualizer
       virtual void checkForUpdate( string message, string VERSION, string REMOTE ) = 0;
 
       virtual const Input& getInput() const = 0;
+
+      virtual void setDebugHeader( const QStringList& header ) = 0;
   };
 
 } // visualizer

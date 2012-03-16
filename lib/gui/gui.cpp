@@ -652,9 +652,6 @@ namespace visualizer
     m_debugTabs->insertTab( 1, m_debugTable, "Debug Table" );
     m_debugTabs->insertTab( 2, m_playList, "Playlist" );
 
-    m_debugTable->setRowCount( 10 );
-    m_debugTable->setColumnCount( 10 );
-
     //m_debugTable->setVerticalHeaderLabels(labels);
     m_debugTable->setCellWidget( 0, 0, new QLabel( "" ) );
     m_debugTable->setShowGrid(true);
@@ -686,6 +683,14 @@ namespace visualizer
     {
       m_dockWidget->hide();
     }
+
+  }
+
+  void _GUI::setDebugHeader( const QStringList& header )
+  {
+    m_header = header;
+    m_debugTable->setColumnCount(header.count());
+    m_debugTable->setHorizontalHeaderLabels(header);
 
   }
 

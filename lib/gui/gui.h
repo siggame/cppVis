@@ -206,6 +206,15 @@ namespace visualizer
 
     public:
       void clearInput();
+
+      void setDebugHeader( const QStringList& header );
+
+      QStringList m_header;
+      QTableWidget* getDebugTable()
+      {
+        return m_debugTable;
+      }
+      const Input& getInput() const;
       void splashScreen();
 
     private:
@@ -274,8 +283,6 @@ namespace visualizer
       void createMenus();
       void buildToolSet();
       void initUnitStats();
-
-      const Input& getInput() const;
 
       // Actions
       QAction *m_helpContents;     /// Help->Contents

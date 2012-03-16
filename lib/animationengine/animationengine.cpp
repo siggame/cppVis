@@ -107,11 +107,35 @@ namespace visualizer
       if( m_currentGame )
       {
         m_currentGame->postDraw();
+        
+        static int last_state = -1;
+
         list<int> units = m_currentGame->getSelectedUnits();
-        for( auto& i : units )
+        size_t count = 0;
+
+        if( TimeManager->getTurn() != last_state )
         {
-          if( frame.unitAvailable( i ) )
+          GUI->getDebugTable()->clearContents();
+          last_state = TimeManager->getTurn();
+
+          for( auto& i : units )
           {
+            if( frame.unitAvailable( i ) )
+            {
+              GUI->getDebugTable()->setRowCount(count+1);
+              GUI->getDebugTable()->setVerticalHeaderItem( count, new QTableWidgetItem( QVariant(i).toString() ) );
+              for( size_t j = 0; j < GUI->getDebugTable()->columnCount(); j++ )
+              {
+                string key = GUI->m_header[j].toStdString();
+                GUI->getDebugTable()->setCellWidget( count, 
+                    j,  
+                    new QLabel( frame[i][key].toString() ) );
+
+              }
+
+              count++;
+              
+            }
           }
         }
 

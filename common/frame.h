@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "animatable.h"
+#include <QVariant>
 #include <list>
 #include <string>
 #include <map>
@@ -33,12 +34,12 @@ namespace visualizer
         return (m_unitInfo.find( unitId ) != m_unitInfo.end());
       }
 
-      map<string, string>& operator[] ( const int& unitId )
+      map<string, QVariant>& operator[] ( const int& unitId )
       {
         return m_unitInfo[unitId];
       }
 
-      const map<string, string>& operator[] ( const int& unitId ) const
+      const map<string, QVariant>& operator[] ( const int& unitId ) const
       {
         return m_unitInfo.find( unitId )->second;
       }
@@ -48,8 +49,8 @@ namespace visualizer
       size_t size() const;
 
     private:
-      std::list<SmartPointer<Animatable> > m_frame;
-      std::map<int, map<string,string> > m_unitInfo;
+      std::list<SmartPointer<Animatable>> m_frame;
+      std::map<int, map<string, QVariant>> m_unitInfo;
 
   }; // Frame
 
