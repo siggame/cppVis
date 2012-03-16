@@ -196,12 +196,7 @@ namespace visualizer
       {
         string path = urlList.at( i ).toLocalFile().toAscii().constData();
         addToPlaylist( path );
-        //pathList.append( urlList.at( i ).toLocalFile() );
       }
-
-      //
-
-      //loadGamelog( path );
 
     }
 
