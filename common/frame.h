@@ -49,8 +49,8 @@ namespace visualizer
       size_t size() const;
 
     private:
-      std::list<SmartPointer<Animatable>> m_frame;
-      std::map<int, map<string, QVariant>> m_unitInfo;
+      std::list<SmartPointer<Animatable> > m_frame;
+      std::map<int, map<string, QVariant> > m_unitInfo;
 
   }; // Frame
 
