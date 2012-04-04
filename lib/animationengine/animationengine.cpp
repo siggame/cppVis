@@ -110,13 +110,18 @@ namespace visualizer
         
         static int last_state = -1;
 
+        static list<int> last_units;
+        
         list<int> units = m_currentGame->getSelectedUnits();
+
         size_t count = 0;
 
-        if( TimeManager->getTurn() != last_state )
+        if( TimeManager->getTurn() != last_state || units != last_units )
         {
+          last_units = units;
           GUI->getDebugTable()->clearContents();
           GUI->clearConsole();
+          GUI->getDebugTable()->setRowCount(0);
           last_state = TimeManager->getTurn();
 
           for( auto& i : units )

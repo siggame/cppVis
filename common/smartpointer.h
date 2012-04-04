@@ -128,6 +128,11 @@ class SmartPointer
       return *this;
     }
 
+    bool operator == ( const SmartPointer<T>& sp ) const
+    {
+      return m_data == sp.m_data;
+    }
+
     operator bool()
     {
       return m_data != 0;
