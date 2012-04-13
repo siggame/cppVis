@@ -247,6 +247,7 @@ namespace visualizer
 
     unsigned int fbo[2];
     unsigned int fboTexture[2];
+    unsigned int depthBuffer[2];
 
     void swapFBO();
     void drawFBO( int fboNum );

@@ -127,7 +127,7 @@ namespace visualizer
       for( size_t i = 0; i < 2; i++ )
       {
         attachFBO(fbo[i]);
-        glClear( GL_COLOR_BUFFER_BIT );
+        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
       }
       m_currentFBO = 0;
       attachFBO( fbo[m_currentFBO] );
@@ -316,6 +316,7 @@ namespace visualizer
 
       // Generate the fbo's we need
       glGenFramebuffers(2, fbo);
+      glGenRenderbuffers(2, depthBuffer);
 
       // Generate the fbo textures we need.
       glGenTextures(2, fboTexture);
@@ -332,6 +333,11 @@ namespace visualizer
         // Attach fboTexture 0 to fbo 0
         glBindFramebuffer( GL_FRAMEBUFFER, fbo[i] );
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTexture[i], 0);
+
+        glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer[i]);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_screenWidth, m_screenHeight );
+
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer[i]);
 
         if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         {
