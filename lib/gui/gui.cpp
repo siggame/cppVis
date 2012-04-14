@@ -456,6 +456,16 @@ namespace visualizer
 
     setAcceptDrops( true );
 
+    MESSAGE( "============Set Window State=======" );
+    setWindowState(
+        windowState()
+        | Qt::WindowActive
+        | Qt::WindowMaximized
+        );
+
+    MESSAGE( "============Show Window=======" );
+    show();
+
     m_centralWidget = new CentralWidget( this );
     setCentralWidget( m_centralWidget );
     MESSAGE( "============Creating Actions=======" );
@@ -491,17 +501,6 @@ namespace visualizer
       setFullScreen(true);
       m_dockWidget->hide();
     }
-
-    MESSAGE( "============Set Window State=======" );
-    setWindowState(
-        windowState()
-        | Qt::WindowActive
-        | Qt::WindowMaximized
-        );
-
-    MESSAGE( "============Show Window=======" );
-    show();
-
     
     MESSAGE( "============Home Path=======" );
     m_previousDirectory = QDir::homePath();
