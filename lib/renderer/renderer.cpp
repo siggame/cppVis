@@ -279,6 +279,9 @@ namespace visualizer
       resize( OptionsMan->getNumber( "renderWidth" ), OptionsMan->getNumber( "renderHeight" ) );
     }
 
+    MESSAGE( "Finished Resizing" );
+
+
 
     m_selectX = m_selectY
      = m_selectSX
@@ -297,7 +300,12 @@ namespace visualizer
     glEnable( GL_BLEND );
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
+    MESSAGE( "Pre-Render Check" );
+
     refresh();
+
+    MESSAGE( "Post-Render Check" );
+
 
     TimeManager->requestUpdate( Renderer );
 
@@ -318,6 +326,7 @@ namespace visualizer
       
     if( fboSupport() )
     {
+      MESSAGE( "Pre-FBO Setup" );
 
       // Generate the fbo's we need
       glGenFramebuffers(2, fbo);
@@ -350,6 +359,7 @@ namespace visualizer
         }
       }
 
+      MESSAGE( "Post-FBO Setup" );
     }
 
 	}
