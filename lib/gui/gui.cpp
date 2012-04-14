@@ -435,6 +435,9 @@ namespace visualizer
   bool _GUI::doSetup()
   {
 
+    m_http = new QHttp( this );
+    connect( m_http, SIGNAL( done( bool) ), this, SLOT( loadThatShit(bool) ) );
+
     m_loadInProgress = false;
 
     setAcceptDrops( true );
