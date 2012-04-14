@@ -26,7 +26,7 @@
   <option>
     <key>helpURL</key>
     <type>String</type>
-    <value>http://xkcd.com</value>
+    <value>ftp://r99acm.device.mst.edu:2121/space/manual/index.html</value>
   </option>
   <option>
     <key>mapSize</key>
