@@ -92,6 +92,7 @@ namespace visualizer
     glMatrixMode(GL_MODELVIEW);
     
     glViewport( 0, 0, width(), height() );
+    glEnable(GL_DEPTH_TEST);
 
   }
 
@@ -132,6 +133,9 @@ namespace visualizer
       m_currentFBO = 0;
       attachFBO( fbo[m_currentFBO] );
     }
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
 
 
     /// @TODO Need to clean up this code a bit.
