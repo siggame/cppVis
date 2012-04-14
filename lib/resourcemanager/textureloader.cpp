@@ -23,6 +23,10 @@ namespace visualizer
       return IMG_TGA;
     if ( path.endsWith(".bmp"))
       return IMG_BMP;
+    if ( path.endsWith(".jpg") || path.endsWith(".jpeg") )
+      return IMG_JPG;
+    if ( path.endsWith(".svg") )
+      return IMG_SVG;
 
     return IMG_NONE;
   } // _TextureLoader::getImageType()
@@ -44,6 +48,12 @@ namespace visualizer
         loadGeneric( path.c_str(), texId, texture );
         break;
       case IMG_BMP:
+        loadGeneric( path.c_str(), texId, texture );
+        break;
+      case IMG_JPG:
+        loadGeneric( path.c_str(), texId, texture );
+        break;
+      case IMG_SVG:
         loadGeneric( path.c_str(), texId, texture );
         break;
       default:

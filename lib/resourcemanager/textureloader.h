@@ -11,7 +11,7 @@ namespace visualizer
 
   enum IMAGE_TYPE
   {
-    IMG_NONE, IMG_TIFF, IMG_PNG, IMG_TGA, IMG_BMP
+    IMG_NONE, IMG_TIFF, IMG_PNG, IMG_TGA, IMG_BMP, IMG_JPG, IMG_SVG
   };
 
   class _TextureLoader: public Module, public ITextureLoader
