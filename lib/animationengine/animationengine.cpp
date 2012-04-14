@@ -147,8 +147,10 @@ namespace visualizer
               }
             } else
             {
+              cout << i << endl;
               for( auto& j : frame[i] )
               {
+                cout << "TALK: " << j.second.toString().toStdString() << endl;
                 GUI->appendConsole( j.second.toString() );
               }
             }
