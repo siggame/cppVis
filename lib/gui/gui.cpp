@@ -474,6 +474,7 @@ namespace visualizer
 
     // If we're in arenaMode, change some settings
 
+    MESSAGE( "============Arena Mode=======" );
     if( OptionsMan->getNumber( "arenaMode" ) )
     {
       menuBar()->hide();
@@ -482,6 +483,7 @@ namespace visualizer
       requestGamelog();
     }
 
+    MESSAGE( "============Demo Mode=======" );
     //If we're in demonstrationMode, change different settings
     if( OptionsMan->getNumber( "demonstrationMode" ) )
     {
@@ -490,12 +492,14 @@ namespace visualizer
       m_dockWidget->hide();
     }
 
+    MESSAGE( "============Set Window State=======" );
     setWindowState(
         windowState()
         | Qt::WindowActive
         | Qt::WindowMaximized
         );
 
+    MESSAGE( "============Show Window=======" );
     show();
 
     m_previousDirectory = QDir::homePath();
