@@ -81,13 +81,16 @@ int main(int argc, char *argv[])
   ///////////////////////////////////////////////////////////////////
   Games->setup();
 
-	if( argc > 1 )
+	if( argc > 1  )
 	{
     for( size_t i = 1; i < argc; i++ )
     {
       GUI->addToPlaylist( argv[i] );
     }
-	} else
+	} else if( OptionsMan->getNumber( "arenaMode" ) )
+  {
+  }
+  else
   {
     GUI->splashScreen();
   }

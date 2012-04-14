@@ -353,7 +353,7 @@ namespace visualizer
 
   void _GUI::requestGamelog()
   {
-    BeanStalker b( "r09mannr4.device.mst.edu", 11300 );
+    BeanStalker b( OptionsMan->getString( "Arena Server" ), 11300 );
 
     b.sendCommand( "watch visualizer-requests" );
 
@@ -362,6 +362,9 @@ namespace visualizer
     QUrl url( glogPath.c_str() );
 
     m_loadInProgress = true;
+
+
+    cout << url.host().toStdString() << ":" << url.path().toStdString() << endl;
 
     m_http->setHost( url.host() );
     m_http->get( url.path() );

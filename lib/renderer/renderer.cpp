@@ -471,7 +471,7 @@ namespace visualizer
 
   bool _Renderer::fboSupport() const
   {
-    if( string((char*)glGetString(GL_EXTENSIONS)).find( "GL_EXT_framebuffer_object" ) != -1 )
+    if( string((char*)glGetString(GL_EXTENSIONS)).find( "GL_EXT_framebuffer_object" ) != -1 && OptionsMan->getNumber("UseFBO") )
     {
       return true;
     }

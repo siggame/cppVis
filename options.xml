@@ -1,8 +1,22 @@
 <options>
   <option>
+    <key>Show Debug Window On Start</key>
+    <type>Integer</type>
+    <value>1</value>
+    <minvalue>0</minvalue>
+    <maxvalue>1</maxvalue>
+  </option>
+  <option>
     <key>arenaMode</key>
     <type>Integer</type>
     <value>0</value>
+    <minvalue>0</minvalue>
+    <maxvalue>1</maxvalue>
+  </option>
+  <option>
+    <key>UseFBO</key>
+    <type>Integer</type>
+    <value>1</value>
     <minvalue>0</minvalue>
     <maxvalue>1</maxvalue>
   </option>
@@ -22,6 +36,11 @@
       <op>Arena</op>
       <op>Demo</op>
     </combos>
+  </option>
+  <option>
+    <key>Arena Server</key>
+    <type>String</type>
+    <value>ec2-23-22-40-10.compute-1.amazonaws.com</value>
   </option>
   <option>
     <key>helpURL</key>
@@ -47,13 +66,6 @@
     <value>1756</value>
     <minvalue>1</minvalue>
     <maxvalue>2048</maxvalue>
-  </option>
-  <option>
-    <key>Show Debug Window On Start</key>
-    <type>Integer</type>
-    <value>1</value>
-    <minvalue>0</minvalue>
-    <maxvalue>1</maxvalue>
   </option>
   <option>
     <key>speed</key>
