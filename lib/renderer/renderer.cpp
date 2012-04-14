@@ -20,7 +20,8 @@ namespace visualizer
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    glOrtho( 0, width,_height,0, -depth, depth );
+    glOrtho( 0, width,_height,0, 0, 20 );
+    cout << "DEPTH: " << depth << endl;
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -135,7 +136,7 @@ namespace visualizer
     }
 
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
+    glDepthFunc(GL_GEQUAL);
 
 
     /// @TODO Need to clean up this code a bit.
@@ -287,10 +288,10 @@ namespace visualizer
 
     glShadeModel( GL_SMOOTH );
     glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
-    glClearDepth( 1.0f );
 
     glEnable( GL_DEPTH_TEST );
     glDepthFunc( GL_LEQUAL );
+    glClearDepth( 0.0f );
 
     glDisable( GL_TEXTURE_2D );
     glEnable( GL_BLEND );
