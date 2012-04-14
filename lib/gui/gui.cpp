@@ -348,6 +348,17 @@ namespace visualizer
 
   void _GUI::loadThatShit( bool err )
   {
+    if( !err )
+    {
+      QByteArray arr = m_http->readAll();
+      if( arr.size() == 0 )
+        return;
+      char *temp = new char[ arr.size() ];
+      memcpy( temp, arr.constData(), arr.size() );
+      loadGamestring( temp, arr.size(), "" );
+      m_loadInProgress = false;
+      delete [] temp;
+    }
 
   }
 
