@@ -670,7 +670,7 @@ namespace visualizer
     // Add the dock to the main window
     addDockWidget( Qt::RightDockWidgetArea, m_dockWidget );
 
-    if( OptionsMan->getNumber( "showDebugWindowOnStart" ) )
+    if( OptionsMan->getNumber( "Show Debug Window On Start" ) )
     {
       m_dockWidget->show();
     }
