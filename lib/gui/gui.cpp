@@ -374,7 +374,6 @@ namespace visualizer
 
     m_loadInProgress = true;
 
-
     cout << url.host().toStdString() << ":" << url.path().toStdString() << endl;
 
     m_http->setHost( url.host() );
