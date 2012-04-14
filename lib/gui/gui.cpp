@@ -447,6 +447,7 @@ namespace visualizer
 
   bool _GUI::doSetup()
   {
+    MESSAGE( "============Setting Up GUI=======" );
 
     m_http = new QHttp( this );
     connect( m_http, SIGNAL( done( bool) ), this, SLOT( loadThatShit(bool) ) );
@@ -457,13 +458,18 @@ namespace visualizer
 
     m_centralWidget = new CentralWidget( this );
     setCentralWidget( m_centralWidget );
+    MESSAGE( "============Creating Actions=======" );
     createActions();
+    MESSAGE( "============Building Controlbar=======" );
     buildControlBar();
+    MESSAGE( "============Building Updatebar=======" );
     buildUpdateBar();
 
     setWindowIcon( QIcon( "icon.png" ) );
 
+    MESSAGE( "============Creating Menus=======" );
     createMenus();
+    MESSAGE( "============Build Toolset=======" );
     buildToolSet();
 
     // If we're in arenaMode, change some settings
@@ -495,7 +501,9 @@ namespace visualizer
     m_previousDirectory = QDir::homePath();
 
     m_chooseDialog = 0;
+    MESSAGE( "============Checking For Updates=======" );
     checkForUpdate( "Visualizer Core", "checkList.md5", VERSION_FILE );
+
 
     return true;
   }

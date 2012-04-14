@@ -11,9 +11,11 @@ namespace visualizer
   RenderWidget::RenderWidget( QWidget *parent )
     : QGLWidget( QGLFormat( QGL::SampleBuffers ), parent )
   {
+    MESSAGE( "============Initializing the Renderer=======" );
     Renderer->setup();
     glInit();
     Renderer->init();
+    MESSAGE( "============Renderer Initialized=======" );
   }
 
   RenderWidget::~RenderWidget()
@@ -22,6 +24,7 @@ namespace visualizer
 
   void RenderWidget::initializeGL()
   {
+    MESSAGE( "============Initializing OpenGL=======" );
     Renderer->create();
     Renderer->setParent( this );
     QGLWidget::initializeGL();

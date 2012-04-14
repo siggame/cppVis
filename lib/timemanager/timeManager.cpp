@@ -31,6 +31,7 @@ namespace visualizer
 
   void _TimeManager::_setup()
   {
+    MESSAGE( "============Initializing TimeManager=======" );
     /// @FIXME There's really no reason this shouldn't all be in a constructor
     m_turn = 0;
     m_progress = 0;

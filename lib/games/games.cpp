@@ -22,6 +22,7 @@ namespace visualizer
 
   void _Games::_setup()
   {
+    MESSAGE( "============Setting Up Plugins=======" );
     IGame *game = 0;
 
     QDir pluginsDir( qApp->applicationDirPath() );
@@ -68,6 +69,7 @@ namespace visualizer
 
       }
     }
+    MESSAGE( "============Plugins Are Initialized=======" );
     
   } // _Games::_setup()
 

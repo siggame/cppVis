@@ -54,16 +54,19 @@ int main(int argc, char *argv[])
   ///////////////////////////////////////////////////////////////////
   // Resource Manager depends on _______________________
   ///////////////////////////////////////////////////////////////////
+  MESSAGE( "============Initializing Resource Manager=======" );
   ResourceMan->setup();
 
   ///////////////////////////////////////////////////////////////////
   // Initialize Texture Loader
   ///////////////////////////////////////////////////////////////////
+  MESSAGE( "============Initializing Texture Loader=======" );
   TextureLoader->setup();
 
   ///////////////////////////////////////////////////////////////////
   // Initialize Animation Engine
   ///////////////////////////////////////////////////////////////////
+  MESSAGE( "============Initializing Animation Engine=======" );
   AnimationEngine->setup();
 
   ///////////////////////////////////////////////////////////////////
@@ -95,8 +98,10 @@ int main(int argc, char *argv[])
     GUI->splashScreen();
   }
 
+  MESSAGE( "Starting The Time Manager" );
   TimeManager->timerStart();
 
+  MESSAGE( "Executing the App" );
 	int retval = app.exec();
 
   MESSAGE( "Destroying Games..." );

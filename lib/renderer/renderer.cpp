@@ -362,6 +362,7 @@ namespace visualizer
       MESSAGE( "Post-FBO Setup" );
     }
 
+    MESSAGE( "Renderer Initialized!" );
 	}
 
   bool _Renderer::isSetup() const

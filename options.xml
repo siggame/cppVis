@@ -1,6 +1,18 @@
 <options>
   <option>
+    <key>Arena Server</key>
+    <type>String</type>
+    <value>ec2-23-22-40-10.compute-1.amazonaws.com</value>
+  </option>
+  <option>
     <key>Show Debug Window On Start</key>
+    <type>Integer</type>
+    <value>1</value>
+    <minvalue>0</minvalue>
+    <maxvalue>1</maxvalue>
+  </option>
+  <option>
+    <key>UseFBO</key>
     <type>Integer</type>
     <value>1</value>
     <minvalue>0</minvalue>
@@ -14,13 +26,6 @@
     <maxvalue>1</maxvalue>
   </option>
   <option>
-    <key>UseFBO</key>
-    <type>Integer</type>
-    <value>1</value>
-    <minvalue>0</minvalue>
-    <maxvalue>1</maxvalue>
-  </option>
-  <option>
     <key>demonstrationMode</key>
     <type>Integer</type>
     <value>0</value>
@@ -30,17 +35,12 @@
   <option>
     <key>gameMode</key>
     <type>Combo</type>
-    <value>Demo</value>
+    <value>Arena</value>
     <combos>
       <op>Normal</op>
       <op>Arena</op>
       <op>Demo</op>
     </combos>
-  </option>
-  <option>
-    <key>Arena Server</key>
-    <type>String</type>
-    <value>ec2-23-22-40-10.compute-1.amazonaws.com</value>
   </option>
   <option>
     <key>helpURL</key>
@@ -70,7 +70,7 @@
   <option>
     <key>speed</key>
     <type>Float</type>
-    <value>6</value>
+    <value>48</value>
     <minvalue>0.01</minvalue>
     <maxvalue>50</maxvalue>
   </option>
