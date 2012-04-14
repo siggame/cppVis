@@ -502,6 +502,8 @@ namespace visualizer
     MESSAGE( "============Show Window=======" );
     show();
 
+    
+    MESSAGE( "============Home Path=======" );
     m_previousDirectory = QDir::homePath();
 
     m_chooseDialog = 0;
