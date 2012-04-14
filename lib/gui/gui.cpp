@@ -505,6 +505,7 @@ namespace visualizer
     
     MESSAGE( "============Home Path=======" );
     m_previousDirectory = QDir::homePath();
+    MESSAGE( ": %s", QDir::homePath().toStdString() );
 
     m_chooseDialog = 0;
     MESSAGE( "============Checking For Updates=======" );
