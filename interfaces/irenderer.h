@@ -84,6 +84,13 @@ namespace visualizer
         const float& z = 0.0f
         ) const = 0;
 
+      virtual void textWidth
+        (
+         const std::string& fontName,
+         const std::string& line,
+         const float& size = 15.0f
+        ) const = 0;
+
       virtual void drawAnimQuad
         (
         const float& x, 

@@ -149,6 +149,13 @@ namespace visualizer
        const Alignment& a = Left
       ) const;
 
+    float textWidth
+      (
+       const std::string& fontName,
+       const std::string& line,
+       const float& size = 15.0f
+      );
+
     void drawLine
       (
        const float& sX,

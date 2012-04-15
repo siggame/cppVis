@@ -724,7 +724,7 @@ namespace visualizer
     // Scale to camera stuff. 
     // Then scale proportionally to size
     glTranslatef( x, y, 0 );
-    scale( size/3.f, size/3.0f );
+    scale( size/3.0f, size/3.0f );
 
     switch( a )
     {
@@ -743,6 +743,20 @@ namespace visualizer
 
     ResourceMan->release( fontName, "renderer" );
   } // _Renderer::drawText()
+
+  void _Renderer::textWidth
+    (
+     const std::string& fontName,
+     const std::string& line,
+     const float& size
+    )
+    {
+      const Text& t = ((ResFont*)ResourceMan->reference( fontName, "renderer" ))->getFont();
+      float width = t.getLineWidth( line );
+      ResourceMan->release( fontName, "renderer" );
+      return width;
+
+    }
 
   void _Renderer::setCamera
     (
