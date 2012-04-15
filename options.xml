@@ -5,6 +5,13 @@
     <value>ec2-23-22-40-10.compute-1.amazonaws.com</value>
   </option>
   <option>
+    <key>Continuous Play</key>
+    <type>Integer</type>
+    <value>1</value>
+    <minvalue>0</minvalue>
+    <maxvalue>1</maxvalue>
+  </option>
+  <option>
     <key>Show Debug Window On Start</key>
     <type>Integer</type>
     <value>1</value>
@@ -38,7 +45,7 @@
   <option>
     <key>helpURL</key>
     <type>String</type>
-    <value>http://xkcd.com</value>
+    <value>ftp://r99acm.device.mst.edu:2121/manual/index.html</value>
   </option>
   <option>
     <key>mapSize</key>

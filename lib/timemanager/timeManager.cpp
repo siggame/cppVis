@@ -318,8 +318,11 @@ namespace visualizer
             m_breakout = true;
             GUI->requestGamelog();
           }
-
+        } else if( OptionsMan->getNumber( "Continuous Play" ) )
+        {
+          GUI->playNext();
         }
+
       }
       else
       {

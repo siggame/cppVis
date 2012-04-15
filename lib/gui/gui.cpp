@@ -70,7 +70,7 @@ namespace visualizer
     evt->acceptProposedAction();
   }
 
-  void _GUI::loadGamestring( char* log, const size_t& length, const string& gamelog )
+  void _GUI::loadGamestring( char* log, const size_t& length, const string& gamelog, const int& startTurn )
   {
     bool parserFound = false;
 
@@ -131,27 +131,37 @@ namespace visualizer
     }
   }
 
-  void _GUI::addToPlaylist( const std::string& gamelog )
+  void _GUI::addToPlaylist( const std::string& gamelog, const int& startTurn )
   {
     QFileInfo file( gamelog.c_str() );
     
     QListWidgetItem *item = new QListWidgetItem( file.fileName() );
     item->setData( 1, QVariant( gamelog.c_str() ) );
+    item->setData( 2, QVariant( startTurn ) );
 
     if( m_playList->count() == 0 )
-      loadGamelog( gamelog );
+      loadGamelog( gamelog, startTurn );
 
     m_playList->addItem( item );
 
 
   }
 
-  void _GUI::playItem( QListWidgetItem* item )
+  void _GUI::playNext()
   {
-    loadGamelog( std::string( item->data(1).toByteArray().constData() ) );
+    m_playListItem++;
+    if( m_playListItem < m_playList->count() )
+    {
+      playItem( m_playList->item(m_playListItem) );
+    }
   }
 
-  void _GUI::loadGamelog( const std::string& gamelog )
+  void _GUI::playItem( QListWidgetItem* item )
+  {
+    loadGamelog( std::string( item->data(1).toByteArray().constData() ), item->data(2).toInt() );
+  }
+
+  void _GUI::loadGamelog( const std::string& gamelog, const int& startTurn )
   {
     ifstream file_gamelog( gamelog.c_str(), ifstream::in );
     if( file_gamelog.is_open() )
@@ -168,7 +178,7 @@ namespace visualizer
 
       file_gamelog.close();
 
-      loadGamestring( input, length, gamelog );
+      loadGamestring( input, length, gamelog, startTurn );
 
       delete [] input;
     }
@@ -191,6 +201,7 @@ namespace visualizer
       QList<QUrl> urlList = mimeData->urls();
 
       m_playList->clear();
+      m_playListItem = 0;
 
       for( size_t i = 0; i < (unsigned int)urlList.size(); ++i )
       {
@@ -284,6 +295,7 @@ namespace visualizer
 
     if( filenames.count() )
     {
+      m_playListItem = 0;
       m_playList->clear();
       for( size_t i = 0; i < filenames.count(); i++ )
       {
@@ -355,7 +367,7 @@ namespace visualizer
         return;
       char *temp = new char[ arr.size() ];
       memcpy( temp, arr.constData(), arr.size() );
-      loadGamestring( temp, arr.size(), "" );
+      loadGamestring( temp, arr.size(), "", 0 );
       m_loadInProgress = false;
       delete [] temp;
     }
@@ -450,6 +462,8 @@ namespace visualizer
   bool _GUI::doSetup()
   {
     MESSAGE( "============Setting Up GUI=======" );
+
+    m_playListItem = 0;
 
     m_http = new QHttp( this );
     connect( m_http, SIGNAL( done( bool) ), this, SLOT( loadThatShit(bool) ) );

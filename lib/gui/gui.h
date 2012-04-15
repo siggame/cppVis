@@ -146,11 +146,11 @@ namespace visualizer
       void requestGamelog();
       bool loadInProgress() const;
 
-      void addToPlaylist( const std::string& gamelog );
+      void addToPlaylist( const std::string& gamelog, const int& startTurn = 0 );
 
       /// GAME SPECIFIC.  NEED TO BE MOVED ELSEWHERE
-      void loadGamelog( const std::string& gamelog );
-      void loadGamestring( char *log, const size_t& length, const string& gamelog );
+      void loadGamelog( const std::string& gamelog, const int& startTurn = 0 );
+      void loadGamestring( char *log, const size_t& length, const string& gamelog, const int& startTurn = 0 );
 
       void update();
       void closeGUI();
@@ -166,6 +166,8 @@ namespace visualizer
       void setFullScreen(bool);
 
       void checkForUpdate( string message, string VERSION, string REMOTE );
+
+      void playNext();
 
     public slots:
       void fileOpen();
@@ -221,6 +223,7 @@ namespace visualizer
     private:
       QHttp* m_http;
       QBuffer *m_updateBuffer;
+      int m_playListItem;
       
 
       bool m_loadInProgress;
