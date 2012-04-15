@@ -744,12 +744,12 @@ namespace visualizer
     ResourceMan->release( fontName, "renderer" );
   } // _Renderer::drawText()
 
-  void _Renderer::textWidth
+  float _Renderer::textWidth
     (
      const std::string& fontName,
      const std::string& line,
      const float& size
-    )
+    ) const
     {
       const Text& t = ((ResFont*)ResourceMan->reference( fontName, "renderer" ))->getFont();
       float width = t.getLineWidth( line );

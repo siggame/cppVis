@@ -84,7 +84,7 @@ namespace visualizer
         const float& z = 0.0f
         ) const = 0;
 
-      virtual void textWidth
+      virtual float textWidth
         (
          const std::string& fontName,
          const std::string& line,

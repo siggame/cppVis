@@ -154,7 +154,7 @@ namespace visualizer
        const std::string& fontName,
        const std::string& line,
        const float& size = 15.0f
-      );
+      ) const;
 
     void drawLine
       (
