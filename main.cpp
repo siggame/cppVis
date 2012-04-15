@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     {
       GUI->addToPlaylist( argv[i] );
     }
-	} else if( OptionsMan->getNumber( "arenaMode" ) )
+	} else if(!OptionsMan->getString( "gameMode" ).compare( "Arena" ) )
   {
   }
   else
