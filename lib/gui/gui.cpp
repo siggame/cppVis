@@ -385,37 +385,41 @@ namespace visualizer
 
   void _GUI::updateDone( QObject* obj )
   {
-    updateInfo* inf = (updateInfo*)obj;
-
-    QFile compare( inf->version.c_str() );
-    if( !compare.open( QIODevice::ReadOnly | QIODevice::Text ) )
+    if( OptionsMan->getString( "gameMode" ).compare( "Arena" ) )
     {
-      MESSAGE( "Local Side MD5 Compare Sum Not Found: %s", inf->version.c_str() );
-      return;
+      updateInfo* inf = (updateInfo*)obj;
+
+      QFile compare( inf->version.c_str() );
+      if( !compare.open( QIODevice::ReadOnly | QIODevice::Text ) )
+      {
+        MESSAGE( "Local Side MD5 Compare Sum Not Found: %s", inf->version.c_str() );
+        return;
+      }
+
+      QByteArray data = compare.readAll();
+
+      if( strcmp( data.constData(), inf->buffer->buffer().constData() ) )
+      {
+        m_updateBar->show();
+
+        QLabel *text = (QLabel*)m_updateBar->widget();
+        text->setText( inf->message.c_str() );
+
+
+        ofstream out1( "md5.in" );
+        out1  << data.constData();
+        out1.close();
+        ofstream out2( "md5.out" );
+        out2 << inf->buffer->buffer().constData();
+        out2.close();
+
+
+      }
+
+      compare.close();
+
+      inf->buffer->close();
     }
-
-    QByteArray data = compare.readAll();
-
-    if( strcmp( data.constData(), inf->buffer->buffer().constData() ) )
-    {
-      m_updateBar->show();
-      QLabel *text = (QLabel*)m_updateBar->widget();
-      text->setText( inf->message.c_str() );
-
-
-      ofstream out1( "md5.in" );
-      out1  << data.constData();
-      out1.close();
-      ofstream out2( "md5.out" );
-      out2 << inf->buffer->buffer().constData();
-      out2.close();
-
-
-    }
-
-    compare.close();
-
-    inf->buffer->close();
 
   }
 
@@ -483,7 +487,7 @@ namespace visualizer
     // If we're in arenaMode, change some settings
 
     MESSAGE( "============Arena Mode=======" );
-    if( OptionsMan->getNumber( "arenaMode" ) )
+    if( !OptionsMan->getString( "gameMode" ).compare( "Arena" ) )
     {
       menuBar()->hide();
       setFullScreen(true);

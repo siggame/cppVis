@@ -19,13 +19,6 @@
     <maxvalue>1</maxvalue>
   </option>
   <option>
-    <key>arenaMode</key>
-    <type>Integer</type>
-    <value>0</value>
-    <minvalue>0</minvalue>
-    <maxvalue>1</maxvalue>
-  </option>
-  <option>
     <key>demonstrationMode</key>
     <type>Integer</type>
     <value>0</value>
@@ -35,7 +28,7 @@
   <option>
     <key>gameMode</key>
     <type>Combo</type>
-    <value>Arena</value>
+    <value>Normal</value>
     <combos>
       <op>Normal</op>
       <op>Arena</op>
