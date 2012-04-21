@@ -5,33 +5,14 @@
     <value>ec2-23-22-40-10.compute-1.amazonaws.com</value>
   </option>
   <option>
-    <key>Continuous Play</key>
-    <type>Integer</type>
-    <value>1</value>
-    <minvalue>0</minvalue>
-    <maxvalue>1</maxvalue>
-  </option>
-  <option>
-    <key>Show Debug Window On Start</key>
-    <type>Integer</type>
-    <value>1</value>
-    <minvalue>0</minvalue>
-    <maxvalue>1</maxvalue>
-  </option>
-  <option>
-    <key>Spectate Server</key>
-    <type>String</type>
-    <value>127.0.0.1</value>
-  </option>
-  <option>
-    <key>Use FBO</key>
-    <type>Integer</type>
-    <value>1</value>
-    <minvalue>0</minvalue>
-    <maxvalue>1</maxvalue>
-  </option>
-  <option>
     <key>Check For Updates</key>
+    <type>Integer</type>
+    <value>1</value>
+    <minvalue>0</minvalue>
+    <maxvalue>1</maxvalue>
+  </option>
+  <option>
+    <key>Continuous Play</key>
     <type>Integer</type>
     <value>1</value>
     <minvalue>0</minvalue>
@@ -53,10 +34,29 @@
     <value>ftp://r99acm.device.mst.edu:2121/manual/index.html</value>
   </option>
   <option>
+    <key>Show Debug Window On Start</key>
+    <type>Integer</type>
+    <value>1</value>
+    <minvalue>0</minvalue>
+    <maxvalue>1</maxvalue>
+  </option>
+  <option>
+    <key>Spectate Server</key>
+    <type>String</type>
+    <value>127.0.0.1</value>
+  </option>
+  <option>
     <key>Speed</key>
     <type>Float</type>
     <value>6</value>
     <minvalue>0.01</minvalue>
     <maxvalue>50</maxvalue>
+  </option>
+  <option>
+    <key>Use FBO</key>
+    <type>Integer</type>
+    <value>1</value>
+    <minvalue>0</minvalue>
+    <maxvalue>1</maxvalue>
   </option>
 </options>
