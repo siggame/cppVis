@@ -206,7 +206,7 @@ namespace visualizer
       for( size_t i = 0; i < (unsigned int)urlList.size(); ++i )
       {
         string path = urlList.at( i ).toLocalFile().toAscii().constData();
-        addToPlaylist( path );
+        addToPlaylist( path, 0 );
       }
 
     }

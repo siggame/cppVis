@@ -51,6 +51,8 @@ namespace visualizer
 
       virtual const Input& getInput() const = 0;
 
+      virtual void addToPlaylist( const std::string& gamelog, const int& startTurn = 0 ) = 0;
+
       virtual void setDebugHeader( const QStringList& header ) = 0;
   };
 
