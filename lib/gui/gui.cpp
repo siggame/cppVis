@@ -343,7 +343,7 @@ namespace visualizer
         plugins << QString(i.second.c_str());
       }
 
-      QString text = QInputDialog::getItem(this, "Choose A Plugin To Spectate With", "Label", plugins, 0, false);
+      QString text = QInputDialog::getItem(this, "Choose A Plugin To Spectate With", "Available Plugins:", plugins, 0, false);
 
       int index = plugins.indexOf(text);
 
@@ -875,7 +875,17 @@ namespace visualizer
     QPushButton *spectate = new QPushButton( "Spectate/Play" );
 
     m_chooseDialog->layout()->addWidget( load );
-    m_chooseDialog->layout()->addWidget( spectate );
+
+    for(auto& i: Games->gameList())
+    {
+      if(i->getPluginInfo().spectateMode)
+      {
+        m_chooseDialog->layout()->addWidget( spectate );
+        break;
+      }
+      
+    }
+
 
     GUI->connect( load, SIGNAL( clicked() ), GUI, SLOT( fileOpen() ) );
     GUI->connect( load, SIGNAL( clicked() ), m_chooseDialog, SLOT( close() ) );
