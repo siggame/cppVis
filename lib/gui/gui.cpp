@@ -560,6 +560,9 @@ namespace visualizer
 
     m_statusBar->addPermanentWidget( m_controlBar, 100 );
 
+    if( !OptionsMan->getString( "gameMode" ).compare( "Arena" ) )
+      m_statusBar->hide();
+
   }
 
   void _GUI::createActions()
