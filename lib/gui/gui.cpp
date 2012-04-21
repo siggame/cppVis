@@ -337,7 +337,18 @@ namespace visualizer
       Games->gameList()[ spectators[0].first ]->spectate( OptionsMan->getString( "SpectateServer" ) );
     } else
     {
-      WARNING( "Jake Needs To Implement A Plugin Selection Dialog" );
+      QStringList plugins;
+      for(auto& i: spectators)
+      {
+        plugins << QString(i.second.c_str());
+      }
+
+      QString text = QInputDialog::getItem(this, "Choose A Plugin To Spectate With", "Label", plugins, 0, false);
+
+      int index = plugins.indexOf(text);
+
+      Games->gameList()[ spectators[index].first ]->spectate( OptionsMan->getString("SpectateServer" ) );
+
     }
 
 

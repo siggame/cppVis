@@ -19,6 +19,11 @@
     <maxvalue>1</maxvalue>
   </option>
   <option>
+    <key>SpectateServer</key>
+    <type>String</type>
+    <value>127.0.0.1</value>
+  </option>
+  <option>
     <key>UseFBO</key>
     <type>Integer</type>
     <value>1</value>
