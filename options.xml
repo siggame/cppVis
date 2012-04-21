@@ -43,7 +43,7 @@
   <option>
     <key>Spectate Server</key>
     <type>String</type>
-    <value>127.0.0.1</value>
+    <value>chess-server.mnuck.com</value>
   </option>
   <option>
     <key>Speed</key>
