@@ -253,7 +253,7 @@ namespace visualizer
 
   void _GUI::helpContents()
   {
-    QDesktopServices::openUrl( QUrl( OptionsMan->getString( "helpURL" ).c_str() ) );
+    QDesktopServices::openUrl( QUrl( OptionsMan->getString( "Help URL" ).c_str() ) );
   }
 
   void _GUI::helpLikeUs()
@@ -334,7 +334,7 @@ namespace visualizer
       WARNING( "No Games Supporting Spectator Mode Found!" );
     } else if( spectators.size() == 1 )
     {
-      Games->gameList()[ spectators[0].first ]->spectate( OptionsMan->getString( "SpectateServer" ) );
+      Games->gameList()[ spectators[0].first ]->spectate( OptionsMan->getString( "Spectate Server" ) );
     } else
     {
       QStringList plugins;
@@ -347,7 +347,7 @@ namespace visualizer
 
       int index = plugins.indexOf(text);
 
-      Games->gameList()[ spectators[index].first ]->spectate( OptionsMan->getString("SpectateServer" ) );
+      Games->gameList()[ spectators[index].first ]->spectate( OptionsMan->getString("Spectate Server" ) );
 
     }
 

@@ -19,12 +19,12 @@
     <maxvalue>1</maxvalue>
   </option>
   <option>
-    <key>SpectateServer</key>
+    <key>Spectate Server</key>
     <type>String</type>
     <value>127.0.0.1</value>
   </option>
   <option>
-    <key>UseFBO</key>
+    <key>Use FBO</key>
     <type>Integer</type>
     <value>1</value>
     <minvalue>0</minvalue>
@@ -48,12 +48,12 @@
     </combos>
   </option>
   <option>
-    <key>helpURL</key>
+    <key>Help URL</key>
     <type>String</type>
     <value>ftp://r99acm.device.mst.edu:2121/manual/index.html</value>
   </option>
   <option>
-    <key>speed</key>
+    <key>Speed</key>
     <type>Float</type>
     <value>6</value>
     <minvalue>0.01</minvalue>
