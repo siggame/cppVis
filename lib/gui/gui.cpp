@@ -868,7 +868,7 @@ namespace visualizer
 
   void _GUI::splashScreen()
   {
-    m_chooseDialog = new QDialog(this, Qt::Tool);
+    m_chooseDialog = new QDialog(this, Qt::SplashScreen);
     m_chooseDialog->setLayout( new QBoxLayout( QBoxLayout::LeftToRight ) );
 
     QPushButton *load = new QPushButton( "Load Gamelog" );
