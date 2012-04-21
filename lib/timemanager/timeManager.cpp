@@ -311,7 +311,7 @@ namespace visualizer
         // Very close to the next turn, but not quite
         m_turnCompletion = 0.9999f;
 
-        if( !OptionsMan->getString( "gameMode" ).compare( "Arena" ) )
+        if( !OptionsMan->getString( "Game Mode" ).compare( "Arena" ) )
         {
           if( !GUI->loadInProgress() )
           {

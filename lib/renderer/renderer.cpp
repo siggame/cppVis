@@ -145,7 +145,6 @@ namespace visualizer
 
     /// @TODO Need to clean up this code a bit.
     glPushMatrix();
-    float mapSize = (float)OptionsMan->getNumber("mapSize");
 
     translate( width()*m_winX/m_unitSzX, height()*m_winY/m_unitSzY );
 
@@ -280,7 +279,7 @@ namespace visualizer
     }
     else
     {
-      resize( OptionsMan->getNumber( "renderWidth" ), OptionsMan->getNumber( "renderHeight" ) );
+      resize( 1, 1 );
     }
 
     MESSAGE( "Finished Resizing" );
@@ -444,12 +443,6 @@ namespace visualizer
 
   bool _Renderer::update(const unsigned int & /*turn*/, const unsigned int & /*frame*/)
   {
-#if 0
-    bool selectUpdate = SelectionRender->getUpdated();
-    float mapSize = (float)OptionsMan->getInt("mapSize");
-    float unitSize  = height()/mapSize;
-
-#endif
     return true;
   }
 

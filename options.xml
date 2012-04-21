@@ -31,14 +31,14 @@
     <maxvalue>1</maxvalue>
   </option>
   <option>
-    <key>demonstrationMode</key>
+    <key>Check For Updates</key>
     <type>Integer</type>
-    <value>0</value>
+    <value>1</value>
     <minvalue>0</minvalue>
     <maxvalue>1</maxvalue>
   </option>
   <option>
-    <key>gameMode</key>
+    <key>Game Mode</key>
     <type>Combo</type>
     <value>Normal</value>
     <combos>
@@ -51,26 +51,6 @@
     <key>helpURL</key>
     <type>String</type>
     <value>ftp://r99acm.device.mst.edu:2121/manual/index.html</value>
-  </option>
-  <option>
-    <key>mapSize</key>
-    <type>Integer</type>
-    <value>1</value>
-    <minvalue>1</minvalue>
-  </option>
-  <option>
-    <key>renderHeight</key>
-    <type>Integer</type>
-    <value>473</value>
-    <minvalue>1</minvalue>
-    <maxvalue>2048</maxvalue>
-  </option>
-  <option>
-    <key>renderWidth</key>
-    <type>Integer</type>
-    <value>1756</value>
-    <minvalue>1</minvalue>
-    <maxvalue>2048</maxvalue>
   </option>
   <option>
     <key>speed</key>

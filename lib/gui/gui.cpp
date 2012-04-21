@@ -408,7 +408,9 @@ namespace visualizer
 
   void _GUI::updateDone( QObject* obj )
   {
-    if( OptionsMan->getString( "gameMode" ).compare( "Arena" ) )
+    if( 
+        OptionsMan->getString( "Game Mode" ).compare( "Arena" ) &&  
+        OptionsMan->getNumber( "Check For Updates" ) )
     {
       updateInfo* inf = (updateInfo*)obj;
 
@@ -501,19 +503,17 @@ namespace visualizer
 
     // If we're in arenaMode, change some settings
 
-    MESSAGE( "============Arena Mode=======" );
-    if( !OptionsMan->getString( "gameMode" ).compare( "Arena" ) )
+    if( !OptionsMan->getString( "Game Mode" ).compare( "Arena" ) )
     {
+      MESSAGE( "============Arena Mode=======" );
       menuBar()->hide();
       setFullScreen(true);
       m_dockWidget->hide();
       requestGamelog();
-    }
-
-    MESSAGE( "============Demo Mode=======" );
-    //If we're in demonstrationMode, change different settings
-    if( OptionsMan->getNumber( "demonstrationMode" ) )
+    } else if( !OptionsMan->getString( "Game Mode" ).compare( "Demo" ) )
     {
+      MESSAGE( "============Demo Mode=======" );
+      //If we're in demonstrationMode, change different settings
       menuBar()->hide();
       setFullScreen(true);
       m_dockWidget->hide();
@@ -571,7 +571,7 @@ namespace visualizer
 
     m_statusBar->addPermanentWidget( m_controlBar, 100 );
 
-    if( !OptionsMan->getString( "gameMode" ).compare( "Arena" ) )
+    if( !OptionsMan->getString( "Game Mode" ).compare( "Arena" ) )
       m_statusBar->hide();
 
   }
