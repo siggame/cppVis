@@ -1,11 +1,10 @@
+
 #ifndef PARTICLE_SYSTEM_H
 #define PARTICLE_SYSTEM_H
 
 #include <vector>
+#include <map>
 #include <string>
-
-// This will probably act more like a particle system manager than becoming the particle system
-// itself.
 
 namespace visualizer
 {
@@ -24,8 +23,9 @@ namespace visualizer
     float initTime;
     float lifeTime;
     float initSize;
-  }; 
-
+  };
+  
+  // todo: implement
   class ParticleSystem
   {
 	  public:
@@ -33,6 +33,7 @@ namespace visualizer
 	  ParticleSystem(const std::string& texture, int iMaxParticles, float fTimePerParticle);
 	  virtual ~ParticleSystem();
 	  
+	  // Pops a particle from the dead vector pool and adds it to the alive vector pool
 	  void AddParticle();
 	  
 	  virtual void InitParticle(Particle& out) = 0;
@@ -43,13 +44,40 @@ namespace visualizer
 	  private:
 	  
 	  std::string m_texture;
-	  int m_uiMaxParticles;
-	  float m_fTime;
-	  float m_fTimePerParticle; 
+	  const int m_uiMaxParticles;
+	  float m_fTime; // Age of ps
+	  float m_fTimePerParticle; // time before the system emits another particle
 	  
-	  std::vector<Particle> m_Particles;
-	  std::vector<Particle> m_AliveParticles;
+	  std::vector<Particle> m_Particles; // all particles
+	  
+	  // These pools are rebuilt every frame
+	  std::vector<Particle> m_AliveParticles; // All particles that get rendered
 	  std::vector<Particle> m_DeadParticles;
+  };
+  
+  class ParticleSystemManager
+  {
+    public:
+    
+    ~ParticleSystemManager();
+    
+    /* todo: implement
+    
+    if the system does not exist, create it,
+    then return the reference to the ps 
+    
+    */
+    ParticleSystem& GetPS(const std::string& ps);
+    
+    // todo: add more methods
+    
+    private:
+    
+    std::map<std::string,ParticleSystem*> m_ParticleSystems;
+    
+    // todo: more stats could go here
+  
+  
   };
 
 
