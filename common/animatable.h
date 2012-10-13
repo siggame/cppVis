@@ -39,8 +39,8 @@ namespace visualizer
       void addKeyFrame( SmartPointer< Anim > anim );
       void addSubFrame( const size_t& subFrame, SmartPointer< Anim > anim );
 
-      const size_t& numKeyFrames() const;
-      const size_t& numFrames() const;
+      size_t numKeyFrames() const;
+      size_t numFrames() const;
 
       std::list<SmartPointer<Anim> >& getFrames();
       const std::list<SmartPointer<Anim> >& getFrames() const;

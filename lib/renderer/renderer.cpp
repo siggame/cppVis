@@ -9,6 +9,8 @@ using namespace std;
 namespace visualizer
 {
 
+const float PI = 3.141592654f;
+
   _Renderer *Renderer = 0;
 
   bool _Renderer::resize(const unsigned int & width, const unsigned int & height, const unsigned int & depth)
@@ -253,7 +255,6 @@ namespace visualizer
     int maxT;
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxT);
 
-    MESSAGE( "" );
     MESSAGE( "============System OpenGL Information=======" );
     MESSAGE( "Shader Support: %d", shaderSupport() );
     MESSAGE( "FBO Support: %d", fboSupport() );
@@ -318,8 +319,8 @@ namespace visualizer
     m_screenHeight = 0;
     for( size_t i = 0; i < QApplication::desktop()->screenCount(); i++ )
     {
-      int width = QApplication::desktop()->screenGeometry(i).width();
-      int height = QApplication::desktop()->screenGeometry(i).height();
+      unsigned int width = QApplication::desktop()->screenGeometry(i).width();
+      unsigned int height = QApplication::desktop()->screenGeometry(i).height();
       if( width > m_screenWidth )
         m_screenWidth = width;
       if( height > m_screenHeight )
@@ -645,7 +646,7 @@ namespace visualizer
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
     glLineWidth( lineWidth );
-    const float convert = 3.14159265358f / 180.0f;
+    const float convert = PI / 180.0f;
     const float interval = (endAngle-startAngle)/segments;
 
     glBegin( GL_LINE_STRIP);

@@ -19,13 +19,13 @@ namespace visualizer
 
   } // Animatable::addSubFrame()
 
-  const size_t& Animatable::numKeyFrames() const
+  size_t Animatable::numKeyFrames() const
   {
     return m_keyFrames.size();
 
   } // Animatable::numKeyFrames()
 
-  const size_t& Animatable::numFrames() const
+  size_t Animatable::numFrames() const
   {
     return m_frames.size();
 

@@ -267,7 +267,7 @@ namespace visualizer
 
   }
 
-  const float& _TimeManager::getSpeed()
+  float _TimeManager::getSpeed()
   {
     // TODO: Make this a logarithmic increase
     return OptionsMan->getNumber( "Speed" ) * m_speedModifier / 3;
