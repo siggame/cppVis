@@ -61,12 +61,7 @@ namespace visualizer
     
     ~ParticleSystemManager();
     
-    /* todo: implement
-    
-    if the system does not exist, create it,
-    then return the reference to the ps 
-    
-    */
+    bool AddPS(const std::string& ps, const std::string& texture, int iMaxParticles, float fTimePerParticle);
     ParticleSystem& GetPS(const std::string& ps);
     
     // todo: add more methods
