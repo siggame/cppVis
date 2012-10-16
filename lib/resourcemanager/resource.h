@@ -162,18 +162,18 @@ namespace visualizer
             "Animation Frame Out of Bounds"
             );
         }
+        
+        int tileX = (int)( texture.width()/width);
+        int tileY = (int)( texture.height()/height);
+        
+        int i = frame / tileX;
+        int j = frame % tileY;
 
-        int tileX = (int)( texture.width()/width );
-        //int tileY = (int)( texture.height()/height );
-        int yPos = (int)frame/tileX;
-        int xPos = frame-yPos*tileX;
         Rect tRect;
-        // Might have to do textureWidth - each of these
-        // because of how png stores textures
-        tRect.upLeft = Coord( xPos*width, yPos*height );
-        tRect.upRight = Coord( (xPos+1)*width, yPos*height );
-        tRect.bottomRight = Coord( (xPos+1)*width, (yPos+1)*height );
-        tRect.bottomLeft = Coord( xPos*width, (yPos+1)*height );
+        tRect.upLeft = Coord( (float)j*width / (float)texture.width(), i*height / (float)texture.height());
+        tRect.upRight = Coord( (float)(j+1)*width / (float)texture.width(), (float)i*width / (float)texture.height());
+        tRect.bottomRight = Coord( (float)(j+1)*width / (float)texture.width(), (float)(i+1)*height / (float)texture.height() );
+        tRect.bottomLeft = Coord( (float)j*width / (float)texture.width(), (float)(i+1)*height / (float)texture.height());
 
         return tRect;
       }

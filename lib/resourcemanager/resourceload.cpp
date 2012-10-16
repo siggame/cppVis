@@ -43,6 +43,7 @@ namespace visualizer
     QFileInfo fInfo( filename.c_str() );
 
     std::ifstream input(filename.c_str());
+    cout<<filename<<endl;
 
     if( !input.is_open() )
     {    
@@ -96,11 +97,13 @@ namespace visualizer
               {
                 case RT_TEXTURE:
                 {
+                  cout<<"TEXTURE"<<endl;
                   loadTexture( pathBuff, namebuff );
                   break;
                 }
                 case RT_ANIMATION:
                 {
+                  cout<<"ANIMATION"<<endl;
                   loadAnimation( pathBuff, namebuff );
 
                 } break;
