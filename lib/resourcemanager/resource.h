@@ -170,10 +170,17 @@ namespace visualizer
         int j = frame % tileY;
 
         Rect tRect;
+        /*tRect.bottomLeft = Coord( (float)j*width / (float)texture.width(), (float)i*height / (float)texture.height());
+        tRect.upLeft = Coord( (float)j*width / (float)texture.width(), (float)(i+1)*height / (float)texture.height());
+        tRect.upRight = Coord( (float)(j+1)*width / (float)texture.width(), (float)(i+1)*height / (float)texture.height());
+        tRect.bottomRight = Coord( (float)(j+1)*width / (float)texture.width(), (float)i*height / (float)texture.height() );*/
+        
+        // this works with #1
+        tRect.bottomLeft = Coord( (float)j*width / (float)texture.width(), (float)(i+1)*height / (float)texture.height());
         tRect.upLeft = Coord( (float)j*width / (float)texture.width(), i*height / (float)texture.height());
         tRect.upRight = Coord( (float)(j+1)*width / (float)texture.width(), (float)i*width / (float)texture.height());
         tRect.bottomRight = Coord( (float)(j+1)*width / (float)texture.width(), (float)(i+1)*height / (float)texture.height() );
-        tRect.bottomLeft = Coord( (float)j*width / (float)texture.width(), (float)(i+1)*height / (float)texture.height());
+        
 
         return tRect;
       }
