@@ -149,12 +149,12 @@ namespace visualizer
         const size_t& rWidth,
         const size_t& rHeight, 
         const size_t& frames
-        ) : ResTexture( image, id ), width( rWidth ), height( rHeight ), numFrames( frames )
+        ) : ResTexture( image, id ), m_width( rWidth ), m_height( rHeight ), m_numFrames( frames )
       {}
     
       Rect calcTexCoord( const unsigned int& frame ) const
       {
-        if( frame >= numFrames )
+        if( frame >= m_numFrames )
         {
           THROW
             (
@@ -163,11 +163,11 @@ namespace visualizer
             );
         }
         
-        int tileX = (int)( texture.width()/width);
-        int tileY = (int)( texture.height()/height);
+        int width = (int)( texture.width()/m_width);
+        int height = (int)( texture.height()/m_height);
         
-        int i = frame / tileX;
-        int j = frame % tileY;
+        int i = frame / m_width;
+        int j = frame % m_height;
 
         Rect tRect;
         /*tRect.bottomLeft = Coord( (float)j*width / (float)texture.width(), (float)i*height / (float)texture.height());
@@ -187,12 +187,12 @@ namespace visualizer
 
       size_t frames() const
       {
-        return numFrames;
+        return m_numFrames;
       }
       
     private:
-      size_t width, height;
-      size_t numFrames;
+      size_t m_width, m_height;
+      size_t m_numFrames;
 
   };
 

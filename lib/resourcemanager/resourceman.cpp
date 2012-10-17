@@ -247,7 +247,7 @@ namespace visualizer
     const std::string metaData = filename + ".meta";
     cout<<metaData<<endl;
     ifstream metaIn( metaData.c_str() );
-    metaIn >> frames;
+    metaIn >> frames; // todo: this var could be removed
     metaIn >> width;
     metaIn >> height;
     
