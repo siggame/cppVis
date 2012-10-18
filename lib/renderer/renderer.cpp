@@ -560,21 +560,15 @@ const float PI = 3.141592654f;
 
     ResAnimation *r = (ResAnimation*)ResourceMan->reference( resource, "renderer" );
     Rect texCoord = r->calcTexCoord( frameNumber );
-
+   
     // todo: fix this, they are reversed
     glBindTexture( GL_TEXTURE_2D, r->getTexture() );
     glBegin( GL_QUADS );
-    
-      /*glTexCoord2f(texCoord.upLeft.x,texCoord.upLeft.y); glVertex3f( x, y, z );
-      glTexCoord2f(texCoord.bottomLeft.x,texCoord.bottomLeft.y); glVertex3f( x, y+h, z );
-      glTexCoord2f(texCoord.bottomRight.x,texCoord.bottomRight.y); glVertex3f( x+w, y+h, z );   
-      glTexCoord2f(texCoord.upRight.x,texCoord.upRight.y ); glVertex3f( x+w, y, z );  */
-    
       // this works with #1
       glTexCoord2f(1.0f-texCoord.upLeft.x, 1.0f-texCoord.upLeft.y); glVertex3f( x, y, z );
       glTexCoord2f( 1.0f-texCoord.bottomLeft.x,1.0f-texCoord.bottomLeft.y); glVertex3f( x, y+h, z );
       glTexCoord2f( 1.0f-texCoord.bottomRight.x, 1.0f-texCoord.bottomRight.y); glVertex3f( x+w, y+h, z );   
-      glTexCoord2f( 1.0f-texCoord.upRight.x, 1.0f-texCoord.upRight.y ); glVertex3f( x+w, y, z );   
+      glTexCoord2f( 1.0f-texCoord.upRight.x, 1.0f-texCoord.upRight.y ); glVertex3f( x+w, y, z );
     glEnd();
 
     ResourceMan->release( resource, "renderer" );

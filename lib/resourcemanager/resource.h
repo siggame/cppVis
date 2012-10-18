@@ -150,7 +150,9 @@ namespace visualizer
         const size_t& rHeight, 
         const size_t& frames
         ) : ResTexture( image, id ), m_width( rWidth ), m_height( rHeight ), m_numFrames( frames )
-      {}
+      {
+        
+      }
     
       Rect calcTexCoord( const unsigned int& frame ) const
       {
@@ -166,8 +168,8 @@ namespace visualizer
         int width = (int)( texture.width()/m_width);
         int height = (int)( texture.height()/m_height);
         
-        int i = frame / m_width;
-        int j = frame % m_height;
+        int i = frame / (m_width);
+        int j = frame % (m_width);
 
         Rect tRect;
         /*tRect.bottomLeft = Coord( (float)j*width / (float)texture.width(), (float)i*height / (float)texture.height());
@@ -178,7 +180,7 @@ namespace visualizer
         // this works with #1
         tRect.bottomLeft = Coord( (float)j*width / (float)texture.width(), (float)(i+1)*height / (float)texture.height());
         tRect.upLeft = Coord( (float)j*width / (float)texture.width(), i*height / (float)texture.height());
-        tRect.upRight = Coord( (float)(j+1)*width / (float)texture.width(), (float)i*width / (float)texture.height());
+        tRect.upRight = Coord( (float)(j+1)*width / (float)texture.width(), (float)i*height / (float)texture.height());
         tRect.bottomRight = Coord( (float)(j+1)*width / (float)texture.width(), (float)(i+1)*height / (float)texture.height() );
         
 

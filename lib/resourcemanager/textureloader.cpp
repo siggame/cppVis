@@ -85,9 +85,12 @@ namespace visualizer
          path.c_str()
         );
     }
-
+    
+    // remove these lines to load non powers of 2
     size_t width = powers[ (size_t)log2( buffer.width()-1 )  ];
     size_t height = powers[ (size_t)log2( buffer.height()-1 ) ];
+    cout<<width<<endl;
+    cout<<height<<endl;
 
     QImage fixed( width, height, QImage::Format_ARGB32 );
     QPainter painter(&fixed);
