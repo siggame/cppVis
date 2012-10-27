@@ -540,7 +540,43 @@ const float PI = 3.141592654f;
     glDisable( GL_BLEND );
     
   } // _Renderer::DrawTexturedQuad()
+  
+  
+  void _Renderer::drawSubTexturedQuad
+    (
+      const float& x,
+      const float& y,
+      const float& w,
+      const float& h,
+      const float& subX,
+      const float& subY,
+      const float& subWidth,
+      const float& subHeight,
+      const std::string& resource,
+      const float& z
+    ) const
+  {
+    glEnable( GL_BLEND );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+    //glDisable( GL_DEPTH_TEST );
+    glEnable( GL_TEXTURE_2D );
 
+    ResTexture *r = (ResTexture*)ResourceMan->reference( resource, "renderer" );
+
+    glBindTexture( GL_TEXTURE_2D, r->getTexture() );
+    glBegin( GL_QUADS );
+      glTexCoord2f( subX+subWidth,  subY+subHeight );  glVertex3f( x, y, z );
+      glTexCoord2f( subX,           subY+subHeight );  glVertex3f( x+w, y, z );
+      glTexCoord2f( subX,           subY );            glVertex3f( x+w, y+h, z );
+      glTexCoord2f( subX+subWidth,  subY );            glVertex3f( x, y+h, z );
+    glEnd();
+
+    ResourceMan->release( resource, "renderer" );
+    glDisable( GL_TEXTURE_2D );
+    glDisable( GL_BLEND );
+    
+  } // _Renderer::drawSubTexturedQuad()
+  
 
   void _Renderer::drawAnimQuad
     (

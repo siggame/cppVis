@@ -83,6 +83,20 @@ namespace visualizer
         const std::string& resource,
         const float& z = 0.0f
         ) const = 0;
+        
+        virtual void drawSubTexturedQuad
+        (
+        const float& x, 
+        const float& y,
+        const float& w, 
+        const float& h,
+        const float& subX,
+        const float& subY,
+        const float& subWidth,
+        const float& subHeight,
+        const std::string& resource,
+        const float& z = 0.0f
+        ) const = 0;
 
       virtual float textWidth
         (
