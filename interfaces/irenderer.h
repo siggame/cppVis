@@ -97,6 +97,17 @@ namespace visualizer
         const std::string& resource,
         const float& z = 0.0f
         ) const = 0;
+        
+      virtual void drawRotatedTexturedQuad
+        (
+          const float& x,
+          const float& y,
+          const float& w, 
+          const float& h,
+          const float& degrees,
+          const std::string& resource,
+          const float& z = 0.0f
+        ) const = 0;
 
       virtual float textWidth
         (

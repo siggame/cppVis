@@ -577,6 +577,25 @@ const float PI = 3.141592654f;
     
   } // _Renderer::drawSubTexturedQuad()
   
+  
+  void _Renderer::drawRotatedTexturedQuad
+    (
+      const float& x,
+      const float& y,
+      const float& w, 
+      const float& h,
+      const float& degrees,
+      const std::string& resource,
+      const float& z
+    ) const
+  {
+    push();
+    translate( x + w/2.0f, y + h/2.0f );
+    rotate( degrees, 0, 0, 1 );
+    drawTexturedQuad( -1 * w/2.0f, -1 * h/2.0f, w, h, resource );
+    pop();
+  } // drawRotatedTexturedQuad
+  
 
   void _Renderer::drawAnimQuad
     (

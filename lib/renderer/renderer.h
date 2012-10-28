@@ -130,6 +130,17 @@ namespace visualizer
       const float& z = 0.0f
       ) const;
     
+    void drawRotatedTexturedQuad
+      (
+        const float& x,
+        const float& y,
+        const float& w, 
+        const float& h,
+        const float& degrees,
+        const std::string& resource,
+        const float& z = 0.0f
+      ) const;
+    
     void drawAnimQuad
       (
        const float& x,
