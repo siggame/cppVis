@@ -2,7 +2,7 @@
   <option>
     <key>Arena Server</key>
     <type>String</type>
-    <value>ec2-23-22-40-10.compute-1.amazonaws.com</value>
+    <value>arena.megaminerai.com</value>
   </option>
   <option>
     <key>Check For Updates</key>
@@ -48,7 +48,7 @@
   <option>
     <key>Speed</key>
     <type>Float</type>
-    <value>6</value>
+    <value>8</value>
     <minvalue>0.01</minvalue>
     <maxvalue>50</maxvalue>
   </option>
