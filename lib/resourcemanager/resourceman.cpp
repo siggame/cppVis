@@ -245,15 +245,11 @@ namespace visualizer
     size_t frames, width, height;
 
     const std::string metaData = filename + ".meta";
-    cout<<metaData<<endl;
     ifstream metaIn( metaData.c_str() );
     metaIn >> frames; // todo: this var could be removed
     metaIn >> width;
-    metaIn >> height;
-    
-    cout<<frames<<endl;
-    cout<<width<<endl;
-    cout<<height<<endl;
+    metaIn >> height; 
+
 
     if( ( id = TextureLoader->load( filename.c_str(), texture ) ) )
     {
