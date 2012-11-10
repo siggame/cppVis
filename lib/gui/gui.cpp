@@ -507,7 +507,10 @@ namespace visualizer
     {
       MESSAGE( "============Arena Mode=======" );
       menuBar()->hide();
-      setFullScreen(true);
+      if( OptionsMan->getNumber( "Presentation Fullscreen" ) == 1 )
+      {
+        setFullScreen(true);
+      }
       m_dockWidget->hide();
       requestGamelog();
     } else if( !OptionsMan->getString( "Game Mode" ).compare( "Demo" ) )
@@ -515,7 +518,10 @@ namespace visualizer
       MESSAGE( "============Demo Mode=======" );
       //If we're in demonstrationMode, change different settings
       menuBar()->hide();
-      setFullScreen(true);
+      if( OptionsMan->getNumber( "Presentation Fullscreen" ) == 1 )
+      {
+        setFullScreen(true);
+      }
       m_dockWidget->hide();
     }
 

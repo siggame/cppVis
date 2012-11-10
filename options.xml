@@ -34,6 +34,13 @@
     <value>ftp://r99acm.device.mst.edu:2121/manual/index.html</value>
   </option>
   <option>
+    <key>Presentation Fullscreen</key>
+    <type>Integer</type>
+    <value>0</value>
+    <minvalue>0</minvalue>
+    <maxvalue>1</maxvalue>
+  </option>
+  <option>
     <key>Show Debug Window On Start</key>
     <type>Integer</type>
     <value>1</value>
