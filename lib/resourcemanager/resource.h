@@ -158,11 +158,7 @@ namespace visualizer
       {
         if( frame >= m_numFrames )
         {
-          THROW
-            (
-            Exception,
-            "Animation Frame Out of Bounds"
-            );
+          THROW (Exception, "Animation Frame Out of Bounds:\nFrame: %i\nMax Frame:%i",frame, m_numFrames - 1);
         }
         
         int width = (int)( texture.width()/m_width);
