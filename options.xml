@@ -2,7 +2,7 @@
   <option>
     <key>Arena Server</key>
     <type>String</type>
-    <value>ec2-23-22-40-10.compute-1.amazonaws.com</value>
+    <value>arena.megaminerai.com</value>
   </option>
   <option>
     <key>Check For Updates</key>
@@ -34,6 +34,13 @@
     <value>ftp://r99acm.device.mst.edu:2121/manual/index.html</value>
   </option>
   <option>
+    <key>Presentation Fullscreen</key>
+    <type>Integer</type>
+    <value>0</value>
+    <minvalue>0</minvalue>
+    <maxvalue>1</maxvalue>
+  </option>
+  <option>
     <key>Show Debug Window On Start</key>
     <type>Integer</type>
     <value>1</value>
@@ -48,7 +55,7 @@
   <option>
     <key>Speed</key>
     <type>Float</type>
-    <value>6</value>
+    <value>8</value>
     <minvalue>0.01</minvalue>
     <maxvalue>50</maxvalue>
   </option>
