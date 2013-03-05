@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     ./lib/renderer/*.cpp \
     ./common/*.cpp \
     ./lib/animationengine/*.cpp \
-    ./common/glew/*.c
+    ./common/glew/*.c \
+    ratingdialog.cpp
 MOC = moc
 HEADERS += ./lib/manager/*.h \
     ./lib/timemanager/*.h \
@@ -43,7 +44,8 @@ HEADERS += ./lib/manager/*.h \
     ./lib/decompress/*.h \
     ./common/*.h \
     ./interfaces/*.h \
-    ./common/glew/*.h
+    ./common/glew/*.h \
+    ratingdialog.h
 win32: {
 #QMAKE_CFLAGS_DEBUG += -pg
 #QMAKE_CXXFLAGS_DEBUG += -pg
@@ -64,3 +66,6 @@ OTHER_FILES +=
 LIBS += -lGLU
 DEFINES += GLEW_STATIC
 #debug:DEFINES += __DEBUG__ GLIBCXX_FORCE_NEW
+
+FORMS += \
+    ratingdialog.ui

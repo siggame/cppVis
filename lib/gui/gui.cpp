@@ -600,7 +600,6 @@ namespace visualizer
         );
     connect( m_helpAbout, SIGNAL(triggered()), this, SLOT(helpAbout()) );
 
-
     m_fileOpen = new QAction( tr( "&Open" ), this );
     m_fileOpen->setShortcut( tr( "Ctrl+O" ) );
     m_fileOpen->setStatusTip(
@@ -627,6 +626,10 @@ namespace visualizer
     m_editOptions->setShortcut( tr("F10") );
     m_editOptions->setStatusTip( tr( "Edit Program Options" ) );
     connect( m_editOptions, SIGNAL( triggered() ), this, SLOT( optionsDialog() ) );
+
+    m_rateOption = new QAction( tr( "&Rate Game..." ), this );
+    connect( m_rateOption, SIGNAL( triggered() ),&m_ratingDialog,SLOT( show() ));
+
 
     m_fileExit = new QAction( tr( "&Quit" ), this );
     m_fileExit->setShortcut( tr( "Ctrl+Q" ) );
@@ -672,6 +675,9 @@ namespace visualizer
     menu = menuBar()->addMenu( tr( "&View" ) );
     menu->addAction(toggleFullScreenAct);
     menu->addAction(showDebugWindowAct);
+
+    menu = menuBar()->addMenu( tr( "&Rating" ) );
+    menu->addAction( m_rateOption );
 
     menu = menuBar()->addMenu( tr( "&Help" ) );
     menu->addAction( m_helpContents );
