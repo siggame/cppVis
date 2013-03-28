@@ -81,6 +81,7 @@ namespace visualizer
         const float& w, 
         const float& h, 
         const std::string& resource,
+        const bool& flipHorizontally = false,
         const float& z = 0.0f
         ) const = 0;
         

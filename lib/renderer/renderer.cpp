@@ -517,6 +517,7 @@ const float PI = 3.141592654f;
     const float& w,
     const float& h,
     const std::string& resource,
+    const bool& flipHorizontally,
     const float& z
     ) const
   {
@@ -525,14 +526,16 @@ const float PI = 3.141592654f;
     //glDisable( GL_DEPTH_TEST );
     glEnable( GL_TEXTURE_2D );
 
+    int U = (int)(!flipHorizontally);
+
     ResTexture *r = (ResTexture*)ResourceMan->reference( resource, "renderer" );
 
     glBindTexture( GL_TEXTURE_2D, r->getTexture() );
     glBegin( GL_QUADS );
-      glTexCoord2f( 1, 1 ); glVertex3f( x, y, z );
-      glTexCoord2f( 0, 1 ); glVertex3f( x+w, y, z );
-      glTexCoord2f( 0, 0 ); glVertex3f( x+w, y+h, z );
-      glTexCoord2f( 1, 0 ); glVertex3f( x, y+h, z );
+      glTexCoord2f( U, 1 ); glVertex3f( x, y, z );
+      glTexCoord2f( 1- U, 1 ); glVertex3f( x+w, y, z );
+      glTexCoord2f( 1 - U, 0 ); glVertex3f( x+w, y+h, z );
+      glTexCoord2f( U, 0 ); glVertex3f( x, y+h, z );
     glEnd();
 
     ResourceMan->release( resource, "renderer" );
@@ -620,10 +623,10 @@ const float PI = 3.141592654f;
     glBindTexture( GL_TEXTURE_2D, r->getTexture() );
     glBegin( GL_QUADS );
       // this works with #1
-      glTexCoord2f(1.0f-texCoord.upLeft.x, 1.0f-texCoord.upLeft.y); glVertex3f( x, y, z );
-      glTexCoord2f( 1.0f-texCoord.bottomLeft.x,1.0f-texCoord.bottomLeft.y); glVertex3f( x, y+h, z );
-      glTexCoord2f( 1.0f-texCoord.bottomRight.x, 1.0f-texCoord.bottomRight.y); glVertex3f( x+w, y+h, z );   
-      glTexCoord2f( 1.0f-texCoord.upRight.x, 1.0f-texCoord.upRight.y ); glVertex3f( x+w, y, z );
+      glTexCoord2f(1.0f - texCoord.upLeft.x, 1.0f -texCoord.upLeft.y); glVertex3f( x, y, z );
+      glTexCoord2f(1.0f -texCoord.bottomLeft.x,1.0f -texCoord.bottomLeft.y); glVertex3f( x, y+h, z );
+      glTexCoord2f( 1.0f -texCoord.bottomRight.x,1.0f - texCoord.bottomRight.y); glVertex3f( x+w, y+h, z );
+      glTexCoord2f(1.0f - texCoord.upRight.x,1.0f - texCoord.upRight.y ); glVertex3f( x+w, y, z );
     glEnd();
 
     ResourceMan->release( resource, "renderer" );
