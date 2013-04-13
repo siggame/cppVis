@@ -36,6 +36,8 @@ namespace visualizer
       virtual AnimData* getData()
       { return 0; } 
 
+      virtual ~Animatable() {}
+
       void addKeyFrame( SmartPointer< Anim > anim );
       void addSubFrame( const size_t& subFrame, SmartPointer< Anim > anim );
 
