@@ -181,6 +181,8 @@ namespace visualizer
 
       int getDebugOptionState(const std::string& option);
 
+      void updateDebugUnitFocus();
+
     signals:
       void proxySetDebugOptionsS(IGame* game);
 

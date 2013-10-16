@@ -844,6 +844,14 @@ namespace visualizer
     }
   }
 
+  void _GUI::updateDebugUnitFocus()
+  {
+    QTableWidgetItem* top = m_debugSelectionsList->item(0, 0);
+
+    if(top != NULL)
+        m_debugSelectionsList->setCurrentCell(0, 0);
+  }
+
   void _GUI::updateDebugInfoTable()
   {
     QList<QTableWidgetItem *> selectionList = m_debugSelectionsList->selectedItems();
@@ -867,12 +875,17 @@ namespace visualizer
 
   int _GUI::getCurrentUnitFocus()
   {
-    QList<QTableWidgetItem *> selectionList = m_debugSelectionsList->selectedItems();
+    static int callCount = 0;
+    auto selection = m_debugSelectionsList->selectedItems();
 
-    if(!selectionList.empty())
-        return selectionList.first()->text().toInt();
+    if(selection.size() != 0)
+    {
+        return selection.first()->text().toInt();
+    }
     else
+    {
         return -1;
+    }
   }
 
   int _GUI::getDebugOptionState(const std::string& option)

@@ -55,6 +55,8 @@ namespace visualizer
 
       virtual void updateDebugWindow() = 0;
 
+      virtual void updateDebugUnitFocus() = 0;
+
       virtual void setDebugOptions(IGame * game) = 0;
 
       virtual int getCurrentUnitFocus() = 0;
