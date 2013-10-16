@@ -10,12 +10,14 @@
 #include "controlbar.h"
 #include "../timemanager/timeManager.h"
 #include "ratingdialog.h"
+#include "../games/games.h"
 
 #include <QtGui>
 #include <QMainWindow>
 #include <QTextEdit>
 #include <QStringList>
 #include <map>
+#include <memory>
 #include <QHttp>
 
 #include <QTcpServer>
@@ -40,7 +42,7 @@ namespace visualizer
 
   ///////////////////////////////////////////////////////////////////////////////
   /// @class _GUI
-  /// @brief GUI object for drawing debugging info along with the QOpenGL 
+  /// @brief GUI object for drawing debugging info along with the QOpenGL
   //// Widget
   ///////////////////////////////////////////////////////////////////////////////
 
@@ -51,17 +53,17 @@ namespace visualizer
 
   ///////////////////////////////////////////////////////////////////////////////
   /// @fn _GUI::dropEvent( QDropEvent* evt )
-  /// @brief This function is triggered automatically by Qt when an object, 
-  /// typically a file, is dropped onto the visualizer.  If the object dropped 
+  /// @brief This function is triggered automatically by Qt when an object,
+  /// typically a file, is dropped onto the visualizer.  If the object dropped
   /// on the visualizer is a gamelog, then the visualizer will open it.
-  /// @param evt The details of the drop event.  This object is typically 
+  /// @param evt The details of the drop event.  This object is typically
   /// managed by Qt.
   ///////////////////////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////////////////////
   /// @fn _GUI::dragEnterEvent( QDragEnterEvent *evt )
-  /// @brief This function is triggered automatically by Qt when an object 
-  /// is dragged over the visualizer.  
+  /// @brief This function is triggered automatically by Qt when an object
+  /// is dragged over the visualizer.
   ///////////////////////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -83,14 +85,14 @@ namespace visualizer
   ///////////////////////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////////////////////
-  /// @fn _GUI::appendConsole( string line ) 
+  /// @fn _GUI::appendConsole( string line )
   /// @brief This function appends text to the console, like talks and debugging
   /// commands.
   /// @param line The line to be outputted to the console.
   ///////////////////////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////////////////////
-  /// @fn _GUI::appendConsole( QString line ) 
+  /// @fn _GUI::appendConsole( QString line )
   /// @brief This function appends text to the console, like talks and debugging
   /// commands.
   /// @param line The line to be outputted to the console.
@@ -129,7 +131,7 @@ namespace visualizer
 
       /// @TODO Revise
       static bool setup();
-      /// @NOTE Why does this return a boolean?  
+      /// @NOTE Why does this return a boolean?
       bool clear();
 
       /// @TODO Revise
@@ -170,12 +172,30 @@ namespace visualizer
 
       void playNext();
 
+      void setDebugOptions(IGame * game)
+      {
+        emit proxySetDebugOptionsS(game);
+      }
+
+      int getCurrentUnitFocus();
+
+      int getDebugOptionState(const std::string& option);
+
+    signals:
+      void proxySetDebugOptionsS(IGame* game);
+
     public slots:
       void fileOpen();
       void fileSpectate();
       void playItem( QListWidgetItem* item );
 
       void updateDone(QObject* obj);
+
+      void proxySetDebugOptionsP(IGame * game);
+
+      void updateDebugWindowSLOT();
+
+      void updateDebugInfoTable();
 
     private slots:
 
@@ -210,13 +230,13 @@ namespace visualizer
     public:
       void clearInput();
 
-      void setDebugHeader( const QStringList& header );
-
       QStringList m_header;
       QTableWidget* getDebugTable()
       {
-        return m_debugTable;
+        return m_debugSelectionsList;
       }
+
+      void updateDebugWindow();
 
       const Input& getInput() const;
       void splashScreen();
@@ -225,7 +245,7 @@ namespace visualizer
       QHttp* m_http;
       QBuffer *m_updateBuffer;
       int m_playListItem;
-      
+
 
       bool m_loadInProgress;
 
@@ -256,9 +276,30 @@ namespace visualizer
 
       /// Console Area
       QTextEdit *m_consoleArea;
-      
-      /// Debug Table
-      QTableWidget *m_debugTable;
+
+      /// Debug Area
+      QWidget* m_debugArea;
+
+      /// Debug Area Layout
+      QVBoxLayout* m_debugAreaLayout;
+
+      /// Debug Options
+      QFrame* m_debugOptionBox;
+
+      /// Debug Options Box Title
+      QLabel* m_debugOptionsLabel;
+
+      /// Debug Individual Options
+      std::map<std::string, std::shared_ptr<QCheckBox> > m_debugOptions;
+
+      /// Debug Options Layout
+      QVBoxLayout* m_debugOptionsLayout;
+
+      /// Debug Seclections list
+      QTableWidget* m_debugSelectionsList;
+
+      /// Debug Selection Info Box
+      QTableWidget *m_debugSelectionInfo;
 
       /// Playlist
       QListWidget *m_playList;

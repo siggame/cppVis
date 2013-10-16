@@ -4,7 +4,7 @@
 #include <ctime>
 #include <cmath>
 
-// CHANGE ME CHANGE ME CHANGE ME 
+// CHANGE ME CHANGE ME CHANGE ME
 #include "gui/gui.h"
 
 namespace visualizer
@@ -14,12 +14,12 @@ namespace visualizer
 
   void _TimeManager::setup()
   {
-      
+
     if( !TimeManager )
       {
         TimeManager = new _TimeManager;
         TimeManager->_setup();
-      }   
+      }
   } // _TimeManager::setup()
 
   void _TimeManager::destroy()
@@ -84,10 +84,10 @@ namespace visualizer
   void _TimeManager::removeRequest( UpdateNeeded* requester )
   {
     for
-      ( 
-      std::list< UpdateNeeded* >::iterator i = m_updateRequesters.begin(); 
+      (
+      std::list< UpdateNeeded* >::iterator i = m_updateRequesters.begin();
       i != m_updateRequesters.end();
-      i++ 
+      i++
       )
     {
       if( requester == *i )
@@ -118,51 +118,51 @@ namespace visualizer
 
   } // _TimeManager::updateChildren()
 
-  const int& _TimeManager::getTurn() 
+  const int& _TimeManager::getTurn()
   {
     if( m_turnCompletion < 0 )
     {
-      m_turn--;
+      setTurn(m_turn - 1);
     }
 
     if( m_turn < 0 )
-      m_turn = 0;
+      setTurn(0);
 
     if( (unsigned int)m_turn >= m_maxTurns )
     {
-      m_turn = m_maxTurns-1;
+      setTurn(m_maxTurns - 1);
     }
 
     return m_turn;
 
   } // _TimeManager::getTurn()
 
-  void _TimeManager::setTurnPercent( const float& perc ) 
+  void _TimeManager::setTurnPercent( const float& perc )
   {
     m_turnCompletion = perc;
     if( m_turnCompletion < 0 )
     {
       m_turnCompletion += 1;
-      m_turn--;
+      setTurn(m_turn - 1);
     } else if( m_turnCompletion >= 1 )
     {
       m_turnCompletion -= 1;
-      m_turn++;
+      setTurn(m_turn + 1);
     }
 
 
   } // _TimeManager::setTurnPercent()
 
-  const float& _TimeManager::getTurnPercent() 
+  const float& _TimeManager::getTurnPercent()
   {
     if( m_turnCompletion < 0 )
     {
       m_turnCompletion += 1;
-      m_turn--;
+      setTurn(m_turn - 1);
     } else if( m_turnCompletion >= 1 )
     {
       m_turnCompletion -= 1;
-      m_turn++;
+      setTurn(m_turn + 1);
     }
 
     return m_turnCompletion;
@@ -171,6 +171,9 @@ namespace visualizer
 
   void _TimeManager::setTurn( const int& turn )
   {
+    if(turn != m_turn)
+        emit TurnChanged();
+
     m_turn = turn;
 
     //updateChildren();
@@ -180,7 +183,7 @@ namespace visualizer
   const int& _TimeManager::nextTurn()
   {
     pause();
-    m_turn++;
+    setTurn(m_turn + 1);
     return getTurn();
 
   } // _TimeManager::nextTurn()
@@ -188,14 +191,14 @@ namespace visualizer
     const int& _TimeManager::prevTurn()
   {
     pause();
-    m_turn--;
+    setTurn(m_turn - 1);
     return getTurn();
 
   } // _TimeManager::prevTurn()
 
   void _TimeManager::play()
   {
-    m_speedModifier = 1; 
+    m_speedModifier = 1;
 
   } // _TimeManager::play()
 
@@ -222,7 +225,7 @@ namespace visualizer
 
   void _TimeManager::fastForward()
   {
-    m_speedModifier++; 
+    m_speedModifier++;
 
   } // _TimeManager::fastForward()
 
@@ -256,7 +259,7 @@ namespace visualizer
     m_numTurns = numTurns;
 
     // @FIXME Must update control bar
-    // @FIXME 
+    // @FIXME
     //updateChildren();
 
   } // _TimeManager::setNumTurns()
@@ -281,16 +284,16 @@ namespace visualizer
 
     float secElapsed = (float)m_time.restart()/1000;
     m_turnCompletion += getSpeed() * secElapsed;
- 
+
     if( m_turn < 0 )
     {
-      m_turn = 0;
+      setTurn(0);
     }
 
     if( m_turnCompletion > 1 )
     {
       size_t skip = floor( m_turnCompletion );
-      m_turn += skip;
+      setTurn(m_turn + skip);
       m_turnCompletion -= skip;
 
       if(loop_on && m_turn >= loop_end)
@@ -300,14 +303,14 @@ namespace visualizer
 
       if( (unsigned int)m_turn >= m_maxTurns )
       {
-        m_turn = m_maxTurns-1;
+        setTurn(m_maxTurns - 1);
       }
 
       if( m_turn >= m_numTurns-1 && !m_breakout )
       {
         pause();
 
-        m_turn = m_numTurns-1;
+        setTurn(m_numTurns-1);
         // Very close to the next turn, but not quite
         m_turnCompletion = 0.9999f;
 
@@ -329,7 +332,7 @@ namespace visualizer
         if( m_turn >= m_numTurns-1 )
         {
           m_breakout = false;
-          m_turn = m_numTurns - 1;
+          setTurn(m_numTurns - 1);
           m_turnCompletion = 0.01f;
         }
       }
@@ -337,7 +340,7 @@ namespace visualizer
     }
     else if( m_turnCompletion < -1 )
     {
-      m_turn += ceil( m_turnCompletion );
+      setTurn(m_turn + ceil( m_turnCompletion ));
       m_turnCompletion -= ceil( m_turnCompletion );
 
       if(loop_on && m_turn <= loop_start)
@@ -347,7 +350,7 @@ namespace visualizer
 
       if( m_turn <= 0 )
       {
-        m_turn = 0;
+        setTurn(0);
         m_turnCompletion = 0;
         pause();
       }
@@ -356,7 +359,7 @@ namespace visualizer
 
     if( m_turn >= m_numTurns )
     {
-      m_turn = m_numTurns-1;
+      setTurn(m_numTurns - 1);
       m_turnCompletion = 0.9999f;
     }
 

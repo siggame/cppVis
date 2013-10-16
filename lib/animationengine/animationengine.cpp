@@ -31,13 +31,13 @@ namespace visualizer
   void _AnimationEngine::buildAnimations( Frame& frame )
   {
     for
-      ( 
+      (
       std::list<SmartPointer<Animatable> >::iterator i = frame.getAnimations().begin();
       i != frame.getAnimations().end();
-      i++ 
+      i++
       )
     {
-      // Total duration is the total amount of time units 
+      // Total duration is the total amount of time units
       // in the animation.
       float totalDuration = 0;
       // extraTime is used to assist in calculating the total duration
@@ -91,7 +91,7 @@ namespace visualizer
 
       if( m_currentGame )
         m_currentGame->preDraw();
-     
+
       Frame& frame = (*m_frameList)[ TimeManager->getTurn() ];
 
       for
@@ -105,59 +105,7 @@ namespace visualizer
       }
 
       if( m_currentGame )
-      {
         m_currentGame->postDraw();
-        
-        static int last_state = -1;
-
-        static list<int> last_units;
-        
-        list<int> units = m_currentGame->getSelectedUnits();
-
-        size_t count = 0;
-
-        if( TimeManager->getTurn() != last_state || units != last_units )
-        {
-          last_units = units;
-          GUI->getDebugTable()->clearContents();
-          GUI->clearConsole();
-          GUI->getDebugTable()->setRowCount(0);
-          last_state = TimeManager->getTurn();
-
-          for( auto& i : units )
-          {
-
-            if( i >= 0 )
-            {
-              if( frame.unitAvailable( i ) )
-              {
-                GUI->getDebugTable()->setRowCount(count+1);
-                GUI->getDebugTable()->setVerticalHeaderItem( count, new QTableWidgetItem( QVariant(i).toString() ) );
-                for( size_t j = 0; j < GUI->getDebugTable()->columnCount(); j++ )
-                {
-                  string key = GUI->m_header[j].toStdString();
-                  GUI->getDebugTable()->setCellWidget( count, 
-                      j,  
-                      new QLabel( frame[i][key].toString() ) );
-
-                }
-
-                count++;
-                
-              }
-            } else
-            {
-              cout << i << endl;
-              for( auto& j : frame[i] )
-              {
-                cout << "TALK: " << j.second.toString().toStdString() << endl;
-                GUI->appendConsole( j.second.toString() );
-              }
-            }
-          }
-        }
-
-      }
 
     }
 
@@ -187,6 +135,7 @@ namespace visualizer
     m_animMutex.lock();
       m_currentGame = game;
       m_frameList = frameList;
+
     m_animMutex.unlock();
   }
 
@@ -196,6 +145,26 @@ namespace visualizer
       m_frameList = frameList;
     m_animMutex.unlock();
   } // _AnimationEngine::registerFrameContainer()
+
+  void _AnimationEngine::lock()
+  {
+    m_animMutex.lock();
+  }
+
+  void _AnimationEngine::release()
+  {
+    m_animMutex.unlock();
+  }
+
+  IGame* _AnimationEngine::GetCurrentGame()
+  {
+    return m_currentGame;
+  }
+
+  Frame& _AnimationEngine::GetCurrentFrame()
+  {
+    return (*m_frameList)[ TimeManager->getTurn() ];
+  }
 
 } // visualizer
 

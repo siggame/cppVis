@@ -32,7 +32,7 @@ namespace visualizer
   };
 
   class IGUI
-  { 
+  {
     public:
 
       virtual bool isSetup() = 0;
@@ -53,7 +53,13 @@ namespace visualizer
 
       virtual void addToPlaylist( const std::string& gamelog, const int& startTurn = 0 ) = 0;
 
-      virtual void setDebugHeader( const QStringList& header ) = 0;
+      virtual void updateDebugWindow() = 0;
+
+      virtual void setDebugOptions(IGame * game) = 0;
+
+      virtual int getCurrentUnitFocus() = 0;
+
+      virtual int getDebugOptionState(const std::string& option) = 0;
   };
 
 } // visualizer

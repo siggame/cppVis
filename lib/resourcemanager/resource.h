@@ -79,12 +79,12 @@ namespace visualizer
 
   };
 
-  class ResFont : public Resource 
+  class ResFont : public Resource
   {
-    public: 
+    public:
       ResFont( const Text& font )
         : Resource( RS_FONT ), m_font( font )
-      { 
+      {
       }
 
       const Text& getFont() const
@@ -103,12 +103,12 @@ namespace visualizer
       QImage texture;
       unsigned int texId;
     public:
-      const QImage& getQImage() const 
-      { 
-        return texture; 
+      const QImage& getQImage() const
+      {
+        return texture;
       }
 
-      ResTexture() 
+      ResTexture()
         : Resource(RT_TEXTURE), texId(0)
       {}
 
@@ -135,35 +135,35 @@ namespace visualizer
   };
 
 
-  class ResAnimation : public ResTexture 
+  class ResAnimation : public ResTexture
   {
     public:
-      ResAnimation() 
+      ResAnimation()
         : ResTexture()
       {}
 
       ResAnimation
-        ( 
-        const QImage& image, 
-        const int& id, 
+        (
+        const QImage& image,
+        const int& id,
         const size_t& rWidth,
-        const size_t& rHeight, 
+        const size_t& rHeight,
         const size_t& frames
         ) : ResTexture( image, id ), m_width( rWidth ), m_height( rHeight ), m_numFrames( frames )
       {
-        
+
       }
-    
+
       Rect calcTexCoord( const unsigned int& frame ) const
       {
         if( frame >= m_numFrames )
         {
-          THROW (Exception, "Animation Frame Out of Bounds:\nFrame: %i\nMax Frame:%i",frame, m_numFrames - 1);
+          THROW (Exception, "Animation Frame Out of Bounds:\nFrame: %i\nMax Frame:%lu",frame, m_numFrames - 1);
         }
-        
+
         int width = (int)( texture.width()/m_width);
         int height = (int)( texture.height()/m_height);
-        
+
         int i = frame / (m_width);
         int j = frame % (m_width);
 
@@ -172,13 +172,13 @@ namespace visualizer
         tRect.upLeft = Coord( (float)j*width / (float)texture.width(), (float)(i+1)*height / (float)texture.height());
         tRect.upRight = Coord( (float)(j+1)*width / (float)texture.width(), (float)(i+1)*height / (float)texture.height());
         tRect.bottomRight = Coord( (float)(j+1)*width / (float)texture.width(), (float)i*height / (float)texture.height() );*/
-        
+
         // this works with #1
         tRect.bottomLeft = Coord( (float)j*width / (float)texture.width(), (float)(i+1)*height / (float)texture.height());
         tRect.upLeft = Coord( (float)j*width / (float)texture.width(), i*height / (float)texture.height());
         tRect.upRight = Coord( (float)(j+1)*width / (float)texture.width(), (float)i*height / (float)texture.height());
         tRect.bottomRight = Coord( (float)(j+1)*width / (float)texture.width(), (float)(i+1)*height / (float)texture.height() );
-        
+
 
         return tRect;
       }
@@ -187,7 +187,7 @@ namespace visualizer
       {
         return m_numFrames;
       }
-      
+
     private:
       size_t m_width, m_height;
       size_t m_numFrames;

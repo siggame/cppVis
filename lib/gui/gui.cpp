@@ -1,5 +1,4 @@
 #include "gui.h"
-#include "../games/games.h"
 #include "../renderer/renderer.h"
 #include "../beanstalker/beanstalker.h"
 #include "version.h"
@@ -31,9 +30,10 @@ namespace visualizer
     if( !GUI )
     {
       GUI = new _GUI;
-    } 
+    }
 
     GUI->m_isSetup = GUI->doSetup();
+
     return GUI->m_isSetup;
   }
 
@@ -88,7 +88,7 @@ namespace visualizer
       output[ size ] = 0;
       fullLog = output;
 
-      delete [] output;     
+      delete [] output;
     }
     else
     {
@@ -97,10 +97,10 @@ namespace visualizer
 
 
     for
-      ( 
-       std::vector<IGame*>::iterator i = Games->gameList().begin(); 
+      (
+       std::vector<IGame*>::iterator i = Games->gameList().begin();
        i != Games->gameList().end() && !parserFound;
-       i++ 
+       i++
       )
       {
         QRegExp rx( (*i)->getPluginInfo().gamelogRegexPattern.c_str() );
@@ -134,7 +134,7 @@ namespace visualizer
   void _GUI::addToPlaylist( const std::string& gamelog, const int& startTurn )
   {
     QFileInfo file( gamelog.c_str() );
-    
+
     QListWidgetItem *item = new QListWidgetItem( file.fileName() );
     item->setData( 1, QVariant( gamelog.c_str() ) );
     item->setData( 2, QVariant( startTurn ) );
@@ -408,8 +408,8 @@ namespace visualizer
 
   void _GUI::updateDone( QObject* obj )
   {
-    if( 
-        OptionsMan->getString( "Game Mode" ).compare( "Arena" ) &&  
+    if(
+        OptionsMan->getString( "Game Mode" ).compare( "Arena" ) &&
         OptionsMan->getNumber( "Check For Updates" ) )
     {
       updateInfo* inf = (updateInfo*)obj;
@@ -462,7 +462,7 @@ namespace visualizer
     connect( ftp, SIGNAL(done(bool)), map, SLOT(map()) );
     map->setMapping( ftp, i );
     //connect( ftp, SIGNAL(done(bool)), this, SLOT(updateDone(bool)) );
-    connect( map, SIGNAL( mapped( QObject* ) ), this, SLOT(updateDone( QObject* )) ); 
+    connect( map, SIGNAL( mapped( QObject* ) ), this, SLOT(updateDone( QObject* )) );
 
     ftp->connectToHost( "r99acm.device.mst.edu", 2121 );
     ftp->login();
@@ -500,6 +500,16 @@ namespace visualizer
     createMenus();
     MESSAGE( "============Build Toolset=======" );
     buildToolSet();
+
+    // connect set debug options. The game will call a private function
+    // which will emit the signal from that thread, to the relevant QThread
+    // and it will then query the game for the info to instantiate Qt
+    // checkbox widget. It's roundabout, but hey, fuck QThreads.
+    QObject::connect(this, SIGNAL(proxySetDebugOptionsS(IGame*)),
+                     this, SLOT(proxySetDebugOptionsP(IGame*)));
+
+    QObject::connect(TimeManager, SIGNAL(TurnChanged()),
+                     this, SLOT(updateDebugWindowSLOT()));
 
     // If we're in arenaMode, change some settings
 
@@ -559,7 +569,7 @@ namespace visualizer
 
   void _GUI::buildUpdateBar()
   {
-    m_updateBar = 
+    m_updateBar =
       new QDockWidget( "Updates Available For:", this );
     m_updateBar->setFeatures( QDockWidget::DockWidgetClosable );
     m_updateBar->setWidget( new QLabel( m_updateBar ) );
@@ -648,7 +658,7 @@ namespace visualizer
     QSignalMapper* mapper = new QSignalMapper(this);
 
 
-    QShortcut *cut; 
+    QShortcut *cut;
     for( size_t i = 0; i < 10; i++ )
     {
       cut = new QShortcut( QKeySequence( Qt::Key_0+i ), this );
@@ -707,31 +717,68 @@ namespace visualizer
 
     m_playList = new QListWidget( m_dockLayoutFrame );
 
-    connect( 
-        m_playList, 
-        SIGNAL(itemDoubleClicked(QListWidgetItem *)), 
-        this, 
+    connect(
+        m_playList,
+        SIGNAL(itemDoubleClicked(QListWidgetItem *)),
+        this,
         SLOT(playItem(QListWidgetItem*))
         );
 
-    m_debugTable = new QTableWidget(m_dockLayoutFrame);
+    m_debugArea= new QWidget(m_dockLayoutFrame);
     m_debugTabs->insertTab( 0, m_consoleArea, "Console" );
-    m_debugTabs->insertTab( 1, m_debugTable, "Debug Table" );
+    m_debugTabs->insertTab( 1, m_debugArea, "Debug Table" );
     m_debugTabs->insertTab( 2, m_playList, "Playlist" );
 
-    //m_debugTable->setVerticalHeaderLabels(labels);
-    m_debugTable->setCellWidget( 0, 0, new QLabel( "" ) );
-    m_debugTable->setShowGrid(true);
+    m_debugAreaLayout = new QVBoxLayout(m_debugArea);
+    m_debugOptionBox = new QFrame(m_debugArea);
+    m_debugOptionsLayout = new QVBoxLayout(m_debugOptionBox);
+    m_debugOptionsLabel = new QLabel("Options", m_debugOptionBox);
+    m_debugSelectionsList = new QTableWidget(m_debugArea);
+    m_debugSelectionInfo = new QTableWidget(m_debugArea);
 
-    m_debugTable->show();
+    m_debugOptionBox->setFrameStyle(QFrame::Shape::Box);
+    m_debugOptionBox->show();
+
+    m_debugOptionsLabel->show();
+    m_debugOptionsLayout->addWidget(m_debugOptionsLabel);
+
+    m_debugSelectionsList->setCellWidget( 0, 0, new QLabel( "" ) );
+    m_debugSelectionsList->setColumnCount(1);
+    m_debugSelectionsList->setHorizontalHeaderLabels({"Selections"});
+    m_debugSelectionsList->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    m_debugSelectionsList->setSelectionBehavior( QAbstractItemView::SelectItems );
+    m_debugSelectionsList->setSelectionMode( QAbstractItemView::SingleSelection );
+    m_debugSelectionsList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_debugSelectionsList->verticalHeader()->setVisible(false);
+    m_debugSelectionsList->setShowGrid(true);
+    m_debugSelectionsList->show();
+
+    m_debugSelectionInfo->setCellWidget( 0, 0, new QLabel( "" ) );
+    m_debugSelectionInfo->setColumnCount(2);
+    m_debugSelectionInfo->setHorizontalHeaderLabels({"Parameter", "Value"});
+    m_debugSelectionInfo->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    m_debugSelectionInfo->setSelectionBehavior( QAbstractItemView::SelectItems );
+    m_debugSelectionInfo->setSelectionMode( QAbstractItemView::NoSelection );
+    m_debugSelectionInfo->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_debugSelectionsList->verticalHeader()->setVisible(false);
+    m_debugSelectionInfo->setShowGrid(true);
+    m_debugSelectionInfo->show();
+
+    QObject::connect(m_debugSelectionsList, SIGNAL(itemSelectionChanged()),
+                     this, SLOT(updateDebugInfoTable()));
+
+    QObject::connect(TimeManager, SIGNAL(TurnChanged()),
+                     this, SLOT(updateDebugInfoTable()));
+
+    m_debugAreaLayout->addWidget(m_debugOptionBox);
+    m_debugAreaLayout->addWidget(m_debugSelectionsList);
+    m_debugAreaLayout->addWidget(m_debugSelectionInfo);
 
     m_frameSlider = new QSlider( Qt::Horizontal );
     m_frameSlider->setMinimum(1);
     m_frameSlider->setMaximum(999);
     m_frameSlider->setTracking(true);
     connect( m_frameSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderChanged(int)) );
-
-    //connect( m_slider, SIGNAL(slider
 
     m_dockLayout->addWidget( m_debugTabs );
     m_dockLayout->addWidget( m_frameSlider );
@@ -753,12 +800,93 @@ namespace visualizer
 
   }
 
-  void _GUI::setDebugHeader( const QStringList& header )
+  void _GUI::proxySetDebugOptionsP(IGame * game)
   {
-    m_header = header;
-    m_debugTable->setColumnCount(header.count());
-    m_debugTable->setHorizontalHeaderLabels(header);
+    m_debugOptions.clear();
+    for(auto& option : game->getDebugOptions())
+    {
+        m_debugOptions[option].reset(new QCheckBox(QString(option.c_str()), NULL));
+        m_debugOptions[option]->show();
+        m_debugOptionsLayout->addWidget(m_debugOptions[option].get());
+    }
+  }
 
+  void _GUI::updateDebugWindowSLOT()
+  {
+    updateDebugWindow();
+  }
+
+  void _GUI::updateDebugWindow()
+  {
+    static std::list<int> pastState;
+
+    IGame* currentGame = AnimationEngine->GetCurrentGame();
+
+    if(currentGame != NULL)
+    {
+        int i = 0;
+
+        list<int> temp = currentGame->getSelectedUnits();
+
+        if(temp != pastState)
+        {
+            m_debugSelectionsList->clearContents();
+            m_debugSelectionsList->setRowCount(currentGame->getSelectedUnits().size());
+
+            for(auto& unit : temp)
+            {
+               m_debugSelectionsList->setItem(i++, 0, new QTableWidgetItem(QVariant(unit).toString() ));
+            }
+
+            pastState = temp;
+        }
+
+    }
+  }
+
+  void _GUI::updateDebugInfoTable()
+  {
+    QList<QTableWidgetItem *> selectionList = m_debugSelectionsList->selectedItems();
+    int i = 0;
+
+    m_debugSelectionInfo->clearContents();
+
+    if(!selectionList.empty())
+    {
+        std::map<std::string, QVariant>& parameters = AnimationEngine->GetCurrentFrame()[selectionList.first()->text().toInt()];
+
+        m_debugSelectionInfo->setRowCount(parameters.size());
+
+        for(auto& param: parameters)
+        {
+            m_debugSelectionInfo->setItem(i, 0, new QTableWidgetItem(QString(param.first.c_str())));
+            m_debugSelectionInfo->setItem(i++, 1, new QTableWidgetItem(param.second.toString()));
+        }
+    }
+  }
+
+  int _GUI::getCurrentUnitFocus()
+  {
+    QList<QTableWidgetItem *> selectionList = m_debugSelectionsList->selectedItems();
+
+    if(!selectionList.empty())
+        return selectionList.first()->text().toInt();
+    else
+        return -1;
+  }
+
+  int _GUI::getDebugOptionState(const std::string& option)
+  {
+    int value = -1;
+    for(auto& it : m_debugOptions)
+    {
+        if(it.first == option)
+        {
+            value = it.second->isChecked();
+            break;
+        }
+    }
+    return value;
   }
 
   void _GUI::closeGUI()
@@ -895,7 +1023,7 @@ namespace visualizer
         m_chooseDialog->layout()->addWidget( spectate );
         break;
       }
-      
+
     }
 
 

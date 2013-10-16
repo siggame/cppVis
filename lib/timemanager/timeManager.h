@@ -25,7 +25,7 @@ namespace visualizer
 
   ///////////////////////////////////////////////////////////////////////////////
   /// @fn _TimeManager::nextTurn()
-  /// @brief Tells the time manager to pause the visualizer and go to the next 
+  /// @brief Tells the time manager to pause the visualizer and go to the next
   /// turn.
   /// @return const int& representing the turn it was changed to.
   ///////////////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ namespace visualizer
 
   ///////////////////////////////////////////////////////////////////////////////
   /// @fn _TimeManager::pause()
-  /// @brief Tells the time menager to pause play 
+  /// @brief Tells the time menager to pause play
   ///////////////////////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@ namespace visualizer
       void updateProgress( float progress );
 
       float getSpeed();
-      /// @TODO This should change the default speed or a new 
+      /// @TODO This should change the default speed or a new
       /// function should be made to do it.
       void setSpeed( const float& speed );
 
@@ -95,7 +95,7 @@ namespace visualizer
 
       void abloop_on(const int& a, const int&b);
       void abloop_off();
-	  
+
       void fastForward();
       void rewind();
 
@@ -104,6 +104,9 @@ namespace visualizer
       void setMaxTurns( const size_t& maxTurns );
 
       char readyForGamelog();
+
+    signals:
+      void TurnChanged();
 
     private slots:
       void timerUpdate();
@@ -124,7 +127,7 @@ namespace visualizer
       bool m_breakout;
       /// @TODO Rename this variable.  It's not a good name at all
 
-      /// This is the amount of the current turn that has been 
+      /// This is the amount of the current turn that has been
       /// achieved.
       /// If we're halfway through turn 30
       /// m_turn == 30

@@ -14,7 +14,7 @@ namespace visualizer
   {
     OP_INT,
     OP_FLOAT,
-    OP_STRING, 
+    OP_STRING,
     OP_COMBO
   };
 
@@ -73,7 +73,9 @@ namespace visualizer
       map< string, Option > m_options;
       vector< pair<string, string> > m_domains;
       friend class OptionsDialog;
-    public: 
+    public:
+      virtual ~_OptionsMan() {}
+
       void addOption( const Option& op );
 
       void setup();

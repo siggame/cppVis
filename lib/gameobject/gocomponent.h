@@ -17,10 +17,9 @@ class GOComponent
     /** Default constructor */
     GOComponent();
     GOComponent( GameObject* owner );
-  #if 0
+
     /** Default destructor */
-    virtual ~GOComponent() = 0;
-  #endif
+    virtual ~GOComponent() {};
 
     virtual const GOC_IDType componentID() const = 0;
     virtual const GOC_IDType familyID() const = 0;

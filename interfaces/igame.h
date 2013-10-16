@@ -29,7 +29,7 @@ namespace visualizer
 
     // How many characters do we scan in the gamelog
     // before we give up trying to match
-    unsigned int searchLength; 
+    unsigned int searchLength;
 
     // Gamelog regular expression pattern to check any given
     // gamelog belongs to this plugin
@@ -52,7 +52,7 @@ namespace visualizer
     public:
       virtual PluginInfo getPluginInfo() = 0;
       virtual void loadGamelog( std::string gamelog ) = 0;
-      virtual void spectate( std::string ipAddress ) {}
+      virtual void spectate(const std::string& ipAddress ) {}
       virtual void destroy() = 0;
 
       virtual void preDraw() {}
@@ -62,7 +62,12 @@ namespace visualizer
       {
         return list<int>();
       }
-    
+
+      virtual list<std::string> getDebugOptions()
+      {
+        return list<std::string>();
+      }
+
       IAnimationEngine *animationEngine;
       IGUI *gui;
       IOptionsMan *options;
