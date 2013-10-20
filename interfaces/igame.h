@@ -50,6 +50,7 @@ namespace visualizer
   class IGame
   {
     public:
+      virtual ~IGame() {}
       virtual PluginInfo getPluginInfo() = 0;
       virtual void loadGamelog( std::string gamelog ) = 0;
       virtual void spectate(const std::string& ipAddress ) {}

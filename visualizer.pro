@@ -54,18 +54,21 @@ win32: {
 QMAKE_CFLAGS_DEBUG += -rdynamic
 QMAKE_CXXFLAGS_DEBUG += -rdynamic
 QMAKE_LFLAGS_DEBUG += -rdynamic
+LIBS += -lGLU
 }
 
 QMAKE_CXXFLAGS += -std=c++0x 
 QMAKE_CXXFLAGS_DEBUG += -std=c++0x
 
-CONFIG += debug 
+CONFIG += release 
 macx:CONFIG -= app_bundle
 QT += opengl network xml
 OTHER_FILES += 
-LIBS += -lGLU
 DEFINES += GLEW_STATIC
 #debug:DEFINES += __DEBUG__ GLIBCXX_FORCE_NEW
 
 FORMS += \
     ratingdialog.ui
+
+LIBS         += -L../MegaMinerAI-12/plugins
+QTPLUGIN     += mars

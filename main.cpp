@@ -8,6 +8,8 @@
 #include "lib/games/games.h"
 #include "lib/resourcemanager/textureloader.h"
 
+Q_IMPORT_PLUGIN(mars);
+
 using namespace visualizer;
 namespace visualizer
 {
