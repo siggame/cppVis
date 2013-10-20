@@ -199,6 +199,10 @@ namespace visualizer
 
       void updateDebugInfoTable();
 
+      void frameChanged();
+
+      void debugOptionStateChanged(int);
+
     private slots:
 
       void displayError( const QAbstractSocket::SocketError& err );

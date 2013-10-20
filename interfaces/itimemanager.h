@@ -9,7 +9,7 @@ namespace visualizer
 {
 
   class ITimeManager
-  {    
+  {
     public:
       virtual const int& getTurn() = 0;
       virtual void setTurnPercent( const float& perc ) = 0;
@@ -31,7 +31,7 @@ namespace visualizer
 
       virtual void abloop_on(const int& a, const int& b) = 0;
       virtual void abloop_off() = 0;
-      
+
       virtual void fastForward() = 0;
       virtual void rewind() = 0;
 

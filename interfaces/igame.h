@@ -63,10 +63,20 @@ namespace visualizer
         return list<int>();
       }
 
-      virtual list<std::string> getDebugOptions()
+      virtual list<IGUI::DebugOption> getDebugOptions()
       {
-        return list<std::string>();
+        return list<IGUI::DebugOption>();
       }
+
+      virtual std::map<std::string, bool> getRenderTagState()
+      {
+        return std::map<std::string, bool>();
+      }
+
+      // private slots ...or this is where I'd put one...IF I HAD ONE!!!
+      virtual void pruneSelection() {}
+
+      virtual void optionStateChanged() {}
 
       IAnimationEngine *animationEngine;
       IGUI *gui;

@@ -62,6 +62,17 @@ namespace visualizer
       virtual int getCurrentUnitFocus() = 0;
 
       virtual int getDebugOptionState(const std::string& option) = 0;
+
+      struct DebugOption
+      {
+        DebugOption(std::string n, bool i) :
+            name(n),
+            initValue(i)
+            {}
+
+        std::string name;
+        bool initValue;
+      };
   };
 
 } // visualizer

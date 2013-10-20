@@ -122,15 +122,17 @@ namespace visualizer
   {
     if( m_turnCompletion < 0 )
     {
-      setTurn(m_turn - 1);
+      m_turn -= 1;
     }
 
     if( m_turn < 0 )
-      setTurn(0);
+    {
+      m_turn = 0;
+    }
 
     if( (unsigned int)m_turn >= m_maxTurns )
     {
-      setTurn(m_maxTurns - 1);
+      m_turn = m_maxTurns - 1;
     }
 
     return m_turn;
@@ -172,7 +174,9 @@ namespace visualizer
   void _TimeManager::setTurn( const int& turn )
   {
     if(turn != m_turn)
+    {
         emit TurnChanged();
+    }
 
     m_turn = turn;
 
@@ -225,7 +229,10 @@ namespace visualizer
 
   void _TimeManager::fastForward()
   {
-    m_speedModifier++;
+    if(m_speedModifier <= 0)
+        m_speedModifier = 1;
+    else
+        m_speedModifier++;
 
   } // _TimeManager::fastForward()
 
