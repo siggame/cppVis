@@ -9,8 +9,8 @@
 #include "centralwidget.h"
 #include "controlbar.h"
 #include "../timemanager/timeManager.h"
-#include "ratingdialog.h"
 #include "../games/games.h"
+
 
 #include <QtGui>
 #include <QMainWindow>
@@ -126,7 +126,7 @@ namespace visualizer
     friend class RenderWidget;
 
     public:
-    _GUI() : m_isSetup(false), m_ratingDialog("test",this) {};
+      _GUI() : m_isSetup(false) {};
       ~_GUI();
 
       /// @TODO Revise
@@ -347,15 +347,11 @@ namespace visualizer
 
       QAction *m_editOptions;      /// Edit->Options
 
-      QAction *m_rateOption;      /// Edit->Options
-
       QAction *toggleFullScreenAct;/// View -> Toggle Full Screen
       QAction *showDebugWindowAct; /// View -> Show Debug Window
 
       QString m_previousDirectory;
       QRect m_normalWindowGeometry;
-
-      RatingDialog m_ratingDialog;
 
       Input m_input;
 
