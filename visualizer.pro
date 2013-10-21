@@ -28,8 +28,7 @@ SOURCES += main.cpp \
     ./lib/renderer/*.cpp \
     ./common/*.cpp \
     ./lib/animationengine/*.cpp \
-    ./common/glew/*.c \
-    ratingdialog.cpp
+    ./common/glew/*.c
 MOC = moc
 HEADERS += ./lib/manager/*.h \
     ./lib/timemanager/*.h \
@@ -44,8 +43,7 @@ HEADERS += ./lib/manager/*.h \
     ./lib/decompress/*.h \
     ./common/*.h \
     ./interfaces/*.h \
-    ./common/glew/*.h \
-    ratingdialog.h
+    ./common/glew/*.h
 win32: {
 #QMAKE_CFLAGS_DEBUG += -pg
 #QMAKE_CXXFLAGS_DEBUG += -pg
