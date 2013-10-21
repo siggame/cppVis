@@ -610,6 +610,7 @@ namespace visualizer
         );
     connect( m_helpAbout, SIGNAL(triggered()), this, SLOT(helpAbout()) );
 
+
     m_fileOpen = new QAction( tr( "&Open" ), this );
     m_fileOpen->setShortcut( tr( "Ctrl+O" ) );
     m_fileOpen->setStatusTip(
@@ -636,10 +637,6 @@ namespace visualizer
     m_editOptions->setShortcut( tr("F10") );
     m_editOptions->setStatusTip( tr( "Edit Program Options" ) );
     connect( m_editOptions, SIGNAL( triggered() ), this, SLOT( optionsDialog() ) );
-
-    m_rateOption = new QAction( tr( "&Rate Game..." ), this );
-    connect( m_rateOption, SIGNAL( triggered() ),&m_ratingDialog,SLOT( show() ));
-
 
     m_fileExit = new QAction( tr( "&Quit" ), this );
     m_fileExit->setShortcut( tr( "Ctrl+Q" ) );
@@ -685,9 +682,6 @@ namespace visualizer
     menu = menuBar()->addMenu( tr( "&View" ) );
     menu->addAction(toggleFullScreenAct);
     menu->addAction(showDebugWindowAct);
-
-    menu = menuBar()->addMenu( tr( "&Rating" ) );
-    menu->addAction( m_rateOption );
 
     menu = menuBar()->addMenu( tr( "&Help" ) );
     menu->addAction( m_helpContents );
@@ -770,6 +764,9 @@ namespace visualizer
     QObject::connect(TimeManager, SIGNAL(TurnChanged()),
                      this, SLOT(updateDebugInfoTable()));
 
+    QObject::connect(TimeManager, SIGNAL(TurnChanged()),
+                     this, SLOT(frameChanged()));
+
     m_debugAreaLayout->addWidget(m_debugOptionBox);
     m_debugAreaLayout->addWidget(m_debugSelectionsList);
     m_debugAreaLayout->addWidget(m_debugSelectionInfo);
@@ -805,10 +802,14 @@ namespace visualizer
     m_debugOptions.clear();
     for(auto& option : game->getDebugOptions())
     {
-        m_debugOptions[option].reset(new QCheckBox(QString(option.c_str()), NULL));
-        m_debugOptions[option]->show();
-        m_debugOptionsLayout->addWidget(m_debugOptions[option].get());
+        m_debugOptions[option.name].reset(new QCheckBox(QString(option.name.c_str()), NULL));
+        m_debugOptions[option.name]->setChecked(option.initValue);
+        m_debugOptions[option.name]->show();
+        m_debugOptionsLayout->addWidget(m_debugOptions[option.name].get());
+        QObject::connect(m_debugOptions[option.name].get(), SIGNAL(stateChanged(int)),
+                         this, SLOT(debugOptionStateChanged(int)));
     }
+    debugOptionStateChanged(int(0));
   }
 
   void _GUI::updateDebugWindowSLOT()
@@ -900,6 +901,22 @@ namespace visualizer
         }
     }
     return value;
+  }
+
+  void _GUI::frameChanged()
+  {
+    IGame* currentGame = AnimationEngine->GetCurrentGame();
+
+    if(currentGame != NULL)
+        currentGame->pruneSelection();
+  }
+
+  void _GUI::debugOptionStateChanged(int)
+  {
+    IGame* currentGame = AnimationEngine->GetCurrentGame();
+
+    if(currentGame != NULL)
+        currentGame->optionStateChanged();
   }
 
   void _GUI::closeGUI()
