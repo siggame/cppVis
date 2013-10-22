@@ -107,7 +107,13 @@ namespace visualizer
 
   _Games::~_Games()
   {
-    /*for
+#ifdef STATIC_BUILD
+      if(!m_gameList.empty())
+      {
+          delete m_gameList[0];
+      }
+#else
+    for
       (
       vector< QPluginLoader* >::iterator i = m_plugins.begin();
       i != m_plugins.end();
@@ -116,12 +122,10 @@ namespace visualizer
     {
       (*i)->unload();
       delete *i;
-    }*/
+    }
+#endif // STATIC_BUILD
 
-      if(!m_gameList.empty())
-      {
-          delete m_gameList[0];
-      }
+
 
   }
 
