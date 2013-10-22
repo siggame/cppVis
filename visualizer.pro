@@ -46,6 +46,8 @@ HEADERS += ./lib/manager/*.h \
     ./common/glew/*.h
 win32: {
 DEFINES += STATIC_BUILD
+LIBS         += -L../MegaMinerAI-12/plugins
+QTPLUGIN     += mars
 } else {
 QMAKE_CFLAGS_DEBUG += -rdynamic
 QMAKE_CXXFLAGS_DEBUG += -rdynamic
@@ -59,8 +61,4 @@ QMAKE_CXXFLAGS_DEBUG += -std=c++0x
 CONFIG += release
 macx:CONFIG -= app_bundle
 QT += opengl network xml
-OTHER_FILES +=
 DEFINES += GLEW_STATIC
-
-LIBS         += -L../MegaMinerAI-12/plugins
-QTPLUGIN     += mars
