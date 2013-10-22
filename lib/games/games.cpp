@@ -24,15 +24,12 @@ namespace visualizer
 
   void _Games::_setup()
   {
-
-
-
-    //IGame *game = &theGame;
-    if(m_gameList.empty())
-    {
-         MESSAGE( "============Setting Up Plugins=======" );
+        MESSAGE( "============Setting Up Plugins=======" );
 
 #ifdef STATIC_BUILD
+        if(!m_gameList.empty())
+            return;
+
         Mars* theGame = new Mars;
 
         theGame->gui = GUI;
@@ -94,12 +91,7 @@ namespace visualizer
         }
 #endif // STATIC_BUILD
          MESSAGE( "============Plugins Are Initialized=======" );
-    }
-
-   // }
-
-
-  } // _Games::_setup()
+    } // _Games::_setup()
 
   std::vector< IGame* >& _Games::gameList()
   {
