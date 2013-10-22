@@ -45,9 +45,7 @@ HEADERS += ./lib/manager/*.h \
     ./interfaces/*.h \
     ./common/glew/*.h
 win32: {
-#QMAKE_CFLAGS_DEBUG += -pg
-#QMAKE_CXXFLAGS_DEBUG += -pg
-#QMAKE_LFLAGS_DEBUG += -pg
+DEFINES += STATIC_BUILD
 } else {
 QMAKE_CFLAGS_DEBUG += -rdynamic
 QMAKE_CXXFLAGS_DEBUG += -rdynamic

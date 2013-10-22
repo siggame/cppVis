@@ -31,6 +31,8 @@ namespace visualizer
     if(m_gameList.empty())
     {
          MESSAGE( "============Setting Up Plugins=======" );
+
+#ifdef STATIC_BUILD
          Mars* theGame = new Mars;
 
         theGame->gui = GUI;
@@ -43,6 +45,7 @@ namespace visualizer
         theGame->errorLog = errorLog;
 
         m_gameList.push_back( theGame );
+#endif // STATIC_BUILD
          MESSAGE( "============Plugins Are Initialized=======" );
     }
 
