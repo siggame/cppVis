@@ -8,7 +8,11 @@
 #include "lib/games/games.h"
 #include "lib/resourcemanager/textureloader.h"
 
+#ifdef STATIC_BUILD
+
 Q_IMPORT_PLUGIN(mars);
+
+#endif
 
 using namespace visualizer;
 namespace visualizer
