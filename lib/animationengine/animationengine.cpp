@@ -92,7 +92,7 @@ namespace visualizer
       if( m_currentGame )
         m_currentGame->preDraw();
 
-      Frame& frame = (*m_frameList)[ TimeManager->getTurn() ];
+      Frame& frame = *(*m_frameList)[ TimeManager->getTurn() ];
       std::map<std::string, bool> renderTags = m_currentGame->getRenderTagState();
 
       for
@@ -173,9 +173,9 @@ namespace visualizer
     return m_currentGame;
   }
 
-  Frame& _AnimationEngine::GetCurrentFrame()
+  Frame* _AnimationEngine::GetCurrentFrame()
   {
-    return (*m_frameList)[ TimeManager->getTurn() ];
+    return (m_frameList != NULL) ? (*m_frameList)[ TimeManager->getTurn() ] : NULL;
   }
 
 } // visualizer

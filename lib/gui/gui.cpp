@@ -819,6 +819,7 @@ namespace visualizer
 
   void _GUI::updateDebugWindow()
   {
+
     static std::list<int> pastState;
 
     IGame* currentGame = AnimationEngine->GetCurrentGame();
@@ -860,17 +861,28 @@ namespace visualizer
 
     m_debugSelectionInfo->clearContents();
 
-    if(!selectionList.empty())
+    if(!selectionList.empty() && AnimationEngine->GetCurrentGame() != NULL && AnimationEngine->GetCurrentFrame() != NULL)
     {
-        std::map<std::string, QVariant>& parameters = AnimationEngine->GetCurrentFrame()[selectionList.first()->text().toInt()];
 
-        m_debugSelectionInfo->setRowCount(parameters.size());
+        Frame * currentFrame = AnimationEngine->GetCurrentFrame();
+        int index = selectionList.first()->text().toInt();
 
-        for(auto& param: parameters)
+
+        if(currentFrame->unitAvailable(index))
         {
-            m_debugSelectionInfo->setItem(i, 0, new QTableWidgetItem(QString(param.first.c_str())));
-            m_debugSelectionInfo->setItem(i++, 1, new QTableWidgetItem(param.second.toString()));
+
+            std::map<std::string, QVariant>& parameters = (*currentFrame)[selectionList.first()->text().toInt()];
+
+            m_debugSelectionInfo->setRowCount(parameters.size());
+
+            for(auto& param: parameters)
+            {
+                m_debugSelectionInfo->setItem(i, 0, new QTableWidgetItem(QString(param.first.c_str())));
+                m_debugSelectionInfo->setItem(i++, 1, new QTableWidgetItem(param.second.toString()));
+            }
+
         }
+
     }
   }
 

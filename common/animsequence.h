@@ -25,17 +25,23 @@ namespace visualizer
         m_frames.clear();
       }
 
-      Frame& operator [] (int frameNum)
+      Frame* operator [] (int frameNum)
       {
         /// @TODO Fix this.  It's not a vector because it
         /// resizes and causes a bunch of issues.
-        std::list<Frame>::iterator j = m_frames.begin(); 
-        for( int i = 0; i < frameNum; i++ )
+
+        if(frameNum < m_frames.size())
         {
-          j++;
+            std::list<Frame>::iterator j = m_frames.begin();
+            for( int i = 0; i < frameNum; i++ )
+            {
+              j++;
+            }
+            return &(*j);
         }
-        return *j;
-      } 
+        else
+            return NULL;
+      }
 
       virtual ~AnimSequence() {}
 

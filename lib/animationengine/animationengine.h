@@ -61,7 +61,7 @@ namespace visualizer
 
       IGame* GetCurrentGame();
 
-      Frame& GetCurrentFrame();
+      Frame* GetCurrentFrame();
 
     signals:
       void NewGameLoaded(IGame * game);
