@@ -516,6 +516,7 @@ const float PI = 3.141592654f;
     const float& y,
     const float& w,
     const float& h,
+	const float& tileFactor,
     const std::string& resource,
     const bool& flipHorizontally,
     const float& z
@@ -532,10 +533,10 @@ const float PI = 3.141592654f;
 
     glBindTexture( GL_TEXTURE_2D, r->getTexture() );
     glBegin( GL_QUADS );
-      glTexCoord2f( U, 1 ); glVertex3f( x, y, z );
-      glTexCoord2f( 1- U, 1 ); glVertex3f( x+w, y, z );
-      glTexCoord2f( 1 - U, 0 ); glVertex3f( x+w, y+h, z );
-      glTexCoord2f( U, 0 ); glVertex3f( x, y+h, z );
+	  glTexCoord2f( tileFactor*U, tileFactor ); glVertex3f( x, y, z );
+	  glTexCoord2f( tileFactor*(1 - U), tileFactor ); glVertex3f( x+w, y, z );
+	  glTexCoord2f( tileFactor*(1 - U), 0 ); glVertex3f( x+w, y+h, z );
+	  glTexCoord2f( tileFactor*U, 0 ); glVertex3f( x, y+h, z );
     glEnd();
 
     ResourceMan->release( resource, "renderer" );
@@ -587,6 +588,7 @@ const float PI = 3.141592654f;
       const float& y,
       const float& w, 
       const float& h,
+	  const float& tileFactor,
       const float& degrees,
       const std::string& resource,
       const float& z
@@ -595,7 +597,7 @@ const float PI = 3.141592654f;
     push();
     translate( x + w/2.0f, y + h/2.0f );
     rotate( degrees, 0, 0, 1 );
-    drawTexturedQuad( -1 * w/2.0f, -1 * h/2.0f, w, h, resource );
+	drawTexturedQuad( -1 * w/2.0f, -1 * h/2.0f, w, h, tileFactor, resource );
     pop();
   } // drawRotatedTexturedQuad
   
