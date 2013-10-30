@@ -5,7 +5,9 @@ using namespace std;
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#ifdef STATIC_BUILD
 #include "../MegaMinerAI-12/visualizer/mars.h"
+#endif // STATIC_BUILD
 
 namespace visualizer
 {
