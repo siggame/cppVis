@@ -69,6 +69,7 @@ namespace visualizer
 
       void updateProgress( float progress );
 
+	  float getDt() const;
       float getSpeed();
       /// @TODO This should change the default speed or a new
       /// function should be made to do it.
@@ -136,6 +137,7 @@ namespace visualizer
 
       int m_turn;
       int m_numTurns;
+	  float m_dt;
       size_t m_maxTurns;
       std::list< UpdateNeeded* > m_updateRequesters;
   }; // _TimeManager

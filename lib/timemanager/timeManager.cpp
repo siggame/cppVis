@@ -43,6 +43,7 @@ namespace visualizer
     loop_on = false;
     loop_start = m_turn;
     loop_end = m_numTurns;
+	m_dt = 0.0f;
 
   } // _TimeManager::_setup()
 
@@ -107,6 +108,8 @@ namespace visualizer
 
   void _TimeManager::updateChildren()
   {
+
+
     for(
       std::list< UpdateNeeded* >::iterator i = m_updateRequesters.begin();
       i != m_updateRequesters.end();
@@ -117,6 +120,11 @@ namespace visualizer
     }
 
   } // _TimeManager::updateChildren()
+
+  float _TimeManager::getDt() const
+  {
+	  return m_dt;
+  }
 
   const int& _TimeManager::getTurn()
   {
@@ -290,6 +298,7 @@ namespace visualizer
     // since it was last called.
 
     float secElapsed = (float)m_time.restart()/1000;
+	m_dt = secElapsed;
     m_turnCompletion += getSpeed() * secElapsed;
 
     if( m_turn < 0 )
