@@ -719,8 +719,8 @@ namespace visualizer
         );
 
     m_debugArea= new QWidget(m_dockLayoutFrame);
-    m_debugTabs->insertTab( 0, m_consoleArea, "Console" );
-    m_debugTabs->insertTab( 1, m_debugArea, "Debug Table" );
+	m_debugTabs->insertTab( 0, m_debugArea, "Debug Table" );
+	m_debugTabs->insertTab( 1, m_consoleArea, "Console" );
     m_debugTabs->insertTab( 2, m_playList, "Playlist" );
 
     m_debugAreaLayout = new QVBoxLayout(m_debugArea);
