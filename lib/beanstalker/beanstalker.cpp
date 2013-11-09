@@ -9,7 +9,7 @@ namespace visualizer
 
     s->connectToHost( host.c_str(), port );
 
-    if( !s->waitForConnected( 5000 ) )
+	if( !s->waitForConnected( -1 ) )
     {
       WARNING
         (
@@ -42,10 +42,7 @@ namespace visualizer
       {
         if( !s->waitForReadyRead() )
         {
-          WARNING
-            (
-            "Could not reserve your glog log." 
-            );
+			cout << "Could not reserve your glog log." << endl;
         }
       }
 
@@ -76,10 +73,7 @@ namespace visualizer
       {
         if( s->waitForReadyRead() )
         {
-          WARNING
-            (
-            "Could not reserve your glog log." 
-            );
+			cout << "Could not reserve your glog log." << endl;
         }
       }
 
@@ -105,10 +99,7 @@ namespace visualizer
     string response = pullWord();
     if( response.compare( "RESERVED" ) )
     {
-      WARNING
-        (
-        "Could not get gamelog."
-        );
+		cout << "Could not get gamelog." << endl;
 
       return "";
 
@@ -150,10 +141,7 @@ namespace visualizer
     }
     else
     {
-      WARNING
-        (
-        "No response from the server." 
-        );
+		cout << "No response from the server." << endl;
     }
 
     return ret;
