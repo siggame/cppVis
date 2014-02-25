@@ -47,7 +47,7 @@ HEADERS += ./lib/manager/*.h \
 win32: {
 DEFINES += STATIC_BUILD
 LIBS         += -L../chess/plugins
-QTPLUGIN     += chess
+QTPLUGIN     += Chess
 } else {
 QMAKE_CFLAGS_DEBUG += -rdynamic
 QMAKE_CXXFLAGS_DEBUG += -rdynamic
