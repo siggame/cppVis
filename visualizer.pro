@@ -1,4 +1,5 @@
 INCLUDEPATH += ./interfaces/ \
+	../chess/visualizer/parser \
     ./lib \
     ./common \
     .
