@@ -8,13 +8,13 @@ using namespace std;
 namespace visualizer
 {
 
-  RenderWidget::RenderWidget( QWidget *parent )
-    : QGLWidget( QGLFormat( QGL::SampleBuffers ), parent )
+  RenderWidget::RenderWidget( QWidget *parent, QGLFormat& f )
+    : QGLWidget(f, parent)
   {
-    MESSAGE( "============Initializing the Renderer=======" );
     Renderer->setup();
-    glInit();
+    this->glInit();
     Renderer->init();
+    Renderer->setParent( this );
     MESSAGE( "============Renderer Initialized=======" );
   }
 
@@ -25,8 +25,6 @@ namespace visualizer
   void RenderWidget::initializeGL()
   {
     MESSAGE( "============Initializing OpenGL=======" );
-    Renderer->create();
-    Renderer->setParent( this );
     QGLWidget::initializeGL();
   }
 
@@ -96,8 +94,6 @@ namespace visualizer
 
     SelectionRender->setUpdated(true);
     SelectionRender->setDragging(false);
-
-    Renderer->update( TimeManager->getTurn(), 0 );
 
   }
 

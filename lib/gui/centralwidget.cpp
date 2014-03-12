@@ -15,7 +15,10 @@ namespace visualizer
 
   CentralWidget::CentralWidget( QWidget* /*parent*/ )
   {
-    m_renderWidget = new RenderWidget( this );
+    QGLFormat fmt( QGL::SampleBuffers | QGL::DoubleBuffer | QGL::Rgba | QGL::AlphaChannel);
+    fmt.setVersion(4, 1);
+
+    m_renderWidget = new RenderWidget( this, fmt );
     m_widgetLayout = new QVBoxLayout( this );
 
     m_widgetLayout->setContentsMargins( 0, 0, 0, 0 );

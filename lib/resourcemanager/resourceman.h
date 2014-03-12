@@ -2,6 +2,7 @@
 #define RESOURCEMAN_H
 
 #include "../manager/manager.h"
+#include "../renderer/renderer.h"
 #include "resource.h"
 #include "iresourceman.h"
 #include "itextureloader.h"
@@ -14,14 +15,14 @@ namespace visualizer
 
 class _ResourceMan : protected _Manager< ResID_t, Resource* >, public IResourceMan
 {
-  Q_INTERFACES( IResourceMan );
+  Q_INTERFACES( IResourceMan )
   public:
     /** Default constructor */
     _ResourceMan()
-    {
-    };
+    {}
+
     /** Default destructor */
-    ~_ResourceMan() {};
+    ~_ResourceMan() {}
 
     Resource * reference(const std::string & rName, const std::string & referencer);
     bool release(const std::string & rName, const std::string & referencer);
@@ -42,10 +43,15 @@ class _ResourceMan : protected _Manager< ResID_t, Resource* >, public IResourceM
  
     void loadShader
       (
-       const size_t& type, 
        const std::string& path, 
        const std::string& name
       );
+
+    void loadModel
+        (
+          const std::string& path,
+          const std::string& name
+        );
 
     static void setup();
     static void destroy();
@@ -53,8 +59,6 @@ class _ResourceMan : protected _Manager< ResID_t, Resource* >, public IResourceM
     bool exists(const ResID_t & rName);
 
     std::vector<std::string> listResourceNames();
-
-  protected:
   private:
 
     ResourceType findFileType(const std::string & filename);

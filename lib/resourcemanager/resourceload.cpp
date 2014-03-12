@@ -28,11 +28,8 @@ namespace visualizer
     if( "font" == typeBuff )
       return RS_FONT;
 
-    if( "vshader" == typeBuff )
-      return RS_VERTSHADER;
-
-    if( "fshader" == typeBuff )
-      return RS_FRAGSHADER;
+    if( "shader" == typeBuff )
+      return RS_SHADER;
 
     return RT_NONE;
   }
@@ -113,15 +110,11 @@ namespace visualizer
                   fontPath += fontWidthFile;
                   loadFont( fontPath, pathBuff, namebuff );
                 } break;
-                case RS_VERTSHADER:
-                case RS_FRAGSHADER:
+                case RS_SHADER:
                 {
                   if( Renderer->shaderSupport() )
                   {
-                    if( rt == RS_VERTSHADER )
-                      loadShader( GL_VERTEX_SHADER, pathBuff, namebuff );
-                    else if( rt == RS_FRAGSHADER )
-                      loadShader( GL_FRAGMENT_SHADER, pathBuff, namebuff );
+                      loadShader(pathBuff, namebuff );
                   }
                 } break;
                 default:

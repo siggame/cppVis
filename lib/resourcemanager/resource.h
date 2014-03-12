@@ -2,9 +2,12 @@
 #define RESOURCE_H
 #include <string>
 #include <QImage>
+#include <map>
 #include "glew/glew.h"
 #include <GL/gl.h>
 #include "common.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/quaternion.hpp"
 #include "interfaces/iresourceman.h"
 #include "renderer/text.h"
 
@@ -69,14 +72,136 @@ namespace visualizer
   class ResShader: public Resource
   {
     public:
-      ResShader( const unsigned int& id )
-        : Resource( RS_VERTSHADER ), m_shaderId(id) { }
+      struct Uniform
+      {
+        std::string name;
+        std::string type;
+      };
 
-      const unsigned int& getShader() const { return m_shaderId; }
+      struct ShaderInfo
+      {
+          std::string type;
+          std::string filename;
+      };
+
+    public:
+      ResShader( std::vector<std::string>& attribs, const unsigned int& id) :
+          Resource( RS_SHADER ),
+          m_attribs(std::move(attribs)),
+          m_shaderProgramID(id)
+          {}
+
+      const unsigned int& getShader() const { return m_shaderProgramID; }
+
+      const std::vector<std::string>& getAttribs() const {return m_attribs;}
 
     private:
-      unsigned int m_shaderId;
+      std::vector<std::string> m_attribs;
+      unsigned int m_shaderProgramID;
+  };
 
+  class ResModel : public Resource
+  {
+    public:
+      struct Attrib
+      {
+          std::string name;
+          unsigned int offset;
+      };
+
+      struct TexInfo
+      {
+          std::string texCoord;
+          std::string fileName;
+      };
+
+      struct Bone
+      {
+          std::string name;
+          glm::mat4 offset;
+      };
+
+      struct Animation
+      {
+          struct Node
+          {
+              struct VectorKey
+              {
+                  glm::vec3 transform;
+                  double time;
+              };
+
+              struct QuatKey
+              {
+                  glm::quat transform;
+                  double time;
+              };
+
+              std::vector<VectorKey> scales;
+              std::vector<QuatKey> rotations;
+              std::vector<VectorKey> translations;
+          };
+
+          std::string name;
+          double duration;
+          double ticksPerSec;
+          std::map<std::string, Node> nodes;
+      };
+
+     public:
+       ResModel(unsigned int vertexBuffer,
+                unsigned int indexBuffer,
+                std::vector<ResModel::Attrib>& attribs,
+                std::vector<ResModel::TexInfo>& textures,
+                std::vector<ResModel::Bone>& bones,
+                std::vector<ResModel::Animation>& animations) :
+           Resource(RS_MODEL),
+           m_VertexBuffer(vertexBuffer),
+           m_IndexBuffer(indexBuffer),
+           m_Attribs(std::move(attribs)),
+           m_Textures(std::move(textures)),
+           m_Bones(std::move(bones)),
+           m_Animations(std::move(animations))
+           {}
+
+       const unsigned int& getVertexBuffer() const {return m_VertexBuffer;}
+
+       const unsigned int& getIndexBuffer() const {return m_IndexBuffer;}
+
+       const Attrib* getAttribInfo
+         (
+           const std::string& attrib
+         ) const;
+
+       const unsigned int getVertexArray
+         (
+           const std::string& shader
+         ) const;
+
+       const std::string& getTexName
+         (
+           const std::string& texCoord,
+           unsigned int skinIndex
+         ) const;
+
+       void addVertexArray
+         (
+           const std::string& shader,
+           unsigned int vao
+         );
+
+       // TODO: needs to be a function to return a list of matrices for node transforms
+       //       lot of math i will do in the next couple of weeks
+
+     private:
+       unsigned int m_VertexBuffer;
+       unsigned int m_IndexBuffer;
+       std::map<std::string, unsigned int> m_VertexArrays;
+
+       std::vector<ResModel::Attrib> m_Attribs;
+       std::vector<ResModel::TexInfo> m_Textures;
+       std::vector<ResModel::Bone> m_Bones;
+       std::vector<ResModel::Animation> m_Animations;
   };
 
   class ResFont : public Resource

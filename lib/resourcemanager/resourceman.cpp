@@ -6,6 +6,7 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <QFileInfo>
 
 using namespace std;
 
@@ -149,46 +150,283 @@ namespace visualizer
 
   void _ResourceMan::loadShader
     (
-     const size_t& type, 
      const std::string& path, 
      const std::string& name
     )
   {
+    ifstream fin( path.c_str() );
+    std::string tag;
+    std::vector<std::string> attributes;
+    std::vector<ResShader::Uniform> uniforms;
+    std::vector<ResShader::ShaderInfo> shaderInfo;
+    QFileInfo fInfo(path.c_str());
 
-    ifstream shader( path.c_str() );
-    
-    if( shader.is_open() )
+    if(fin.fail())
+        return;
+
+    // because HELL yes
+    if(fInfo.suffix() != "megashader")
     {
-      std::string shaderSource((std::istreambuf_iterator<char>(shader)), std::istreambuf_iterator<char>());
-      
-      unsigned int id = glCreateShader(type);
+        fin.close();
+        return;
+    }
 
-      const char *source = shaderSource.c_str();
-      glShaderSource( id, 1, &source, 0 );
-      glCompileShader( id );
+    while(fin >> tag)
+    {
+        if(tag == "input")
+        {
+            fin >> tag;
+            uint size = Renderer->shaderTypeSize(tag);
+            fin >> tag;
+            // ensuring that it is a recognized type, and an acceptable
+            // vertex attrib. Must conform to my naming standard for attribs
+            // to ensure shader compatability
+            if(size != 0 && Renderer->vertexAttribSize(tag))
+            {
+                attributes.push_back(tag);
+            }
+        }
+        else if(tag == "uniform")
+        {
+            std::string type;
+            fin >> type;
+            uint size = Renderer->shaderTypeSize(type);
+            fin >> tag;
+            if(size != 0)
+            {
+                ResShader::Uniform u;
+                u.type = type;
+                u.name = tag;
+                uniforms.push_back(u);
+            }
+        }
+        else if(tag == "shader")
+        {
+            std::string type;
+            fin >> type;
+            fin >> tag;
+            if(type == "f" || type == "v")
+            {
+                ResShader::ShaderInfo info;
+                info.type = type;
+                info.filename = (fInfo.path() + "/" + tag.c_str()).toStdString();
+                std::cout << info.filename << std::endl;
+                shaderInfo.push_back(info);
+            }
+        }
 
-      int status;
-      glGetShaderiv( id, GL_COMPILE_STATUS, &status );
+        if(!fin.good()) // if it unexpectedly hit the end, or something else went awry
+        {
+            fin.close();
+            return;
+        }
+    }
 
-      if( !status )
+    fin.close();
+
+    uint shaderProgramID = Renderer->createShader(attributes, shaderInfo);
+
+    if(shaderProgramID != 0)
+    {
+        ResShader* res = new ResShader(attributes, shaderProgramID);
+        reg(name, res);
+    }
+  }
+
+  void _ResourceMan::loadModel
+    (
+        const string& path,
+        const string& name
+    )
+  {
+      ifstream fin ( path.c_str(), std::ifstream::in | std::ifstream::binary);
+      QFileInfo fInfo(path.c_str());
+      std::vector<ResModel::Attrib> attribs;
+      std::vector<ResModel::TexInfo> textures;
+      char* rawVertBuffer = nullptr;
+      unsigned int* rawIndexBuffer = nullptr;
+      std::vector<ResModel::Bone> bones;
+      std::vector<ResModel::Animation> animations;
+
+      unsigned int attribSize = 0;
+      int currentOffset = 0;           // also the size of a complete vertex after attribs are found
+      int blockSize = 0;               // number of elements in the section (NOT BYTES)
+
+
+      if(fin.fail())
+          return;
+
+      // because HELL yes
+      if(fInfo.suffix() != "megamodel")
       {
-        WARNING( "Shader '%s' did not compile correctly", name.c_str() );
+          fin.close();
+          return;
       }
 
-      int logLength;
-      glGetShaderiv( id, GL_INFO_LOG_LENGTH, &logLength );
+      // attribs
+      fin.read((char*) &blockSize, sizeof(blockSize));
+      for(int i = 0; i < blockSize; i++)
+      {
+          ResModel::Attrib newAttrib;
+          fin >> newAttrib.name;
+          attribSize = Renderer->vertexAttribSize(newAttrib.name);
+          if(attribSize != 0)
+          {
+            newAttrib.offset = currentOffset;
+            currentOffset += attribSize;
+            attribs.emplace_back(newAttrib);
+          }
+      }
 
-      char *log = new char[logLength+1]; 
-      glGetShaderInfoLog( id, logLength, 0, log );
-      MESSAGE( "'%s' info log: \n %s", name.c_str(), log );
-      delete [] log;
-      ResShader *res = new ResShader(id);
-      reg( name, res );
+      // textures
+      fin.read((char*) &blockSize, sizeof(blockSize));
+      for(int i = 0; i < blockSize; i++)
+      {
+          ResModel::TexInfo newTexInfo;
+          fin >> newTexInfo.texCoord;
+          if(newTexInfo.texCoord != "tex1" || newTexInfo.texCoord != "tex2")
+          {
+              fin >> newTexInfo.fileName;
+              textures.emplace_back(newTexInfo);
+          }
+      }
 
-    } else
-    {
-      WARNING( "Shader could not be found: %s", path.c_str() );
-    }
+      // vertices
+      fin.read((char*) &blockSize, sizeof(blockSize));
+      rawVertBuffer = new char[blockSize * currentOffset];
+      fin.read(rawVertBuffer, blockSize * currentOffset);
+
+      // indices
+      fin.read((char*) &blockSize, sizeof(blockSize));
+      rawIndexBuffer = new unsigned int[blockSize];
+      fin.read((char*) rawIndexBuffer, blockSize * sizeof(unsigned int));
+
+      // bones (where it gets tricky)
+      fin.read((char*) &blockSize, sizeof(blockSize));
+      for(int i = 0; i < blockSize; i++)
+      {
+          // each bone has name and a 4x4 (16 float) matrix describing it's tranlation from the
+          // local origin of the model
+          ResModel::Bone newBone;
+          fin >> newBone.name;
+
+          // stored in column major in the file
+          for(int j = 0; j < 4; j++)
+              for(int k = 0; k < 4; k++)
+                  fin.read((char*) &newBone.offset[j][k], sizeof(newBone.offset[j][k]));
+
+          bones.emplace_back(newBone);
+      }
+
+      // animations (the most difficult and final part)
+      fin.read((char *) &blockSize, sizeof(blockSize));
+      for(int i = 0; i < blockSize; i++)
+      {
+          // because these can become so large, rather than make a temp anim, filling it up, and
+          // copying it into a vector, I construct it within the the vector and then
+          // get a reference to the object I just made.
+          animations.emplace_back(ResModel::Animation());
+          ResModel::Animation & newAnim = animations.back();
+
+          // each animation contains a name, total duration in ticks,
+          // and the number of ticks per second.
+          fin >> newAnim.name;
+          fin.read((char*) &newAnim.duration, sizeof(newAnim.duration));
+          fin.read((char*) &newAnim.ticksPerSec, sizeof(newAnim.ticksPerSec));
+
+          // next is the number of nodes (or bones) that change over the course of the animation
+          // these are sometimes referred to as channels, so this would be the number of channels
+          fin.read((char*) &blockSize, sizeof(blockSize));
+
+          // next is a biggie. For each node (channel) there will be set of scalings that take place
+          // over the course of the animation (in the form of a 3 float vector), a set of rotations
+          // (in the form of a 4 float quaternion), and a set of translations (also in the form of a
+          // 3 float vector). Here is an example of a 2 second animation on a single node:
+          // each '-' is a tick    ticks = 50     tickPerSec = 25
+          //     start                                               end
+          //       |                                                  |
+          //       V                                                  V
+          //----------------------------------------------------------------------
+          //scale               *                                *
+          //rotate                          *      *
+          //trans         *                                      *
+          //----------------------------------------------------------------------
+          //
+          // would look like this in my file:
+          //             value of   num of     value of     num of   value of
+          //  numScales  scale      Rotations  rotate       trans    trans
+          //      V        V            V        V            V       V
+          //     [2] [13] [*] [46] [*] [2] [25] [*] [32] [*] [2] [7] [*] [46] [*]
+          //          ^                     ^                     ^
+          //       time of                time of               time of
+          //      this scale             rotation               trans
+          //
+          // and there is one of these for every node in the animations (usually one for
+          // each bone to describe it's movement over the course of the animation, but if
+          // the bone never moves, the node (channel) may be ommited)
+
+          // for each node (or channel)
+          for(int i = 0; i < blockSize; i++)
+          {
+              std::string name;
+
+              // get the name of the bone this node is concerned with
+              fin >> name;
+
+              // an individual node gets pretty large, so i construct it in the map, and then
+              // get a reference to that node in the map;
+              newAnim.nodes[name] = ResModel::Animation::Node();
+              ResModel::Animation::Node & newNode = newAnim.nodes[name];
+
+              // get the number of scaling keys over the course of this animation for this bone
+              fin.read((char*) &blockSize, sizeof(blockSize));
+              for(int i = 0; i < blockSize; i++)
+              {
+                  ResModel::Animation::Node::VectorKey newScaleKey;
+
+                  // NOTE: not quite sure if glm::vec3 is exactly 12 bytes laid out
+                  // sequentially so i do them seperately
+                  fin.read((char*) &newScaleKey.transform.x, sizeof(newScaleKey.transform.x));
+                  fin.read((char*) &newScaleKey.transform.y, sizeof(newScaleKey.transform.y));
+                  fin.read((char*) &newScaleKey.transform.z, sizeof(newScaleKey.transform.z));
+
+                  fin.read((char*) &newScaleKey.time, sizeof(newScaleKey.time));
+
+                  newNode.scales.emplace_back(newScaleKey);
+              }
+
+              fin.read((char*) &blockSize, sizeof(blockSize));
+              for(int i = 0; i < blockSize; i++)
+              {
+                  ResModel::Animation::Node::QuatKey newRotationKey;
+
+                  fin.read((char*) &newRotationKey.transform.x, sizeof(newRotationKey.transform.x));
+                  fin.read((char*) &newRotationKey.transform.y, sizeof(newRotationKey.transform.y));
+                  fin.read((char*) &newRotationKey.transform.z, sizeof(newRotationKey.transform.z));
+                  fin.read((char*) &newRotationKey.transform.w, sizeof(newRotationKey.transform.w));
+
+                  fin.read((char*) &newRotationKey.time, sizeof(newRotationKey.time));
+
+                  newNode.rotations.emplace_back(newRotationKey);
+              }
+
+              fin.read((char*) &blockSize, sizeof(blockSize));
+              for(int i = 0; i < blockSize; i++)
+              {
+                  ResModel::Animation::Node::VectorKey newTranslateKey;
+
+                  fin.read((char*) &newTranslateKey.transform.x, sizeof(newTranslateKey.transform.x));
+                  fin.read((char*) &newTranslateKey.transform.y, sizeof(newTranslateKey.transform.y));
+                  fin.read((char*) &newTranslateKey.transform.z, sizeof(newTranslateKey.transform.z));
+
+                  fin.read((char*) &newTranslateKey.time, sizeof(newTranslateKey.time));
+
+                  newNode.translations.emplace_back(newTranslateKey);
+              }
+          }
+      }
+
+      // that should be everything in the file. Now we need to set up the mesh in OpenGL.
 
   }
 

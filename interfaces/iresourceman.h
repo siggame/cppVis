@@ -135,12 +135,15 @@ namespace visualizer
       
       virtual void loadShader
         (
-         const size_t& type, 
          const std::string& path, 
          const std::string& name
         ) = 0;
 
-
+      virtual void loadModel
+        (
+         const std::string& path,
+         const std::string& name
+        ) = 0;
 
   };
 

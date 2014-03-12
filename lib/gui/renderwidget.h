@@ -67,7 +67,7 @@ namespace visualizer
   class RenderWidget: public QGLWidget
   {
     public:
-      RenderWidget( QWidget *parent );
+      RenderWidget( QWidget *parent, QGLFormat& f );
       ~RenderWidget();
       void initializeGL();
 
