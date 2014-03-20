@@ -2,7 +2,7 @@
   <option>
     <key>Arena Server</key>
     <type>String</type>
-    <value>arena.megaminerai.com</value>
+    <value>r99acm.device.mst.edu</value>
   </option>
   <option>
     <key>Check For Updates</key>
@@ -50,7 +50,7 @@
   <option>
     <key>Spectate Server</key>
     <type>String</type>
-    <value>chess-server.mnuck.com</value>
+    <value>r99acm.device.mst.edu</value>
   </option>
   <option>
     <key>Speed</key>
