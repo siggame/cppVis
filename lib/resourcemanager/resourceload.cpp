@@ -31,6 +31,9 @@ namespace visualizer
     if( "shader" == typeBuff )
       return RS_SHADER;
 
+    if( "model" == typeBuff)
+      return RS_MODEL;
+
     return RT_NONE;
   }
 
@@ -117,6 +120,10 @@ namespace visualizer
                       loadShader(pathBuff, namebuff );
                   }
                 } break;
+                case RS_MODEL:
+                {
+                  loadModel(pathBuff, namebuff);
+                }break;
                 default:
                   THROW
                     (

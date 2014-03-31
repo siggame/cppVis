@@ -278,12 +278,9 @@ namespace visualizer
             const unsigned int& indexBuffer
           ) const;
 
-        unsigned int createVertexArray
+        void createVertexArray
           (
-            const std::vector<ResModel::Attrib>& attribs,
-            const unsigned int vertexSize,
-            const unsigned int& vbo,
-            const unsigned int& indexBuf,
+            ResModel* attribs,
             const ResShader* shader
           ) const;
 

@@ -8,6 +8,8 @@
 #include <QMessageBox>
 #include <sstream>
 
+#define UNUSED(arg) (void)arg
+
 #if __DEBUG__
 
 #include <stdio.h>

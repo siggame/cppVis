@@ -247,7 +247,7 @@ namespace visualizer
 
         glScalef( factor*fx, factor*fy, 1 );
 
-        AnimationEngine->draw();
+        //AnimationEngine->draw();
 
         glPopMatrix();
 
@@ -256,14 +256,18 @@ namespace visualizer
         drawProgressBar( m_selectX, m_selectY, m_selectSX-m_selectX, m_selectSY-m_selectY, 1, Color( 1, 0, 0 ) );
 
         // test stuff
-        if(ResourceMan->exists("color"))
+        if(ResourceMan->exists("flat") && ResourceMan->exists("cube"))
         {
             unsigned int location;
-            ResShader* s = (ResShader*)ResourceMan->reference( "color", "renderer" );
+            glm::vec4 color(1.0f, 1.0f, 1.0f, 1.0f);
+            ResShader* s = (ResShader*)ResourceMan->reference( "flat", "renderer" );
+            ResModel * m = (ResModel*)ResourceMan->reference("cube", "renderer")
 
             if(s->getShader() != 0)
             {
                 glUseProgram(s->getShader());
+                glDisable(GL_BLEND);
+
                 checkGLError();
 
                 static bool beenHere = false;
@@ -276,56 +280,29 @@ namespace visualizer
 
                 location = glGetUniformLocation(s->getShader(), "worldMatrix");
                 glUniformMatrix4fv(location, 1, false, glm::value_ptr(world));
-                glGetUniformfv(s->getShader(), location, data);
-                if(!beenHere)
-                {
-                    for(int i = 0; i < 16; i++)
-                    {
-                        std::cout << data[i] << " ";
-                        if((i + 1)% 4 == 0)
-                            std::cout << std::endl;
-                    }
-                    std::cout << std::endl;
-                }
 
                 location = glGetUniformLocation(s->getShader(), "viewMatrix");
                 glUniformMatrix4fv(location, 1, false, glm::value_ptr(view));
-                glGetUniformfv(s->getShader(), location, data);
-                if(!beenHere)
-                {
-                    for(int i = 0; i < 16; i++)
-                    {
-                        std::cout << data[i] << " ";
-                        if((i + 1)% 4 == 0)
-                            std::cout << std::endl;
-                    }
-                    std::cout << std::endl;
-                }
-
 
                 location = glGetUniformLocation(s->getShader(), "projectionMatrix");
                 glUniformMatrix4fv(location, 1, false, glm::value_ptr(proj));
-                glGetUniformfv(s->getShader(), location, data);
-                if(!beenHere)
+
+                location = glGetUniformLocation(s->getShader(), "flatColor");
+                glUniform4fv(location, 1, glm::value_ptr(color));
+
+                unsigned int vao = m->getVertexArray(s->getName());
+
+                if(vao >= 1)
                 {
-                    for(int i = 0; i < 16; i++)
-                    {
-                        std::cout << data[i] << " ";
-                        if((i + 1)% 4 == 0)
-                            std::cout << std::endl;
-                    }
-                    std::cout << std::endl;
+                    glBindVertexArray(vao);
+                    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
                 }
 
-                glBindVertexArray(vertexArrayID);
-                glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-
-                checkGLError();
-
+                glUseProgram(0);
+                glEnable( GL_BLEND );
+                glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
                 if(beenHere == false)
                     beenHere = true;
-
-                glUseProgram(0);
             }
 
             ResourceMan->release("color", "renderer");
@@ -931,7 +908,7 @@ namespace visualizer
             size = 16; // vec4
         else if(t == "norm")
             size = 12; // vec3
-        else if(t == "binorm")
+        else if(t == "tan")
             size = 12; // vec3
         else if(t == "bitan")
             size = 12; // vec3
@@ -969,7 +946,7 @@ namespace visualizer
             type = GL_FLOAT; // vec4
         else if(t == "norm")
             type = GL_FLOAT; // vec3
-        else if(t == "binorm")
+        else if(t == "tan")
             type = GL_FLOAT; // vec3
         else if(t == "bitan")
             type = GL_FLOAT; // vec3
@@ -1141,19 +1118,18 @@ namespace visualizer
         glDeleteBuffers(1, &indexBuffer);
     }
 
-    unsigned int _Renderer::createVertexArray
+    void _Renderer::createVertexArray
       (
-        const std::vector<ResModel::Attrib>& attribs,
-        const unsigned int vertexSize,
-        const unsigned int& vbo,
-        const unsigned int& indexBuf,
+        ResModel* model,
         const ResShader* shader
       ) const
     {
         const std::vector<std::string>& neededAttribs = shader->getAttribs();
+        const std::vector<ResModel::Attrib>&  attribs = model->getAttribInfo();
+        const std::vector<unsigned int>& vertexBuffers = model->getVertexBuffers();
+        const std::vector<unsigned int>&  indexBuffers = model->getIndexBuffers();
         int index = -1;
         GLenum type = GL_INVALID_ENUM;
-        unsigned int attribSize;
         unsigned int attribNumElements;
         unsigned int vao = 0;
 
@@ -1162,45 +1138,48 @@ namespace visualizer
 
         for(int i =0; i < neededAttribs.size(); i++)
         {
-            glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-            index = -1;
-            for(int j = 0; j < attribs.size(); j++)
+            for(unsigned int i = 0; i < vertexBuffers.size(); i++)
             {
+                glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers[i]);
 
-                if(attribs[j].name == neededAttribs[i])
+                index = -1;
+                for(int j = 0; j < attribs.size(); j++)
                 {
-                    index = j;
-                    break;
+
+                    if(attribs[j].name == neededAttribs[i])
+                    {
+                        index = j;
+                        break;
+                    }
                 }
+
+                if(index == -1)
+                {
+                    glDeleteVertexArrays(1, &vao);
+                    model->addVertexArray(shader->getName(), 0);
+                    return;
+                }
+
+
+                glEnableVertexAttribArray(i);
+
+                type = vertexAttribType(attribs[index].name);
+                unsigned int attribSize = vertexAttribSize(attribs[index].name);
+                if(type == GL_FLOAT)
+                {
+                    attribNumElements = attribSize/ sizeof(float);
+                    glVertexAttribPointer(i, attribNumElements, type, false,  model->getVertexSize(), (unsigned char*)NULL + attribSize);
+                }
+                else if(type == GL_INT)
+                {
+                    attribNumElements = attribSize/ sizeof(int);
+                    glVertexAttribIPointer(i, attribNumElements, type, model->getVertexSize(), (unsigned char*)NULL + attribSize);
+                }
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffers[i]);
             }
+        }        
 
-            if(index == -1)
-            {
-                glDeleteVertexArrays(1, &vao);
-                return 0;
-            }
-
-
-            glEnableVertexAttribArray(i);
-
-            GLenum type = vertexAttribType(attribs[index].name);
-            unsigned int attribSize = vertexAttribSize(attribs[index].name);
-            if(type == GL_FLOAT)
-            {
-                attribNumElements = attribSize/ sizeof(float);
-                glVertexAttribPointer(i, attribNumElements, type, false,  vertexSize, (unsigned char*)NULL + attribSize);
-            }
-            else if(type == GL_INT)
-            {
-                attribNumElements = attribSize/ sizeof(int);
-                glVertexAttribIPointer(i, attribNumElements, type,  vertexSize, (unsigned char*)NULL + attribSize);
-            }
-        }
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuf);
-
-
+        model->addVertexArray(shader->getName(), vao);
     }
 
     char * _Renderer::loadShaderFromSource(const std::string& filename) const

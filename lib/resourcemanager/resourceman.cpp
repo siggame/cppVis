@@ -162,7 +162,10 @@ namespace visualizer
     QFileInfo fInfo(path.c_str());
 
     if(fin.fail())
+    {
+        std::cout << "couldn't find file: " << path << std::endl;
         return;
+    }
 
     // because HELL yes
     if(fInfo.suffix() != "megashader")
@@ -171,6 +174,7 @@ namespace visualizer
         return;
     }
 
+    std::cout << "loading shader: " << name << std::endl;
     while(fin >> tag)
     {
         if(tag == "input")
@@ -217,6 +221,7 @@ namespace visualizer
 
         if(!fin.good()) // if it unexpectedly hit the end, or something else went awry
         {
+
             fin.close();
             return;
         }
@@ -228,7 +233,7 @@ namespace visualizer
 
     if(shaderProgramID != 0)
     {
-        ResShader* res = new ResShader(attributes, shaderProgramID);
+        ResShader* res = new ResShader(attributes, shaderProgramID, name);
         reg(name, res);
     }
   }
@@ -243,14 +248,16 @@ namespace visualizer
       QFileInfo fInfo(path.c_str());
       std::vector<ResModel::Attrib> attribs;
       std::vector<ResModel::TexInfo> textures;
-      char* rawVertBuffer = nullptr;
-      unsigned int* rawIndexBuffer = nullptr;
-      std::vector<ResModel::Bone> bones;
+      std::vector<unsigned int> numOfVertices;
+      std::vector<char*> rawVertBuffers;
+      std::vector<unsigned int> numOfIndices;
+      std::vector<unsigned int*> rawIndexBuffers;
+      std::vector<std::vector<ResModel::Bone> > bones;
       std::vector<ResModel::Animation> animations;
 
       unsigned int attribSize = 0;
       int currentOffset = 0;           // also the size of a complete vertex after attribs are found
-      int blockSize = 0;               // number of elements in the section (NOT BYTES)
+      unsigned int blockSize = 0;               // number of elements in the section (NOT BYTES)
 
 
       if(fin.fail())
@@ -268,7 +275,7 @@ namespace visualizer
       for(int i = 0; i < blockSize; i++)
       {
           ResModel::Attrib newAttrib;
-          fin >> newAttrib.name;
+          std::getline(fin, newAttrib.name, '\0');
           attribSize = Renderer->vertexAttribSize(newAttrib.name);
           if(attribSize != 0)
           {
@@ -283,43 +290,68 @@ namespace visualizer
       for(int i = 0; i < blockSize; i++)
       {
           ResModel::TexInfo newTexInfo;
-          fin >> newTexInfo.texCoord;
+          std::getline(fin, newTexInfo.texCoord, '\0');
           if(newTexInfo.texCoord != "tex1" || newTexInfo.texCoord != "tex2")
           {
-              fin >> newTexInfo.fileName;
-              textures.emplace_back(newTexInfo);
+              std::getline(fin, newTexInfo.fileName, '\0');
+              textures.emplace_back(newTexInfo);std::string m_ShaderName;
           }
       }
 
-      // vertices
+      // meshes
       fin.read((char*) &blockSize, sizeof(blockSize));
-      rawVertBuffer = new char[blockSize * currentOffset];
-      fin.read(rawVertBuffer, blockSize * currentOffset);
-
-      // indices
-      fin.read((char*) &blockSize, sizeof(blockSize));
-      rawIndexBuffer = new unsigned int[blockSize];
-      fin.read((char*) rawIndexBuffer, blockSize * sizeof(unsigned int));
-
-      // bones (where it gets tricky)
-      fin.read((char*) &blockSize, sizeof(blockSize));
+      std::cout << "num meshes: " << blockSize << std::endl;
       for(int i = 0; i < blockSize; i++)
       {
-          // each bone has name and a 4x4 (16 float) matrix describing it's tranlation from the
-          // local origin of the model
-          ResModel::Bone newBone;
-          fin >> newBone.name;
+          char* vertBuf;
+          unsigned int* indexBuf;
+          unsigned int numVerts = 0;
+          unsigned int numIndices = 0;
+          unsigned int numBones = 0;
 
-          // stored in column major in the file
-          for(int j = 0; j < 4; j++)
+          //vertices
+          fin.read((char*) &numVerts, sizeof(numVerts));
+          std::cout << "numVerts: " << numVerts << std::endl;
+          std::cout << "size of Vert: " << currentOffset << std::endl;
+          std::cout << "num Bytes: " << numVerts * currentOffset << std::endl;
+          numOfVertices.push_back(numVerts);
+          vertBuf = new char[numVerts * currentOffset];
+          fin.read(vertBuf, numVerts * currentOffset);
+          rawVertBuffers.push_back(vertBuf);
+
+          //indices
+          fin.read((char*) &numIndices, sizeof(numIndices));
+          std::cout << "num indices: " << numIndices << std::endl;
+          numOfIndices.push_back(numIndices);
+          indexBuf = new unsigned int[numIndices];
+          fin.read((char*) indexBuf, numIndices * sizeof(unsigned int));
+          rawIndexBuffers.push_back(indexBuf);
+
+          // bones (where it gets tricky)
+          bones.push_back(std::vector<ResModel::Bone>());
+          fin.read((char*) &numBones, sizeof(numBones));
+          std::cout << "num bones: " << numBones << std::endl;
+          for(int j = 0; j < numBones; j++)
+          {
+              // each bone has name and a 4x4 (16 float) matrix describing it's tranlation from the
+              // local origin of the model
+              ResModel::Bone newBone;
+              std::getline(fin, newBone.name, '\0');
+
+              // stored in row major in the file
               for(int k = 0; k < 4; k++)
-                  fin.read((char*) &newBone.offset[j][k], sizeof(newBone.offset[j][k]));
+                  for(int l = 0; l < 4; l++)
+                      fin.read((char*) &newBone.offset[k][l], sizeof(newBone.offset[k][l]));
 
-          bones.emplace_back(newBone);
+
+              bones.back().emplace_back(newBone);
+          }
       }
+
 
       // animations (the most difficult and final part)
       fin.read((char *) &blockSize, sizeof(blockSize));
+      std::cout << "num anims: " << blockSize << std::endl;
       for(int i = 0; i < blockSize; i++)
       {
           // because these can become so large, rather than make a temp anim, filling it up, and
@@ -330,7 +362,7 @@ namespace visualizer
 
           // each animation contains a name, total duration in ticks,
           // and the number of ticks per second.
-          fin >> newAnim.name;
+          std::getline(fin, newAnim.name, '\0');
           fin.read((char*) &newAnim.duration, sizeof(newAnim.duration));
           fin.read((char*) &newAnim.ticksPerSec, sizeof(newAnim.ticksPerSec));
 
@@ -371,7 +403,7 @@ namespace visualizer
               std::string name;
 
               // get the name of the bone this node is concerned with
-              fin >> name;
+              std::getline(fin, name, '\0');
 
               // an individual node gets pretty large, so i construct it in the map, and then
               // get a reference to that node in the map;
@@ -427,7 +459,73 @@ namespace visualizer
       }
 
       // that should be everything in the file. Now we need to set up the mesh in OpenGL.
+      std::vector<unsigned int> vertexBuffers;
+      std::vector<unsigned int> indexBuffers;
+      unsigned int vertexBuffer = 0;
+      unsigned int indexBuffer = 0;
 
+      for(int i = 0; i < rawVertBuffers.size(); i++)
+      {
+          vertexBuffer = Renderer->createVertexBuffer(rawVertBuffers[i], numOfVertices[i] * currentOffset);
+          indexBuffer = Renderer->createIndexBuffer(rawIndexBuffers[i], numOfIndices[i] * sizeof(unsigned int));
+
+          if( vertexBuffer == 0 || indexBuffer == 0)
+          {
+              for(unsigned int j = 0; j < vertexBuffers.size(); j++)
+              {
+                  if(vertexBuffers[j] != 0)
+                      Renderer->deleteVertexBuffer(vertexBuffers[j]);
+              }
+
+              for(unsigned int j = 0; j < indexBuffers.size(); j++)
+              {
+                  if(indexBuffers[j] != 0)
+                      Renderer->deleteIndexBuffer(indexBuffers[j]);
+              }
+
+              for(int i = 0; i < rawVertBuffers.size(); i++)
+              {
+                  delete [] rawVertBuffers[i];
+                  delete [] rawIndexBuffers[i];
+              }
+
+              std::cout << "asplosion\n";
+              return;
+          }
+
+          vertexBuffers.push_back(vertexBuffer);
+          indexBuffers.push_back(indexBuffer);
+      }
+
+      for(int i = 0; i < rawVertBuffers.size(); i++)
+      {
+          delete [] rawVertBuffers[i];
+          delete [] rawIndexBuffers[i];
+      }
+
+      std::cout << "model info\n" << std::endl;
+      std::cout << "num vert buffers: " << rawVertBuffers.size() << std::endl;
+      std::cout << "num index buffers: " << rawIndexBuffers.size() << std::endl;
+      std::cout << "attribs: " << std::endl;
+      for(int i = 0; i < attribs.size(); i++)
+      {
+          std::cout << "    " << attribs[i].name << "  " << attribs[i].offset << std::endl;
+      }
+      std::cout << "textures: " << std::endl;
+      for(int i = 0; i < textures.size(); i++)
+      {
+          std::cout << "    " << textures[i].texCoord << "   " << textures[i].fileName << std::endl;
+      }
+      std::cout << "num bones: " << std::endl;
+      for(int i = 0; i < bones.size(); i++)
+      {
+          std::cout << "     mesh" << i << "  " << bones[i].size() << std::endl;
+      }
+      std::cout << "num animations: " << animations.size() << std::endl;
+
+
+      ResModel * mdl = new ResModel(currentOffset, vertexBuffers, indexBuffers, attribs, textures, bones, animations);
+      reg(name, mdl);
   }
 
   void _ResourceMan::loadFont

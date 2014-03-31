@@ -85,19 +85,23 @@ namespace visualizer
       };
 
     public:
-      ResShader( std::vector<std::string>& attribs, const unsigned int& id) :
+      ResShader( std::vector<std::string>& attribs, const unsigned int& id, const std::string& name) :
           Resource( RS_SHADER ),
           m_attribs(std::move(attribs)),
-          m_shaderProgramID(id)
+          m_shaderProgramID(id),
+          m_ShaderName(name)
           {}
 
       const unsigned int& getShader() const { return m_shaderProgramID; }
+
+      const std::string& getName() const {return m_ShaderName;}
 
       const std::vector<std::string>& getAttribs() const {return m_attribs;}
 
     private:
       std::vector<std::string> m_attribs;
       unsigned int m_shaderProgramID;
+      std::string m_ShaderName;
   };
 
   class ResModel : public Resource
@@ -149,34 +153,42 @@ namespace visualizer
       };
 
      public:
-       ResModel(unsigned int vertexBuffer,
-                unsigned int indexBuffer,
+       ResModel(unsigned int vertSize,
+                std::vector<unsigned int> vertexBuffer,
+                std::vector<unsigned int> indexBuffer,
                 std::vector<ResModel::Attrib>& attribs,
                 std::vector<ResModel::TexInfo>& textures,
-                std::vector<ResModel::Bone>& bones,
+                std::vector<std::vector<ResModel::Bone> >& bones,
                 std::vector<ResModel::Animation>& animations) :
            Resource(RS_MODEL),
-           m_VertexBuffer(vertexBuffer),
-           m_IndexBuffer(indexBuffer),
+           m_VertexSize(vertSize),
+           m_VertexBuffers(std::move(vertexBuffer)),
+           m_IndexBuffers(std::move(indexBuffer)),
            m_Attribs(std::move(attribs)),
            m_Textures(std::move(textures)),
            m_Bones(std::move(bones)),
            m_Animations(std::move(animations))
            {}
 
-       const unsigned int& getVertexBuffer() const {return m_VertexBuffer;}
+       const unsigned int& getVertexSize() const {return m_VertexSize;}
 
-       const unsigned int& getIndexBuffer() const {return m_IndexBuffer;}
+       const std::vector<unsigned int>& getVertexBuffers() const {return m_VertexBuffers;}
 
-       const Attrib* getAttribInfo
-         (
-           const std::string& attrib
-         ) const;
+       const std::vector<unsigned int>& getIndexBuffers() const {return m_IndexBuffers;}
 
-       const unsigned int getVertexArray
+       const std::vector<Attrib>& getAttribInfo () const {return m_Attribs;}
+
+       const int getVertexArray
          (
            const std::string& shader
-         ) const;
+         ) const
+       {
+           auto it = m_VertexArrays.find(shader);
+           if(it != m_VertexArrays.end())
+               return it->second;
+
+           return -1;
+       }
 
        const std::string& getTexName
          (
@@ -188,19 +200,24 @@ namespace visualizer
          (
            const std::string& shader,
            unsigned int vao
-         );
+         )
+       {
+           if(m_VertexArrays.find(shader) == m_VertexArrays.end())
+               m_VertexArrays[shader] = vao;
+       }
 
        // TODO: needs to be a function to return a list of matrices for node transforms
        //       lot of math i will do in the next couple of weeks
 
      private:
-       unsigned int m_VertexBuffer;
-       unsigned int m_IndexBuffer;
+       const unsigned int m_VertexSize;
+       std::vector<unsigned int> m_VertexBuffers;
+       std::vector<unsigned int> m_IndexBuffers;
        std::map<std::string, unsigned int> m_VertexArrays;
 
        std::vector<ResModel::Attrib> m_Attribs;
        std::vector<ResModel::TexInfo> m_Textures;
-       std::vector<ResModel::Bone> m_Bones;
+       std::vector<std::vector<ResModel::Bone> > m_Bones;
        std::vector<ResModel::Animation> m_Animations;
   };
 

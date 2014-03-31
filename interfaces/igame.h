@@ -53,7 +53,10 @@ namespace visualizer
       virtual ~IGame() {}
       virtual PluginInfo getPluginInfo() = 0;
       virtual void loadGamelog( std::string gamelog ) = 0;
-      virtual void spectate(const std::string& ipAddress ) {}
+      virtual void spectate(const std::string& ipAddress )
+      {
+          UNUSED(ipAddress);
+      }
       virtual void destroy() = 0;
 
       virtual void preDraw() {}
