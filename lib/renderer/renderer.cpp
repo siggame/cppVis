@@ -532,6 +532,8 @@ const float PI = 3.141592654f;
     ResTexture *r = (ResTexture*)ResourceMan->reference( resource, "renderer" );
 
     glBindTexture( GL_TEXTURE_2D, r->getTexture() );
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glBegin( GL_QUADS );
 	  glTexCoord2f( tileFactor*U, tileFactor ); glVertex3f( x, y, z );
 	  glTexCoord2f( tileFactor*(1 - U), tileFactor ); glVertex3f( x+w, y, z );
@@ -557,6 +559,8 @@ const float PI = 3.141592654f;
       const float& subWidth,
       const float& subHeight,
       const std::string& resource,
+      const float& offsetX,
+      const float& offsetY,
       const float& z
     ) const
   {
@@ -568,11 +572,13 @@ const float PI = 3.141592654f;
     ResTexture *r = (ResTexture*)ResourceMan->reference( resource, "renderer" );
 
     glBindTexture( GL_TEXTURE_2D, r->getTexture() );
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glBegin( GL_QUADS );
-      glTexCoord2f( subX+subWidth,  subY+subHeight );  glVertex3f( x, y, z );
-      glTexCoord2f( subX,           subY+subHeight );  glVertex3f( x+w, y, z );
-      glTexCoord2f( subX,           subY );            glVertex3f( x+w, y+h, z );
-      glTexCoord2f( subX+subWidth,  subY );            glVertex3f( x, y+h, z );
+      glTexCoord2f( subX+subWidth +offsetX ,  subY+subHeight +offsetY );  glVertex3f( x, y, z );
+      glTexCoord2f( subX +offsetX,           subY+subHeight +offsetY );  glVertex3f( x+w, y, z );
+      glTexCoord2f( subX +offsetX,           subY+offsetY );            glVertex3f( x+w, y+h, z );
+      glTexCoord2f( subX+subWidth+offsetX,  subY +offsetY );            glVertex3f( x, y+h, z );
     glEnd();
 
     ResourceMan->release( resource, "renderer" );

@@ -129,6 +129,8 @@ namespace visualizer
       const float& subWidth,
       const float& subHeight,
       const std::string& resource,
+      const float& offsetX = 0.0f,
+      const float& offsetY = 0.0f,
       const float& z = 0.0f
       ) const;
     
