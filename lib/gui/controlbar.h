@@ -10,7 +10,7 @@
 namespace visualizer
 {
 
-class ControlBar : public QWidget, public UpdateNeeded
+class ControlBar : public QWidget
 {
   friend class _GUI;
   friend class _TimeManager;
@@ -18,15 +18,15 @@ class ControlBar : public QWidget, public UpdateNeeded
     public:
     ControlBar( QWidget *parent = 0 );
 
-    void update();
-
   public slots:
-    void sliderDrag();
+    void sliderPress();
     void sliderRelease();
     void sliderChanged(int value);
     void rewind();
     void play();
     void fastForward();
+    void turnChanged();
+    void maxTurnsChanged(int);
 
   private:
     QLabel* turnLabel;
@@ -34,7 +34,6 @@ class ControlBar : public QWidget, public UpdateNeeded
     QPushButton* rewindButton;
     QPushButton* playButton;
     QPushButton* fastForwardButton;
-    float originalTimeManagerSpeed;
 
 };
 

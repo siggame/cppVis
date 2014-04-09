@@ -511,6 +511,12 @@ namespace visualizer
     QObject::connect(TimeManager, SIGNAL(TurnChanged()),
                      this, SLOT(updateDebugWindowSLOT()));
 
+    QObject::connect(TimeManager, SIGNAL(maxTurnsChanged(int)),
+                     m_controlBar, SLOT(maxTurnsChanged(int)));
+
+    QObject::connect(TimeManager, SIGNAL(TurnChanged()),
+                     m_controlBar, SLOT(turnChanged()));
+
     // If we're in arenaMode, change some settings
 
     if( !OptionsMan->getString( "Game Mode" ).compare( "Arena" ) )

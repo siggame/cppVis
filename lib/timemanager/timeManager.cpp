@@ -35,7 +35,7 @@ namespace visualizer
     /// @FIXME There's really no reason this shouldn't all be in a constructor
     m_turn = 0;
     m_progress = 0;
-    m_speedModifier = 0;
+    m_speedModifier = OptionsMan->getNumber( "Speed" )/3.0f;
     m_turnCompletion = 0;
     m_numTurns = 1;
     m_maxTurns = -1;
@@ -210,13 +210,13 @@ namespace visualizer
 
   void _TimeManager::play()
   {
-    m_speedModifier = 1;
+    m_Paused = false;
 
   } // _TimeManager::play()
 
   void _TimeManager::pause()
   {
-    m_speedModifier = 0;
+    m_Paused = true;
 
     m_turnCompletion = 0.99999f;
 
@@ -273,6 +273,8 @@ namespace visualizer
   {
     m_numTurns = numTurns;
 
+    emit maxTurnsChanged(numTurns);
+
     // @FIXME Must update control bar
     // @FIXME
     //updateChildren();
@@ -288,7 +290,7 @@ namespace visualizer
   float _TimeManager::getSpeed()
   {
     // TODO: Make this a logarithmic increase
-    return OptionsMan->getNumber( "Speed" ) * m_speedModifier / 3;
+      return (m_Paused)?0:m_speedModifier;
 
   } // _TimeManager::getSpeed()
 

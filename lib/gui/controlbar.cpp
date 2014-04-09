@@ -45,9 +45,8 @@ namespace visualizer
         }	");
 
     m_slider->setTracking( true );
-    originalTimeManagerSpeed = 0;
 
-    connect( m_slider, SIGNAL(sliderPressed()), this, SLOT(sliderDrag()) );
+    connect( m_slider, SIGNAL(sliderPressed()), this, SLOT(sliderPress()) );
     connect( m_slider, SIGNAL(sliderReleased()), this, SLOT(sliderRelease()) );
     connect( m_slider, SIGNAL(valueChanged(int)), this, SLOT(sliderChanged(int)) );
 
@@ -63,38 +62,37 @@ namespace visualizer
 
     setLayout( layout );
 
-    TimeManager->requestUpdate( this );
-
     update();
   }
 
-
-  void ControlBar::sliderDrag()
+  void ControlBar::sliderPress()
   {
-    originalTimeManagerSpeed = TimeManager->getSpeed();
     TimeManager->pause();
   }
 
-
   void ControlBar::sliderRelease()
   {
-    TimeManager->setSpeed( originalTimeManagerSpeed );
+    TimeManager->play();
   }
 
 
   void ControlBar::sliderChanged( int value )
   {
     TimeManager->setTurn(value);
+    turnLabel->setText(QString::number(TimeManager->getTurn()));
   }
 
 
-  void ControlBar::update()
+  void ControlBar::turnChanged()
   {
-    m_slider->setSliderPosition( TimeManager->getTurn() );
-    m_slider->setMaximum( TimeManager->getNumTurns()-1 );
+    m_slider->setSliderPosition(TimeManager->getTurn());
     turnLabel->setText( QString::number( TimeManager->getTurn() ) );
   }
 
+  void ControlBar::maxTurnsChanged(int numTurns)
+  {
+    m_slider->setMaximum(numTurns - 1);
+  }
 
   void ControlBar::rewind()
   {
