@@ -74,6 +74,17 @@ namespace visualizer
         const float& z = 0.0f
         ) const = 0;
 
+      virtual void drawCircle
+        (
+        const float& x,
+        const float& y,
+        const float& radius,
+        const float& percentage,
+        const int& resolution,
+        const float& startAngle = 0.0f,
+        const float& z = 0.0f
+        ) const = 0;
+
       virtual void drawTexturedQuad
         (
         const float& x,

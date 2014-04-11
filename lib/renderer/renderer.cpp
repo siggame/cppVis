@@ -510,6 +510,36 @@ const float PI = 3.141592654f;
     
   } // _Renderer::drawQuad()
 
+
+  void _Renderer::drawCircle
+    (
+    const float& x,
+    const float& y,
+    const float& radius,
+    const float& percentage,
+    const int& resolution,
+    const float& startAngle,
+    const float& z
+    ) const
+  {
+      glEnable( GL_BLEND );
+      glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+      int increments = resolution * percentage;
+
+      glBegin(GL_TRIANGLE_FAN);
+        glVertex3f(x, y, z);
+        for(int i = 0; i < increments;i++)
+        {
+            glVertex3f(x + radius * cos(((2*PI)/resolution) * i + startAngle) ,
+                       y + radius * sin(((2*PI)/resolution) * i + startAngle) ,
+                       z);
+        }
+      glEnd();
+
+      glDisable( GL_BLEND );
+  }
+
+
   void _Renderer::drawTexturedQuad
     (
     const float& x,

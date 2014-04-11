@@ -99,6 +99,30 @@ namespace visualizer
        const float& z = 0.0f
       ) const;
 
+    void drawQuad
+      (
+      const float& x,
+      const float& y,
+      const float& x2,
+      const float& y2,
+      const float& x3,
+      const float& y3,
+      const float& x4,
+      const float& y4,
+      const float& z = 0.0f
+      ) const;
+
+    void drawCircle
+      (
+      const float& x,
+      const float& y,
+      const float& radius,
+      const float& percentage,
+      const int& resolution,
+      const float& startAngle = 0.0f,
+      const float& z = 0.0f
+      ) const;
+
     void setSelectionBox(
       const float& x,
       const float& y,
