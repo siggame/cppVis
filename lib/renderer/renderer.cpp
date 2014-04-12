@@ -645,6 +645,7 @@ const float PI = 3.141592654f;
     const float& w,
     const float& h,
     const std::string& resource,
+    const bool& flipHorizontally,
     const int& frameNumber,
     const float& z
     ) const
@@ -657,14 +658,16 @@ const float PI = 3.141592654f;
     ResAnimation *r = (ResAnimation*)ResourceMan->reference( resource, "renderer" );
     Rect texCoord = r->calcTexCoord( frameNumber );
    
+    bool U = flipHorizontally;
+
     // todo: fix this, they are reversed
     glBindTexture( GL_TEXTURE_2D, r->getTexture() );
     glBegin( GL_QUADS );
       // this works with #1
-      glTexCoord2f(1.0f - texCoord.upLeft.x, 1.0f -texCoord.upLeft.y); glVertex3f( x, y, z );
-      glTexCoord2f(1.0f -texCoord.bottomLeft.x,1.0f -texCoord.bottomLeft.y); glVertex3f( x, y+h, z );
-      glTexCoord2f( 1.0f -texCoord.bottomRight.x,1.0f - texCoord.bottomRight.y); glVertex3f( x+w, y+h, z );
-      glTexCoord2f(1.0f - texCoord.upRight.x,1.0f - texCoord.upRight.y ); glVertex3f( x+w, y, z );
+      glTexCoord2f((U)?(1.0f - texCoord.upLeft.x):(1.0f - texCoord.upRight.x),(1.0f -texCoord.upLeft.y)); glVertex3f( x, y, z );
+      glTexCoord2f((U)?(1.0f -texCoord.bottomLeft.x):(1.0f - texCoord.bottomRight.x),(1.0f -texCoord.bottomLeft.y)); glVertex3f( x, y+h, z );
+      glTexCoord2f((U)?(1.0f -texCoord.bottomRight.x):(1.0f - texCoord.bottomLeft.x),(1.0f - texCoord.bottomRight.y)); glVertex3f( x+w, y+h, z );
+      glTexCoord2f((U)?(1.0f - texCoord.upRight.x):(1.0f - texCoord.upLeft.x),(1.0f - texCoord.upRight.y )); glVertex3f( x+w, y, z );
     glEnd();
 
     ResourceMan->release( resource, "renderer" );
