@@ -299,7 +299,7 @@ namespace visualizer
     // m_time.restart() returns the number of milliseconds
     // since it was last called.
 
-    float secElapsed = (float)m_time.restart()/1000;
+    float secElapsed = (float)m_time.restart()/1000.0f;
 	m_dt = secElapsed;
     m_turnCompletion += getSpeed() * secElapsed;
 

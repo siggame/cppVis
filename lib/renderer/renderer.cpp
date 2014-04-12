@@ -528,7 +528,7 @@ const float PI = 3.141592654f;
 
       glBegin(GL_TRIANGLE_FAN);
         glVertex3f(x, y, z);
-        for(int i = 0; i < increments;i++)
+        for(int i = 0; i <= increments;i++)
         {
             glVertex3f(x + radius * cos(((2*PI)/resolution) * i + startAngle) ,
                        y + radius * sin(((2*PI)/resolution) * i + startAngle) ,
