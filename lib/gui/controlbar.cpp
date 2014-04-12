@@ -72,7 +72,7 @@ namespace visualizer
 
   void ControlBar::sliderRelease()
   {
-	//TimeManager->play();
+    TimeManager->play();
   }
 
 
@@ -103,11 +103,17 @@ namespace visualizer
 
   void ControlBar::play()
   {
-  TimeManager->play();
-  if(TimeManager->getSpeed() > 0)
-	playButton->setText( "||" );
-  else
-	playButton->setText(">");
+    if( TimeManager->getSpeed() != 0 )
+    {
+      TimeManager->pause();
+      playButton->setText( ">" );
+    }
+    else
+    {
+      TimeManager->play();
+      playButton->setText( "||" );
+    }
+
   }
 
 

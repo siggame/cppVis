@@ -210,7 +210,7 @@ namespace visualizer
 
   void _TimeManager::play()
   {
-	m_Paused = !m_Paused;
+    m_Paused = false;
 
   } // _TimeManager::play()
 
