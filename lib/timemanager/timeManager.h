@@ -109,8 +109,6 @@ namespace visualizer
     signals:
       void TurnChanged();
 
-      void maxTurnsChanged(int);
-
     private slots:
       void timerUpdate();
 
@@ -121,7 +119,6 @@ namespace visualizer
       QTime m_time;
 
       float m_speedModifier;
-      bool m_Paused;
 
       float m_progress;
       bool loop_on;
