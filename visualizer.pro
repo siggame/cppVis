@@ -46,8 +46,8 @@ HEADERS += ./lib/manager/*.h \
     ./common/glew/*.h
 win32: {
 DEFINES += STATIC_BUILD
-LIBS         += -L../MegaMinerAI-13/plugins
-QTPLUGIN     += Droids
+LIBS         += -L../MegaMinerAI-14/plugins
+QTPLUGIN     += Plants
 } else {
 QMAKE_CFLAGS_DEBUG += -rdynamic
 QMAKE_CXXFLAGS_DEBUG += -rdynamic
