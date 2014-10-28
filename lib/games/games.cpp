@@ -6,7 +6,7 @@ using namespace std;
 #endif
 
 #ifdef STATIC_BUILD
-#include "../MegaMinerAI-13/visualizer/droids.h"
+#include "../MegaMinerAI-14/visualizer/plants.h"
 #endif // STATIC_BUILD
 
 namespace visualizer
@@ -32,7 +32,7 @@ namespace visualizer
         if(!m_gameList.empty())
             return;
 
-		Droids* theGame = new Droids;
+		    Plants* theGame = new Plants;
 
         theGame->gui = GUI;
         theGame->animationEngine = AnimationEngine;

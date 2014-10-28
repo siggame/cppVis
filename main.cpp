@@ -10,7 +10,7 @@
 
 #ifdef STATIC_BUILD
 
-Q_IMPORT_PLUGIN(Droids);
+Q_IMPORT_PLUGIN(Plants);
 
 #endif
 
