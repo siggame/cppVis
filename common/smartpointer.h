@@ -99,6 +99,11 @@ class SmartPointer
       return *m_data;
     }
 
+	const T& operator *() const
+	{
+	  return *m_data;
+	}
+
     T* operator -> ()
     {
       return m_data;
