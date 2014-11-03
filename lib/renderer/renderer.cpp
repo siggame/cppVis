@@ -548,6 +548,8 @@ const float PI = 3.141592654f;
 	const int& resolution,
 	const std::string& resource,
 	const float& startAngle,
+	const float& xOffset,
+	const float& yOffset,
 	const float& z
 	) const
   {
@@ -560,7 +562,7 @@ const float PI = 3.141592654f;
 
 	  glBindTexture( GL_TEXTURE_2D, r->getTexture() );
 	  glBegin(GL_TRIANGLE_FAN);
-	  glTexCoord2f(0.5f, 0.5f);
+	  glTexCoord2f(0.5f + xOffset, 0.5f + yOffset);
 	  glVertex3f(x, y, z);
 		for(int i = 0; i <= increments;i++)
 		{
@@ -570,7 +572,7 @@ const float PI = 3.141592654f;
 			float tx = xcos * 0.5 + 0.5;
 			float ty = ysin * 0.5 + 0.5;
 
-			glTexCoord2f(tx, ty);
+			glTexCoord2f(tx + xOffset, ty + yOffset);
 			glVertex3f(x + radius * xcos , y + radius * ysin , z);
 		}
 	  glEnd();

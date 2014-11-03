@@ -94,6 +94,8 @@ namespace visualizer
 		const int& resolution,
 		const std::string& resource,
 		const float& startAngle = 0.0f,
+		const float& xOffset = 0.0f,
+		const float& yOffset = 0.0f,
 		const float& z = 0.0f
 		) const = 0;
 
