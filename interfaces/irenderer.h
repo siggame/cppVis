@@ -94,7 +94,9 @@ namespace visualizer
 		const int& resolution,
 		const std::string& resource,
 		const float& startAngle = 0.0f,
-		const float& xOffset = 0.0f,
+		const float& xCenterOffset = 0.0f, // Offset for center vertex
+		const float& yCenterOffset = 0.0f,
+		const float& xOffset = 0.0f, // Offset for other vertices
 		const float& yOffset = 0.0f,
 		const float& z = 0.0f
 		) const = 0;
