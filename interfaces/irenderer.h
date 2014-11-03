@@ -85,6 +85,18 @@ namespace visualizer
         const float& z = 0.0f
         ) const = 0;
 
+	  virtual void drawTexturedCircle
+		(
+		const float& x,
+		const float& y,
+		const float& radius,
+		const float& percentage,
+		const int& resolution,
+		const std::string& resource,
+		const float& startAngle = 0.0f,
+		const float& z = 0.0f
+		) const = 0;
+
       virtual void drawTexturedQuad
         (
         const float& x,

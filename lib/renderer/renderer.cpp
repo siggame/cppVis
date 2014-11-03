@@ -29,8 +29,8 @@ const float PI = 3.141592654f;
     glLoadIdentity();
     m_height = _height;
     m_width = width;
-    m_depth = depth;
-    refresh();
+	m_depth = depth;
+	refresh();
 
     return true;
   }
@@ -526,17 +526,58 @@ const float PI = 3.141592654f;
       glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
       int increments = resolution * percentage;
 
-      glBegin(GL_TRIANGLE_FAN);
-        glVertex3f(x, y, z);
-        for(int i = 0; i <= increments;i++)
-        {
-            glVertex3f(x + radius * cos(((2*PI)/resolution) * i + startAngle) ,
-                       y + radius * sin(((2*PI)/resolution) * i + startAngle) ,
-                       z);
-        }
+	  glBegin(GL_TRIANGLE_FAN);
+		glVertex3f(x, y, z);
+		for(int i = 0; i <= increments;i++)
+		{
+			glVertex3f(x + radius * cos(((2*PI)/resolution) * i + startAngle) ,
+					   y + radius * sin(((2*PI)/resolution) * i + startAngle) ,
+					   z);
+		}
       glEnd();
 
       glDisable( GL_BLEND );
+  }
+
+  void _Renderer::drawTexturedCircle
+	(
+	const float& x,
+	const float& y,
+	const float& radius,
+	const float& percentage,
+	const int& resolution,
+	const std::string& resource,
+	const float& startAngle,
+	const float& z
+	) const
+  {
+	  glEnable( GL_BLEND );
+	  glEnable( GL_TEXTURE_2D );
+	  glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+	  ResTexture *r = (ResTexture*)ResourceMan->reference( resource, "renderer" );
+
+	  int increments = resolution * percentage;
+
+	  glBindTexture( GL_TEXTURE_2D, r->getTexture() );
+	  glBegin(GL_TRIANGLE_FAN);
+	  glTexCoord2f(0.5f, 0.5f);
+	  glVertex3f(x, y, z);
+		for(int i = 0; i <= increments;i++)
+		{
+			float angle = ((2*PI)/resolution) * i + startAngle;
+			float xcos = cos(angle);
+			float ysin = sin(angle);
+			float tx = xcos * 0.5 + 0.5;
+			float ty = ysin * 0.5 + 0.5;
+
+			glTexCoord2f(tx, ty);
+			glVertex3f(x + radius * xcos , y + radius * ysin , z);
+		}
+	  glEnd();
+
+	  ResourceMan->release( resource, "renderer" );
+	  glDisable( GL_TEXTURE_2D );
+	  glDisable( GL_BLEND );
   }
 
 

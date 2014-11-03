@@ -123,6 +123,20 @@ namespace visualizer
       const float& z = 0.0f
       ) const;
 
+	void drawTexturedCircle
+	  (
+	  const float& x,
+	  const float& y,
+	  const float& radius,
+	  const float& percentage,
+	  const int& resolution,
+	  const string& resource,
+	  const float& startAngle = 0.0f,
+	  const float& z = 0.0f
+	  ) const;
+
+
+
     void setSelectionBox(
       const float& x,
       const float& y,
