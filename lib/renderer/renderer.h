@@ -280,6 +280,16 @@ namespace visualizer
        const float& eY
       );
 
+	//clips all of the items out side of the given plane, need to run glDisable(GL_SCISSOR_TEST)​ after done
+	void enableScissor
+	 (
+	  const float& x,
+	  const float& y,
+	  const float& width,
+	  const float& height
+	 );
+	void disableScissor();
+
     int createShaderProgram() const;
     void attachShader( const int& program, const string& name ) const;
     void buildShaderProgram( const int& id ) const;

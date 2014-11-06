@@ -146,9 +146,9 @@ const float PI = 3.141592654f;
 
 
     /// @TODO Need to clean up this code a bit.
-    glPushMatrix();
+	glPushMatrix();
 
-    translate( width()*m_winX/m_unitSzX, height()*m_winY/m_unitSzY );
+	translate( width()*m_winX/m_unitSzX, height()*m_winY/m_unitSzY );
 
     float bigger = height()<width() ? height() : width();
 
@@ -167,11 +167,11 @@ const float PI = 3.141592654f;
       factor = height()/m_unitSzY;
     }
 
-    glScalef( factor*fx, factor*fy, 1 );
+	glScalef( factor*fx, factor*fy, 1 );
 
     AnimationEngine->draw();
 
-    glPopMatrix();
+	glPopMatrix();
  
     if( fboSupport() )
     {
@@ -915,6 +915,35 @@ const float PI = 3.141592654f;
     resize( width(), height() );
 
   } // _Renderer::setCamera()
+
+  void _Renderer::enableScissor
+   (
+	const float& x,
+	const float& y,
+	const float& w,
+	const float& h
+  )
+  {
+	// TODO: move this code for finding the factor somewhere else!
+	float factor = 1;
+
+	if(width()/m_unitSzX < height()/m_unitSzY)
+	{
+		factor = width()/m_unitSzX;
+	}
+	else
+	{
+		factor = height()/m_unitSzY;
+	}
+
+	glEnable(GL_SCISSOR_TEST);
+	glScissor(x * factor, height() - (y * factor), w * factor, h * factor);
+  }
+
+  void _Renderer::disableScissor()
+   {
+	 glDisable(GL_SCISSOR_TEST);
+   }
 
   int _Renderer::createShaderProgram() const
   {

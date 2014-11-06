@@ -223,15 +223,15 @@ namespace visualizer
         const float& x,
         const float& y,
         const float& z
-        ) const = 0;
+		) const = 0;
 
-      virtual void setCamera
+	  virtual void setCamera
         (
         const float& sX,
         const float& sY,
         const float& eX,
         const float& eY
-        ) = 0;
+		) = 0;
 
       virtual int createShaderProgram() const = 0;
       virtual void attachShader( const int& program, const string& name ) const = 0;
@@ -243,6 +243,15 @@ namespace visualizer
         const float& sX,
         const float& sY
         ) = 0;
+	  virtual void enableScissor
+	   (
+		 const float& x,
+		 const float& y,
+		 const float& width,
+		 const float& height
+	   ) = 0;
+
+	  virtual void disableScissor() = 0;
 
       virtual void beginList( const std::string& name ) const = 0;
 
