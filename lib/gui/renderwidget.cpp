@@ -12,6 +12,7 @@ namespace visualizer
     : QGLWidget( QGLFormat( QGL::SampleBuffers ), parent )
   {
     MESSAGE( "============Initializing the Renderer=======" );
+    setFocusPolicy(Qt::ClickFocus);
     Renderer->setup();
     glInit();
     Renderer->init();
@@ -116,5 +117,32 @@ namespace visualizer
     adjustInput( GUI->m_input.sx, GUI->m_input.sy );
 
   }
+  
+  void RenderWidget::wheelEvent(QWheelEvent* event)
+  {
+    event->accept();
+    IGame* currentGame = AnimationEngine->GetCurrentGame();
+    currentGame->wheelEvent(event->delta());
+    
+    QGLWidget::wheelEvent(event);
+  }
 
+  void RenderWidget::keyPressEvent(QKeyEvent * event)
+  {
+      IGame* currentGame = AnimationEngine->GetCurrentGame();
+      std::string s;
+      std::cout << "wakka" << std::endl;
+      if (event->key() == Qt::Key_W)
+        s = "W";
+      else if(event->key() == Qt::Key_A)
+        s = "A";
+      else if(event->key() == Qt::Key_S)
+        s = "S";
+      else if(event->key() == Qt::Key_D)
+        s = "D";
+      currentGame->keyPressEvent(s);
+    
+      QGLWidget::keyPressEvent(event);
+  }
+  
 } // visualizer

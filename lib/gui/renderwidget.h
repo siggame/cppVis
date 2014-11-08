@@ -9,6 +9,9 @@
 #include "glew/glew.h"
 #include <GL/gl.h>
 #include <QGLWidget>
+#include <QWheelEvent>
+#include <QKeyEvent>
+#include <QDebug>
 #include "../selectionrender/selectionrender.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -79,6 +82,10 @@ namespace visualizer
       void mousePressEvent( QMouseEvent *event );
       void mouseReleaseEvent( QMouseEvent *event );
       void mouseMoveEvent( QMouseEvent *event );
+      
+      void wheelEvent(QWheelEvent * event);
+      
+      void keyPressEvent( QKeyEvent * event );
 
       void adjustInput( float& x, float& y );
 

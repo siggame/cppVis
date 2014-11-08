@@ -82,6 +82,12 @@ namespace visualizer
       virtual void pushZoomMatrix() const {}
       
       virtual void popZoomMatrix() const {}
+      
+      virtual void wheelEvent(int delta) {}
+      
+      virtual void keyPressEvent(std::string& key) {}
+      
+      virtual float zoomFactor() {}
 
       IAnimationEngine *animationEngine;
       IGUI *gui;
