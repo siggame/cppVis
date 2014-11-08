@@ -78,6 +78,10 @@ namespace visualizer
       virtual void pruneSelection() {}
 
       virtual void optionStateChanged() {}
+      
+      virtual void pushZoomMatrix() const {}
+      
+      virtual void popZoomMatrix() const {}
 
       IAnimationEngine *animationEngine;
       IGUI *gui;
