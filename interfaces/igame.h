@@ -50,6 +50,12 @@ namespace visualizer
   class IGame
   {
     public:
+      struct Point
+      {
+          float x;
+          float y;
+      };
+        
       virtual ~IGame() {}
       virtual PluginInfo getPluginInfo() = 0;
       virtual void loadGamelog( std::string gamelog ) = 0;
@@ -78,6 +84,22 @@ namespace visualizer
       virtual void pruneSelection() {}
 
       virtual void optionStateChanged() {}
+      
+      virtual void pushZoomMatrix() const {}
+      
+      virtual void popZoomMatrix() const {}
+      
+      virtual void wheelEvent(int delta) {}
+      
+      virtual void keyPressEvent(std::string& key) {}
+      
+      virtual float zoomFactor() {return 0;}
+      
+      virtual int getWidth() const {return 0;}
+      
+      virtual int getHeight() const {return 0;}
+      
+      Point zoomPoint() {}
 
       IAnimationEngine *animationEngine;
       IGUI *gui;
